@@ -17,7 +17,15 @@
         <label class="visually-hidden" for="channel-directory-search">Search channels</label>
         <input class="form-control" id="channel-directory-search" type="search" name="q" value="{{ channel_query }}" maxlength="120" placeholder="Search channel name, description, or creator">
     </div>
-    <button class="btn btn-outline-primary" type="submit">Search</button>
+    <div>
+        <label class="visually-hidden" for="channel-directory-sort">Sort channels</label>
+        <select class="form-select" id="channel-directory-sort" name="sort" aria-label="Sort channels">
+            <option value="popular"{% if channel_sort == "popular" %} selected{% endif %}>Most subscribers</option>
+            <option value="videos"{% if channel_sort == "videos" %} selected{% endif %}>Most public videos</option>
+            <option value="name"{% if channel_sort == "name" %} selected{% endif %}>Name A–Z</option>
+        </select>
+    </div>
+    <button class="btn btn-outline-primary" type="submit">Apply</button>
     {% if channel_query %}<a class="btn btn-outline-secondary" href="{% url 'channel_list' %}">Clear</a>{% endif %}
 </form>
 
@@ -63,13 +71,13 @@
 <nav class="mt-4" aria-label="Channel directory pages">
     <div class="d-flex justify-content-between align-items-center gap-3">
         {% if channels_page.has_previous %}
-            <a class="btn btn-outline-secondary" href="?{% if channel_query %}q={{ channel_query|urlencode }}&amp;{% endif %}page={{ channels_page.previous_page_number }}">Previous</a>
+            <a class="btn btn-outline-secondary" href="?{% if channel_query %}q={{ channel_query|urlencode }}&amp;{% endif %}sort={{ channel_sort|urlencode }}&amp;page={{ channels_page.previous_page_number }}">Previous</a>
         {% else %}
             <span></span>
         {% endif %}
         <span class="video-meta">Page {{ channels_page.number }} of {{ channels_page.paginator.num_pages }}</span>
         {% if channels_page.has_next %}
-            <a class="btn btn-outline-secondary" href="?{% if channel_query %}q={{ channel_query|urlencode }}&amp;{% endif %}page={{ channels_page.next_page_number }}">Next</a>
+            <a class="btn btn-outline-secondary" href="?{% if channel_query %}q={{ channel_query|urlencode }}&amp;{% endif %}sort={{ channel_sort|urlencode }}&amp;page={{ channels_page.next_page_number }}">Next</a>
         {% else %}
             <span></span>
         {% endif %}

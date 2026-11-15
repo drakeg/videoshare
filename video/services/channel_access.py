@@ -30,10 +30,18 @@ def require_available_channel(user, *, pk):
 
 
 CHANNEL_DIRECTORY_QUERY_MAX_LENGTH = 120
+CHANNEL_DIRECTORY_SORTS = {
+    "popular": ("-subscriber_count", "name", "pk"),
+    "videos": ("-public_video_count", "-subscriber_count", "name", "pk"),
+    "name": ("name", "pk"),
+}
 
 
-def get_channel_directory(user, requested_query=""):
+def get_channel_directory(user, requested_query="", requested_sort="popular"):
     selected_query = str(requested_query or "").strip()[:CHANNEL_DIRECTORY_QUERY_MAX_LENGTH]
+    selected_sort = str(requested_sort or "").strip().lower()
+    if selected_sort not in CHANNEL_DIRECTORY_SORTS:
+        selected_sort = "popular"
     channels = available_channels(user).select_related("owner")
     if selected_query:
         channels = channels.filter(
@@ -52,5 +60,5 @@ def get_channel_directory(user, requested_query=""):
             ),
             distinct=True,
         ),
-    ).order_by("-subscriber_count", "name", "pk")
-    return channels, selected_query
+    ).order_by(*CHANNEL_DIRECTORY_SORTS[selected_sort])
+    return channels, selected_query, selected_sort

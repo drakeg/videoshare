@@ -206,6 +206,66 @@ class ChannelDirectoryTests(TestCase):
         self.assertContains(response, 'name="q" value="creator"', html=False)
         self.assertNotContains(response, 'name="page"', html=False)
 
+    def test_directory_sort_controls_support_popular_videos_and_name(self):
+        alpha = self._directory_channel(1, prefix="Alpha")
+        zulu = self._directory_channel(1, prefix="Zulu")
+        alpha.subscribers.add(self.viewer)
+        zulu.subscribers.add(self.viewer)
+        zulu.subscribers.add(self.owner)
+
+        for index in range(2):
+            Video.objects.create(
+                title=f"Alpha public {index}",
+                description="Description",
+                thumbnail=SimpleUploadedFile(f"alpha-{index}.jpg", b"image", content_type="image/jpeg"),
+                video_file=SimpleUploadedFile(f"alpha-{index}.mp4", b"video", content_type="video/mp4"),
+                author=alpha.owner,
+                channel=alpha,
+                publication_status=Video.PublicationStatus.PUBLISHED,
+                audience=Video.Audience.EVERYONE,
+            )
+        Video.objects.create(
+            title="Zulu public",
+            description="Description",
+            thumbnail=SimpleUploadedFile("zulu.jpg", b"image", content_type="image/jpeg"),
+            video_file=SimpleUploadedFile("zulu.mp4", b"video", content_type="video/mp4"),
+            author=zulu.owner,
+            channel=zulu,
+            publication_status=Video.PublicationStatus.PUBLISHED,
+            audience=Video.Audience.EVERYONE,
+        )
+
+        popular = self.client.get(reverse("channel_list"), {"sort": "popular"})
+        videos = self.client.get(reverse("channel_list"), {"sort": "videos"})
+        name = self.client.get(reverse("channel_list"), {"sort": "name"})
+
+        self.assertEqual(popular.context["channel_sort"], "popular")
+        self.assertEqual(list(popular.context["channels"].object_list)[0].pk, zulu.pk)
+        self.assertEqual(videos.context["channel_sort"], "videos")
+        self.assertEqual(list(videos.context["channels"].object_list)[0].pk, alpha.pk)
+        self.assertEqual(name.context["channel_sort"], "name")
+        self.assertEqual(list(name.context["channels"].object_list)[0].pk, alpha.pk)
+
+    def test_directory_invalid_sort_falls_back_to_popular(self):
+        response = self.client.get(reverse("channel_list"), {"sort": "unexpected"})
+
+        self.assertEqual(response.context["channel_sort"], "popular")
+        self.assertContains(response, '<option value="popular" selected>', html=False)
+
+    def test_directory_pagination_preserves_search_and_sort(self):
+        for index in range(CHANNEL_DIRECTORY_PAGE_SIZE + 1):
+            self._directory_channel(index, prefix="Sort Trail")
+
+        response = self.client.get(
+            reverse("channel_list"),
+            {"q": "sort trail", "sort": "name"},
+        )
+
+        self.assertContains(
+            response,
+            "q=sort%20trail&amp;sort=name&amp;page=2",
+        )
+
     def test_suspended_channels_remain_hidden_from_non_staff_search(self):
         ChannelModerationState.objects.create(channel=self.channel)
 
