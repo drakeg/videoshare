@@ -29,6 +29,25 @@ def require_available_channel(user, *, pk):
         raise Http404("Channel not found") from None
 
 
+CHANNEL_CONTENT_QUERY_MAX_LENGTH = 120
+
+
+def filter_channel_content(videos, requested_query=""):
+    selected_query = str(requested_query or "").strip()[:CHANNEL_CONTENT_QUERY_MAX_LENGTH]
+    if not selected_query:
+        return videos, selected_query
+
+    hashtag_query = selected_query[1:] if selected_query.startswith("#") else selected_query
+    videos = videos.filter(
+        Q(title__icontains=selected_query)
+        | Q(description__icontains=selected_query)
+        | Q(category__name__icontains=selected_query)
+        | Q(tags__name__icontains=selected_query)
+        | Q(hashtags__name__icontains=hashtag_query)
+    ).distinct()
+    return videos, selected_query
+
+
 CHANNEL_DIRECTORY_QUERY_MAX_LENGTH = 120
 CHANNEL_DIRECTORY_SORTS = {
     "popular": ("-subscriber_count", "name", "pk"),
