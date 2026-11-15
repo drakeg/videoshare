@@ -11,9 +11,10 @@ CHANNEL_DIRECTORY_PAGE_SIZE = 24
 
 
 def channel_list(request):
-    channels, selected_query = get_channel_directory(
+    channels, selected_query, selected_sort = get_channel_directory(
         request.user,
         request.GET.get("q", ""),
+        request.GET.get("sort", "popular"),
     )
     channels_page = Paginator(channels, CHANNEL_DIRECTORY_PAGE_SIZE).get_page(
         request.GET.get("page")
@@ -25,6 +26,7 @@ def channel_list(request):
             "channels": channels_page,
             "channels_page": channels_page,
             "channel_query": selected_query,
+            "channel_sort": selected_sort,
         },
     )
 
