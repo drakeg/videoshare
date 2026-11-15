@@ -1296,9 +1296,13 @@ Verification:
 The development server remains intended only for trusted local/LAN testing; public exposure and production TLS/reverse-proxy work remain out of scope.
 
 
-## Active sprint: Channel directory sorting
+## Completed sprint: Channel directory sorting
 
 Goal: add explicit Most subscribers, Most public videos, and Name A-Z ordering to the public Channels directory while preserving search, pagination, moderation visibility, and existing statistics.
+
+Delivered in PR #276 with validated server-side sort selection, safe fallback to Most subscribers, search/sort state preservation across pagination, and regression coverage for all supported sort choices.
+
+GitHub Actions Django checks run #611 passed all 899 tests with one expected skip, along with configuration and migration-drift checks.
 
 No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
 

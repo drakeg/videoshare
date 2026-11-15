@@ -40,3 +40,22 @@ Let viewers choose how the Channels directory is ordered while preserving the se
 - Category/tag filters
 - Recommendation ranking
 - Background indexing
+
+## Delivered
+
+- Most subscribers remains the default ordering.
+- Added Most public videos and Name A-Z ordering.
+- Unknown sort values safely fall back to the default.
+- Search and sort are applied before pagination and preserved in pager links.
+- Existing moderation visibility and annotated subscriber/public-video counts are unchanged.
+- Added regression coverage for all sort choices, fallback behavior, and pager state.
+
+## Verification
+
+GitHub Actions Django checks run #611 passed:
+
+- Django configuration checks passed.
+- Migration drift check passed.
+- All 899 tests passed with one expected skip.
+- Local source compilation with `python3 -m compileall -q video` passed.
+- Docker verification was attempted locally, but the host Docker daemon was occupied by another Compose operation and did not progress to Django output during this sprint.
