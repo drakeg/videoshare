@@ -46,3 +46,21 @@ Let viewers quickly find a creator's visible uploads from the channel page witho
 - Date filters
 - Background indexing
 - Recommendation changes
+
+## Delivered
+
+- Added a single channel-page search field for visible standard videos and Shorts.
+- Search matches title, description, category, structured tag, and hashtag.
+- Query normalization trims whitespace, caps input at 120 characters, and accepts hashtag searches with a leading `#`.
+- Filtering occurs after the existing `visible_to(...)` boundary and before each independent paginator.
+- Both pager link sets preserve the active query and the other section's current page.
+- Search submission resets both pagers and a channel-wide no-results state is shown when neither section matches.
+- Existing newest-first ordering and page sizes remain unchanged.
+
+## Verification results
+
+- `python3 -m compileall -q video` passed locally.
+- `docker compose config --quiet` passed locally.
+- Focused Docker test run: 11 tests passed in 1.720s.
+- Full local Docker verification: all 904 tests passed in 592.349s.
+- GitHub Actions Django checks run #614 passed configuration and migration-drift checks and all 904 tests with one expected skip.

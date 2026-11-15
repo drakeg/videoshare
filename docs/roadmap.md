@@ -1309,9 +1309,13 @@ No schema, migration, dependency, worker, queue, AWS resource, paid service, or 
 Plan and verification: `docs/channel-directory-sorting-sprint.md`.
 
 
-## Active sprint: Channel content search
+## Completed sprint: Channel content search
 
 Goal: add one bounded search across a channel's visible standard videos and Shorts while preserving existing visibility rules, independent pagination, and newest-first ordering.
+
+Delivered in PR #277 with title/description/category/tag/hashtag matching, visibility-safe filtering before pagination, preserved query/page state, and a channel-wide no-results state.
+
+Verification passed locally and in CI: focused Docker tests passed 11/11, the full local Docker suite passed 904/904, and GitHub Actions Django checks run #614 passed all 904 tests with one expected skip plus configuration and migration-drift checks.
 
 No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
 
