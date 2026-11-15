@@ -1307,3 +1307,12 @@ GitHub Actions Django checks run #611 passed all 899 tests with one expected ski
 No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
 
 Plan and verification: `docs/channel-directory-sorting-sprint.md`.
+
+
+## Active sprint: Channel content search
+
+Goal: add one bounded search across a channel's visible standard videos and Shorts while preserving existing visibility rules, independent pagination, and newest-first ordering.
+
+No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
+
+Plan and verification: `docs/channel-content-search-sprint.md`.
