@@ -173,7 +173,7 @@ class ChannelDirectoryTests(TestCase):
         page = response.context["channels"]
         self.assertEqual(page.paginator.count, CHANNEL_DIRECTORY_PAGE_SIZE + 1)
         self.assertEqual(page.paginator.num_pages, 2)
-        self.assertContains(response, "q=trail&amp;page=2")
+        self.assertContains(response, "q=trail&amp;sort=popular&amp;page=2")
 
     def test_directory_search_is_trimmed_and_blank_is_unfiltered(self):
         road = Channel.objects.create(
