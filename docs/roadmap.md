@@ -1294,3 +1294,12 @@ Verification:
 - The one transient full-suite FFmpeg fixture timeout was not reproducible in isolation; the isolated FFmpeg smoke suite passed 5/5.
 
 The development server remains intended only for trusted local/LAN testing; public exposure and production TLS/reverse-proxy work remain out of scope.
+
+
+## Active sprint: Channel directory sorting
+
+Goal: add explicit Most subscribers, Most public videos, and Name A-Z ordering to the public Channels directory while preserving search, pagination, moderation visibility, and existing statistics.
+
+No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
+
+Plan and verification: `docs/channel-directory-sorting-sprint.md`.
