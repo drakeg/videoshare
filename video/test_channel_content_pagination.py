@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Channel, Video
+from .metadata_models import Hashtag, Tag
+from .models import Category, Channel, Video
 from .shorts_models import VideoShort
 
 
@@ -66,6 +67,81 @@ class ChannelContentPaginationTests(TestCase):
         self.assertEqual(len(response.context["shorts"]), 1)
         self.assertContains(response, "Videos page 2 of 2")
         self.assertContains(response, "Shorts page 2 of 2")
+
+    def test_search_matches_title_description_category_tag_and_hashtag(self):
+        category = Category.objects.create(name="Travel")
+        title_match = self.make_video("Mountain Trail Guide")
+        description_match = self.make_video("Workshop", description="RV solar troubleshooting")
+        category_match = self.make_video("Category video", category=category)
+        tag_match = self.make_video("Tagged video")
+        hashtag_match = self.make_video("Hashtag short", short=True)
+        noise = self.make_video("Unrelated cooking")
+        Tag.objects.create(name="boondocking").videos.add(tag_match)
+        Hashtag.objects.create(name="roadlife").videos.add(hashtag_match)
+
+        cases = (
+            ("mountain trail", title_match),
+            ("SOLAR TROUBLE", description_match),
+            ("travel", category_match),
+            ("boondock", tag_match),
+            ("#roadlife", hashtag_match),
+        )
+        for query, expected in cases:
+            with self.subTest(query=query):
+                response = self.client.get(self.url, {"q": query})
+                self.assertContains(response, expected.title)
+                self.assertNotContains(response, noise.title)
+
+    def test_search_filters_before_both_pagers_and_preserves_query(self):
+        for index in range(13):
+            self.make_video(f"trail-video-{index}")
+        for index in range(9):
+            self.make_video(f"trail-short-{index}", short=True)
+        self.make_video("unrelated")
+
+        response = self.client.get(self.url, {"q": "trail"})
+
+        self.assertEqual(response.context["videos"].paginator.count, 13)
+        self.assertEqual(response.context["videos"].paginator.num_pages, 2)
+        self.assertEqual(response.context["shorts"].paginator.count, 9)
+        self.assertEqual(response.context["shorts"].paginator.num_pages, 2)
+        self.assertContains(response, "?q=trail&video_page=2&short_page=1#channel-videos")
+        self.assertContains(response, "?q=trail&short_page=2&video_page=1#channel-shorts")
+
+    def test_search_query_is_trimmed_capped_and_blank_is_unfiltered(self):
+        visible = self.make_video("trim target")
+
+        trimmed = self.client.get(self.url, {"q": "  trim target  "})
+        self.assertEqual(trimmed.context["channel_query"], "trim target")
+        self.assertContains(trimmed, visible.title)
+
+        blank = self.client.get(self.url, {"q": "   "})
+        self.assertEqual(blank.context["channel_query"], "")
+        self.assertContains(blank, visible.title)
+
+        capped = self.client.get(self.url, {"q": "x" * 180})
+        self.assertEqual(len(capped.context["channel_query"]), 120)
+
+    def test_search_never_reveals_non_visible_content(self):
+        self.make_video("secret draft", publication_status=Video.PublicationStatus.DRAFT)
+        self.make_video("secret draft short", short=True, publication_status=Video.PublicationStatus.DRAFT)
+
+        response = self.client.get(self.url, {"q": "secret draft"})
+
+        self.assertEqual(response.context["videos"].paginator.count, 0)
+        self.assertEqual(response.context["shorts"].paginator.count, 0)
+        self.assertContains(response, "No channel content matches")
+        self.assertNotContains(response, "secret draft short")
+
+    def test_search_form_resets_both_section_pages(self):
+        response = self.client.get(
+            self.url,
+            {"q": "creator", "video_page": 4, "short_page": 3},
+        )
+
+        self.assertContains(response, 'name="q" value="creator"', html=False)
+        self.assertNotContains(response, 'name="video_page"', html=False)
+        self.assertNotContains(response, 'name="short_page"', html=False)
 
     def test_invalid_page_values_are_handled_safely(self):
         for index in range(13):
