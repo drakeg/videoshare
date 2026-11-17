@@ -30,12 +30,20 @@ def require_available_channel(user, *, pk):
 
 
 CHANNEL_CONTENT_QUERY_MAX_LENGTH = 120
+CHANNEL_CONTENT_SORTS = {
+    "newest": ("-pub_date", "-pk"),
+    "oldest": ("pub_date", "pk"),
+    "views": ("-views", "-pub_date", "-pk"),
+}
 
 
-def filter_channel_content(videos, requested_query=""):
+def filter_channel_content(videos, requested_query="", requested_sort="newest"):
     selected_query = str(requested_query or "").strip()[:CHANNEL_CONTENT_QUERY_MAX_LENGTH]
+    selected_sort = str(requested_sort or "").strip().lower()
+    if selected_sort not in CHANNEL_CONTENT_SORTS:
+        selected_sort = "newest"
     if not selected_query:
-        return videos, selected_query
+        return videos.order_by(*CHANNEL_CONTENT_SORTS[selected_sort]), selected_query, selected_sort
 
     hashtag_query = selected_query[1:] if selected_query.startswith("#") else selected_query
     videos = videos.filter(
@@ -44,8 +52,8 @@ def filter_channel_content(videos, requested_query=""):
         | Q(category__name__icontains=selected_query)
         | Q(tags__name__icontains=selected_query)
         | Q(hashtags__name__icontains=hashtag_query)
-    ).distinct()
-    return videos, selected_query
+    ).distinct().order_by(*CHANNEL_CONTENT_SORTS[selected_sort])
+    return videos, selected_query, selected_sort
 
 
 CHANNEL_DIRECTORY_QUERY_MAX_LENGTH = 120

@@ -52,8 +52,8 @@ class ChannelContentPaginationTests(TestCase):
 
         response = self.client.get(self.url, {"video_page": 1, "short_page": 1})
 
-        self.assertContains(response, "?video_page=2&short_page=1#channel-videos")
-        self.assertContains(response, "?short_page=2&video_page=1#channel-shorts")
+        self.assertContains(response, "?sort=newest&video_page=2&short_page=1#channel-videos")
+        self.assertContains(response, "?sort=newest&short_page=2&video_page=1#channel-shorts")
 
     def test_second_pages_return_remaining_content(self):
         for index in range(13):
@@ -105,8 +105,8 @@ class ChannelContentPaginationTests(TestCase):
         self.assertEqual(response.context["videos"].paginator.num_pages, 2)
         self.assertEqual(response.context["shorts"].paginator.count, 9)
         self.assertEqual(response.context["shorts"].paginator.num_pages, 2)
-        self.assertContains(response, "?q=trail&video_page=2&short_page=1#channel-videos")
-        self.assertContains(response, "?q=trail&short_page=2&video_page=1#channel-shorts")
+        self.assertContains(response, "?q=trail&sort=newest&video_page=2&short_page=1#channel-videos")
+        self.assertContains(response, "?q=trail&sort=newest&short_page=2&video_page=1#channel-shorts")
 
     def test_search_query_is_trimmed_capped_and_blank_is_unfiltered(self):
         visible = self.make_video("trim target")
@@ -142,6 +142,59 @@ class ChannelContentPaginationTests(TestCase):
         self.assertContains(response, 'name="q" value="creator"', html=False)
         self.assertNotContains(response, 'name="video_page"', html=False)
         self.assertNotContains(response, 'name="short_page"', html=False)
+
+    def test_sort_controls_support_newest_oldest_and_most_viewed(self):
+        first = self.make_video("first", views=5)
+        second = self.make_video("second", views=10)
+        first_short = self.make_video("first-short", short=True, views=7)
+        second_short = self.make_video("second-short", short=True, views=2)
+
+        newest = self.client.get(self.url, {"sort": "newest"})
+        oldest = self.client.get(self.url, {"sort": "oldest"})
+        views = self.client.get(self.url, {"sort": "views"})
+
+        self.assertEqual(newest.context["channel_sort"], "newest")
+        self.assertEqual(list(newest.context["videos"].object_list), [second, first])
+        self.assertEqual(list(newest.context["shorts"].object_list), [second_short, first_short])
+
+        self.assertEqual(oldest.context["channel_sort"], "oldest")
+        self.assertEqual(list(oldest.context["videos"].object_list), [first, second])
+        self.assertEqual(list(oldest.context["shorts"].object_list), [first_short, second_short])
+
+        self.assertEqual(views.context["channel_sort"], "views")
+        self.assertEqual(list(views.context["videos"].object_list), [second, first])
+        self.assertEqual(list(views.context["shorts"].object_list), [first_short, second_short])
+
+    def test_invalid_sort_falls_back_to_newest(self):
+        response = self.client.get(self.url, {"sort": "unexpected"})
+
+        self.assertEqual(response.context["channel_sort"], "newest")
+        self.assertContains(response, '<option value="newest" selected>', html=False)
+
+    def test_search_and_sort_combine_before_pagination(self):
+        older = self.make_video("trail older", views=1)
+        newer = self.make_video("trail newer", views=99)
+        self.make_video("unrelated", views=1000)
+
+        response = self.client.get(self.url, {"q": "trail", "sort": "views"})
+
+        self.assertEqual(response.context["channel_query"], "trail")
+        self.assertEqual(response.context["channel_sort"], "views")
+        self.assertEqual(list(response.context["videos"].object_list), [newer, older])
+
+    def test_pagination_preserves_search_sort_and_other_section_page(self):
+        for index in range(13):
+            self.make_video(f"trail-video-{index}", views=index)
+        for index in range(9):
+            self.make_video(f"trail-short-{index}", short=True, views=index)
+
+        response = self.client.get(
+            self.url,
+            {"q": "trail", "sort": "views", "video_page": 1, "short_page": 1},
+        )
+
+        self.assertContains(response, "?q=trail&sort=views&video_page=2&short_page=1#channel-videos")
+        self.assertContains(response, "?q=trail&sort=views&short_page=2&video_page=1#channel-shorts")
 
     def test_invalid_page_values_are_handled_safely(self):
         for index in range(13):

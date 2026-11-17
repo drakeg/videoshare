@@ -23,8 +23,16 @@
             <label class="visually-hidden" for="channel-content-search">Search this channel</label>
             <input class="form-control" id="channel-content-search" type="search" name="q" value="{{ channel_query }}" maxlength="120" placeholder="Search this channel's videos and Shorts">
         </div>
-        <button class="btn btn-outline-primary" type="submit">Search channel</button>
-        {% if channel_query %}<a class="btn btn-outline-secondary" href="{{ request.path }}">Clear</a>{% endif %}
+        <div>
+            <label class="visually-hidden" for="channel-content-sort">Sort channel content</label>
+            <select class="form-select" id="channel-content-sort" name="sort" aria-label="Sort channel content">
+                <option value="newest"{% if channel_sort == "newest" %} selected{% endif %}>Newest</option>
+                <option value="oldest"{% if channel_sort == "oldest" %} selected{% endif %}>Oldest</option>
+                <option value="views"{% if channel_sort == "views" %} selected{% endif %}>Most viewed</option>
+            </select>
+        </div>
+        <button class="btn btn-outline-primary" type="submit">Apply</button>
+        {% if channel_query or channel_sort != "newest" %}<a class="btn btn-outline-secondary" href="{{ request.path }}">Clear</a>{% endif %}
     </form>
     {% with account=channel.monetization_account %}
         {% if account and account.is_ready_to_earn %}
@@ -57,13 +65,13 @@
     <section class="discovery-section" aria-labelledby="channel-shorts">
         <div class="section-heading"><div><p class="eyebrow">Short-form</p><h2 id="channel-shorts">Shorts</h2></div><a href="{% url 'shorts_feed' %}">Browse all Shorts</a></div>
         <div class="row g-3">{% for video in shorts %}<div class="col-6 col-md-4 col-lg-3"><div class="card h-100"><a href="{% url 'video_detail' video.pk %}"><img class="card-img-top" src="{{ video.thumbnail.url }}" alt="Thumbnail for {{ video.title }}" style="aspect-ratio:9/16; object-fit:cover;"></a><div class="card-body"><span class="badge text-bg-dark mb-2">Short</span><h3 class="h6"><a class="text-decoration-none" href="{% url 'video_detail' video.pk %}">{{ video.title }}</a></h3></div></div></div>{% endfor %}</div>
-        {% if shorts.paginator.num_pages > 1 %}<nav class="d-flex gap-2 align-items-center mt-3" aria-label="Shorts pages">{% if shorts.has_previous %}<a class="btn btn-sm btn-outline-secondary" href="?{% if channel_query %}q={{ channel_query|urlencode }}&{% endif %}short_page={{ shorts.previous_page_number }}&video_page={{ videos.number }}#channel-shorts">Previous Shorts</a>{% endif %}<span class="video-meta">Shorts page {{ shorts.number }} of {{ shorts.paginator.num_pages }}</span>{% if shorts.has_next %}<a class="btn btn-sm btn-outline-secondary" href="?{% if channel_query %}q={{ channel_query|urlencode }}&{% endif %}short_page={{ shorts.next_page_number }}&video_page={{ videos.number }}#channel-shorts">Next Shorts</a>{% endif %}</nav>{% endif %}
+        {% if shorts.paginator.num_pages > 1 %}<nav class="d-flex gap-2 align-items-center mt-3" aria-label="Shorts pages">{% if shorts.has_previous %}<a class="btn btn-sm btn-outline-secondary" href="?{% if channel_query %}q={{ channel_query|urlencode }}&{% endif %}sort={{ channel_sort|urlencode }}&short_page={{ shorts.previous_page_number }}&video_page={{ videos.number }}#channel-shorts">Previous Shorts</a>{% endif %}<span class="video-meta">Shorts page {{ shorts.number }} of {{ shorts.paginator.num_pages }}</span>{% if shorts.has_next %}<a class="btn btn-sm btn-outline-secondary" href="?{% if channel_query %}q={{ channel_query|urlencode }}&{% endif %}sort={{ channel_sort|urlencode }}&short_page={{ shorts.next_page_number }}&video_page={{ videos.number }}#channel-shorts">Next Shorts</a>{% endif %}</nav>{% endif %}
     </section>
     {% endif %}
     <section class="discovery-section" aria-labelledby="channel-videos">
         <div class="section-heading"><h2 id="channel-videos">Videos</h2></div>
         {% include 'videos/_video_cards.html' with videos=videos %}
-        {% if videos.paginator.num_pages > 1 %}<nav class="d-flex gap-2 align-items-center mt-3" aria-label="Video pages">{% if videos.has_previous %}<a class="btn btn-sm btn-outline-secondary" href="?{% if channel_query %}q={{ channel_query|urlencode }}&{% endif %}video_page={{ videos.previous_page_number }}&short_page={{ shorts.number }}#channel-videos">Previous videos</a>{% endif %}<span class="video-meta">Videos page {{ videos.number }} of {{ videos.paginator.num_pages }}</span>{% if videos.has_next %}<a class="btn btn-sm btn-outline-secondary" href="?{% if channel_query %}q={{ channel_query|urlencode }}&{% endif %}video_page={{ videos.next_page_number }}&short_page={{ shorts.number }}#channel-videos">Next videos</a>{% endif %}</nav>{% endif %}
+        {% if videos.paginator.num_pages > 1 %}<nav class="d-flex gap-2 align-items-center mt-3" aria-label="Video pages">{% if videos.has_previous %}<a class="btn btn-sm btn-outline-secondary" href="?{% if channel_query %}q={{ channel_query|urlencode }}&{% endif %}sort={{ channel_sort|urlencode }}&video_page={{ videos.previous_page_number }}&short_page={{ shorts.number }}#channel-videos">Previous videos</a>{% endif %}<span class="video-meta">Videos page {{ videos.number }} of {{ videos.paginator.num_pages }}</span>{% if videos.has_next %}<a class="btn btn-sm btn-outline-secondary" href="?{% if channel_query %}q={{ channel_query|urlencode }}&{% endif %}sort={{ channel_sort|urlencode }}&video_page={{ videos.next_page_number }}&short_page={{ shorts.number }}#channel-videos">Next videos</a>{% endif %}</nav>{% endif %}
     </section>
     {% endif %}
 {% endblock %}
