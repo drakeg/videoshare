@@ -43,3 +43,21 @@ Let viewers order a channel's visible standard videos and Shorts while preservin
 - Date filters
 - Background indexing
 - Recommendation changes
+
+## Delivered
+
+- Newest remains the default ordering for both standard videos and Shorts.
+- Added Oldest and Most viewed ordering.
+- Unknown sort values safely fall back to Newest.
+- Search and sort are applied before the two independent pagers.
+- Both pager link sets preserve search, sort, and the other section's current page.
+- Submitting the search/sort form resets both pagers.
+- Existing visibility rules, page sizes, and video/Short separation are unchanged.
+
+## Verification results
+
+- `python3 -m compileall -q video` passed locally.
+- `docker compose config --quiet` passed locally.
+- Focused Docker regression suite: 15/15 tests passed in 2.491s.
+- GitHub Actions Django checks run #617 passed configuration and migration-drift checks and all 908 tests with one expected skip.
+- A full local Docker suite was started, but the host Docker daemon became occupied by another Docker operation before Django test output began; the stalled invocation was terminated after CI completed successfully.

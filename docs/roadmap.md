@@ -1322,9 +1322,13 @@ No schema, migration, dependency, worker, queue, AWS resource, paid service, or 
 Plan and verification: `docs/channel-content-search-sprint.md`.
 
 
-## Active sprint: Channel content sorting
+## Completed sprint: Channel content sorting
 
 Goal: add Newest, Oldest, and Most viewed ordering across a channel's visible standard videos and Shorts while preserving channel search, independent pagination, and existing visibility rules.
+
+Delivered in PR #278 with validated server-side sort selection, safe fallback to Newest, combined search/sort before pagination, and preserved state across both independent pagers.
+
+Verification passed: focused Docker tests passed 15/15, and GitHub Actions Django checks run #617 passed configuration, migration-drift checks, and all 908 tests with one expected skip. The attempted full local Docker suite was stopped after the host Docker daemon became occupied by another Docker operation before Django test output began.
 
 No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
 
