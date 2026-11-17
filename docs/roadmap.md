@@ -1320,3 +1320,12 @@ Verification passed locally and in CI: focused Docker tests passed 11/11, the fu
 No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
 
 Plan and verification: `docs/channel-content-search-sprint.md`.
+
+
+## Active sprint: Channel content sorting
+
+Goal: add Newest, Oldest, and Most viewed ordering across a channel's visible standard videos and Shorts while preserving channel search, independent pagination, and existing visibility rules.
+
+No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
+
+Plan and verification: `docs/channel-content-sorting-sprint.md`.
