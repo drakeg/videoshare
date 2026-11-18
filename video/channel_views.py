@@ -38,13 +38,17 @@ def channel_list(request):
 def channel_detail(request, pk):
     channel = require_available_channel(request.user, pk=pk)
     visible = channel.videos.visible_to(request.user).select_related("author", "category")
-    visible, selected_query = filter_channel_content(visible, request.GET.get("q", ""))
+    visible, selected_query, selected_sort = filter_channel_content(
+        visible,
+        request.GET.get("q", ""),
+        request.GET.get("sort", "newest"),
+    )
     videos = Paginator(
-        visible.filter(short_metadata__isnull=True).order_by("-pub_date", "-pk"),
+        visible.filter(short_metadata__isnull=True),
         CHANNEL_VIDEO_PAGE_SIZE,
     ).get_page(request.GET.get("video_page"))
     shorts = Paginator(
-        visible.filter(short_metadata__isnull=False).order_by("-pub_date", "-pk"),
+        visible.filter(short_metadata__isnull=False),
         CHANNEL_SHORT_PAGE_SIZE,
     ).get_page(request.GET.get("short_page"))
 
@@ -70,6 +74,7 @@ def channel_detail(request, pk):
             "is_subscribed": is_subscribed,
             "upload_notifications_enabled": upload_notifications_enabled,
             "channel_query": selected_query,
+            "channel_sort": selected_sort,
         },
     )
 
