@@ -1346,9 +1346,13 @@ Verification passed in GitHub Actions run #627: configuration and migration-drif
 
 Plan and verification: `docs/private-portal-mode-sprint.md`.
 
-## Active sprint: Category directory search and pagination
+## Completed sprint: Category directory search and pagination
 
 Goal: add bounded category search, A–Z/Z–A ordering, and 24-per-page pagination while preserving current category creation and detail behavior.
+
+Delivered in PR #279 with bounded name/description search, validated A–Z/Z–A ordering, 24-per-page pagination, and preserved search/sort state across pager links.
+
+Verification passed: focused Docker tests passed 9/9, and GitHub Actions Django checks run #620 passed configuration, migration-drift checks, and all 917 tests with one expected skip.
 
 No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
 

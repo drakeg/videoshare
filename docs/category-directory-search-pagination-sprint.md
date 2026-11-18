@@ -41,3 +41,20 @@ Make the public Categories directory easier to browse as it grows without changi
 - Category recommendations
 - Fuzzy/full-text search
 - Category detail pagination or filtering
+
+## Delivered
+
+- Added bounded category search across name and description.
+- Search input is trimmed and capped at 120 characters.
+- Added validated Name A–Z and Name Z–A ordering with safe fallback to A–Z.
+- Paginated the Categories directory at 24 categories per page.
+- Pager links preserve active search and sort state.
+- New search/sort submissions do not preserve stale page numbers.
+- Category creation and category detail behavior are unchanged.
+
+## Verification results
+
+- `python3 -m compileall -q video` passed locally.
+- `docker compose config --quiet` passed locally.
+- Focused Docker regression suite: 9/9 tests passed in 0.240s.
+- GitHub Actions Django checks run #620 passed configuration and migration-drift checks and all 917 tests with one expected skip.
