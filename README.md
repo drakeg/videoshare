@@ -257,7 +257,11 @@ Compose builds the image automatically when needed. The one-off test container d
 docker compose run --build --rm test
 ```
 
-The test service runs `docker/test.sh`; keep that script aligned with the Django CI workflow whenever verification steps change.
+The test service runs `docker/test.sh`; keep that script aligned with the Django CI workflow whenever verification steps change. The full Django suite defaults to four parallel test processes locally and in CI. On a constrained machine, override it for a single run, for example:
+
+```bash
+DJANGO_TEST_PROCESSES=1 docker compose run --rm test
+```
 
 ### Without Docker
 
