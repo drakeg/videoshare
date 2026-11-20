@@ -1,6 +1,6 @@
 aws_region = "us-east-1"
 
-project_name     = "ytclone"
+project_name     = "videoshare"
 media_bucket_name = "replace-with-a-globally-unique-bucket-name"
 
 # Keep disabled initially to avoid storing multiple paid copies of large videos.
