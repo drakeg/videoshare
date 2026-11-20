@@ -1402,3 +1402,14 @@ Delivered in PR #288 with configurable `DJANGO_TEST_PROCESSES`, matching Docker/
 Verification passed in GitHub Actions run #652 with all 953 tests and one expected skip. Compose interpolation and shell-level runner behavior were verified locally. Actual local test-container execution remained blocked by the host Docker daemon after stranded ephemeral test containers were removed, so no full local Docker pass is claimed.
 
 Plan and verification: `docs/local-docker-test-parity-sprint.md`.
+
+
+## Completed sprint: Closed pilot user provisioning
+
+Goal: add a staff-only branded account-provisioning workflow with password-setup links for private pilots where public registration is disabled.
+
+Delivered in PR #290 with a Pilot Users page, ordinary-user provisioning, signed password-setup URLs, branded password-reset pages/emails, and accessibility coverage. The sprint also fixed the previously incomplete Lost password flow.
+
+Verification passed in GitHub Actions run #660: configuration and migration-drift checks succeeded and all 961 tests passed with one expected skip. Focused Docker provisioning/accessibility tests passed 15/15.
+
+Plan and verification: `docs/pilot-user-provisioning-sprint.md`.

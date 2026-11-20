@@ -32,8 +32,14 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** GitHub Actions run #652 passed all 953 tests with one expected skip; Compose and shell-runner behavior verified locally. Full local container execution remains blocked by the host Docker daemon and is not claimed as passed.
 
-## Next sprint — Pilot operator onboarding
+## Completed sprint — Closed pilot user provisioning
 
-**Goal:** Review the remaining account-provisioning/support friction for closed private pilots now that branding, access control, preflight, accessibility checks, and test-runner parity are in place.
+**Delivered:** staff-only Pilot Users page, ordinary-user provisioning, secure password-setup links, branded password recovery, accessibility coverage, and operator documentation.
+
+**Verification:** focused Docker 15/15; GitHub Actions run #660 passed all 961 tests with one expected skip; repository standards passed.
+
+## Next sprint — Existing pilot user setup-link recovery
+
+**Goal:** Let trusted staff regenerate a secure password setup/reset link for an existing ordinary pilot user without reopening public registration or navigating raw Django admin.
 
 No live payment activation or paid infrastructure is required.

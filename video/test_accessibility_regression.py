@@ -326,6 +326,8 @@ class RenderedAccessibilityRegressionTests(TestCase):
             "shorts_feed",
             "login",
             "register",
+            "password_reset",
+            "password_reset_done",
         ):
             with self.subTest(route_name=route_name):
                 self.assert_accessible_response(
@@ -336,6 +338,19 @@ class RenderedAccessibilityRegressionTests(TestCase):
     def test_search_results_page_passes_structural_accessibility_gate(self):
         response = self.client.get(reverse("search"), {"query": "accessibility"})
         self.assert_accessible_response(response, route_name="search")
+
+    def test_staff_pilot_user_page_passes_structural_accessibility_gate(self):
+        staff = User.objects.create_user(
+            username="a11y-staff",
+            password="password123",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+
+        self.assert_accessible_response(
+            self.client.get(reverse("site_admin_pilot_users")),
+            route_name="site_admin_pilot_users",
+        )
 
     def test_authenticated_creator_upload_passes_structural_accessibility_gate(self):
         user = User.objects.create_user(username="creator", password="password123")
