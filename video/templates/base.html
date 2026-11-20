@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{% block title %}VideoShare{% endblock %}</title>
+    <title>{% block title %}{{ site_name }}{% endblock %}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#17151f">
@@ -18,10 +18,10 @@
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
         <div class="header-inner">
-            <a class="brand" href="{% url 'video_list' %}" aria-label="VideoShare home"><span class="brand-mark" aria-hidden="true"><span></span></span><span>Video<span>Share</span></span></a>
+            <a class="brand" href="{% url 'video_list' %}" aria-label="{{ site_name }} home"><span class="brand-mark" aria-hidden="true"><span></span></span><span>{{ site_name }}</span></a>
             <form class="header-search" role="search" method="get" action="{% url 'search' %}">
                 <label class="visually-hidden" for="site-search">Search videos, channels, and playlists</label>
-                <input id="site-search" type="search" placeholder="Search VideoShare" name="query" value="{{ request.GET.query }}" list="site-search-suggestions" data-search-suggestions="{% url 'search_suggestions' %}">
+                <input id="site-search" type="search" placeholder="Search {{ site_name }}" name="query" value="{{ request.GET.query }}" list="site-search-suggestions" data-search-suggestions="{% url 'search_suggestions' %}">
                 <datalist id="site-search-suggestions"></datalist>
                 <button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg></button>
             </form>
@@ -31,7 +31,7 @@
                     <a class="icon-action notification-action" href="{% url 'notification_list' %}" aria-label="Notifications{% if unread_notification_count %}, {{ unread_notification_count }} unread{% endif %}" title="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/></svg>{% if unread_notification_count %}<span class="notification-dot">{{ unread_notification_count }}</span>{% endif %}</a>
                     <a class="avatar-action" href="{% url 'user_profile' user.username %}" aria-label="View your profile">{{ user.username|slice:":1"|upper }}</a>
                 {% else %}
-                    <a class="button button-secondary button-compact" href="{% url 'register' %}">Sign up</a><a class="button button-primary button-compact" href="{% url 'login' %}">Log in</a>
+                    {% if public_registration_enabled %}<a class="button button-secondary button-compact" href="{% url 'register' %}">Sign up</a>{% endif %}<a class="button button-primary button-compact" href="{% url 'login' %}">Log in</a>
                 {% endif %}
             </nav>
         </div>
@@ -39,7 +39,7 @@
     <div class="mobile-search-wrap">
         <form class="header-search mobile-search" role="search" method="get" action="{% url 'search' %}">
             <label class="visually-hidden" for="mobile-site-search">Search videos, channels, and playlists</label>
-            <input id="mobile-site-search" type="search" placeholder="Search VideoShare" name="query" value="{{ request.GET.query }}" list="mobile-site-search-suggestions" data-search-suggestions="{% url 'search_suggestions' %}">
+            <input id="mobile-site-search" type="search" placeholder="Search {{ site_name }}" name="query" value="{{ request.GET.query }}" list="mobile-site-search-suggestions" data-search-suggestions="{% url 'search_suggestions' %}">
             <datalist id="mobile-site-search-suggestions"></datalist>
             <button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg></button>
         </form>

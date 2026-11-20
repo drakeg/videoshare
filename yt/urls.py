@@ -13,26 +13,17 @@ Class-based views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path, reverse_lazy
+from django.urls import include, path
 from django.views.generic import RedirectView
-from django.views.generic.edit import CreateView
 
 from video import access_views, notification_views
 from video.account_views import current_profile
-from .forms import RegistrationForm
+from .views import RegistrationView
 
 urlpatterns = [
     path('', RedirectView.as_view(pattern_name='video_list', permanent=False), name='home'),
     path('admin/', admin.site.urls),
-    path(
-        'accounts/register/',
-        CreateView.as_view(
-            template_name='registration/register.html',
-            form_class=RegistrationForm,
-            success_url=reverse_lazy('login'),
-        ),
-        name='register',
-    ),
+    path('accounts/register/', RegistrationView.as_view(), name='register'),
     path('accounts/profile/', current_profile, name='current_profile'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('monetization/', include('monetization.urls')),

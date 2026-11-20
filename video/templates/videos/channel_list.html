@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% block title %}Channels · VideoShare{% endblock %}
+{% block title %}Channels · {{ site_name }}{% endblock %}
 {% block content %}
 <header class="page-header">
     <div>
         <p class="eyebrow">Discover creators</p>
         <h1>Channels</h1>
-        <p>Find creators to follow, explore their public videos, and discover growing communities across VideoShare.</p>
+        <p>Find creators to follow, explore their public videos, and discover growing communities across {{ site_name }}.</p>
     </div>
     {% if user.is_authenticated %}
         <a class="btn btn-primary" href="{% url 'channel_create' %}">Create channel</a>
