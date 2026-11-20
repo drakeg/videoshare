@@ -59,5 +59,5 @@ class LocalDockerRuntimeTests(SimpleTestCase):
         readme = (REPOSITORY_ROOT / "README.md").read_text()
 
         self.assertIn("- Django 6.1.3", readme)
-        self.assertIn("- Stripe 17.0.0", readme)
+        self.assertIn("- Stripe 17.1.0", readme)
         self.assertIn("- Terraform 1.17.2 for infrastructure validation", readme)
