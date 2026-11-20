@@ -34,6 +34,7 @@ DEBUG = env_bool("DJANGO_DEBUG", False)
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1")
 CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS")
 CSRF_FAILURE_VIEW = "video.security_views.csrf_failure"
+PRIVATE_PORTAL = env_bool("DJANGO_PRIVATE_PORTAL", False)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "video.middleware.PrivatePortalMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
