@@ -1,14 +1,18 @@
+import csv
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponseBadRequest
+from django.db import transaction
+from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from .community_models import CommunityPost, CommunityReply
 from .models import Channel, Video
-from .pilot_user_forms import PilotUserProvisioningForm
+from .pilot_user_forms import PilotUserCsvImportForm, PilotUserProvisioningForm
 from .services.administration import get_creator_audience, get_site_admin_overview, moderate_site_comment
+from .services.pilot_user_import import PilotUserCsvValidationError, validate_pilot_user_csv
 from .services.pilot_users import password_setup_path, provision_pilot_user
 from .services.moderation_actions import (
     restore_video,
@@ -27,9 +31,10 @@ def site_admin_dashboard(request):
     return render(request, "videos/site_admin_dashboard.html", get_site_admin_overview())
 
 
-def _pilot_user_context(*, form=None, setup_user=None, setup_url=None, setup_heading=None, setup_description=None):
+def _pilot_user_context(*, form=None, import_form=None, setup_user=None, setup_url=None, setup_heading=None, setup_description=None):
     return {
         "form": form or PilotUserProvisioningForm(),
+        "import_form": import_form or PilotUserCsvImportForm(),
         "pilot_users": (
             User.objects.filter(is_staff=False, is_superuser=False)
             .order_by("-date_joined", "-pk")[:50]
@@ -65,6 +70,48 @@ def site_admin_pilot_users(request):
         "videos/site_admin_pilot_users.html",
         _pilot_user_context(form=form),
     )
+
+
+@staff_member_required
+@require_POST
+def site_admin_pilot_user_csv_import(request):
+    import_form = PilotUserCsvImportForm(request.POST, request.FILES)
+    if not import_form.is_valid():
+        return render(
+            request,
+            "videos/site_admin_pilot_users.html",
+            _pilot_user_context(import_form=import_form),
+            status=400,
+        )
+
+    try:
+        rows = validate_pilot_user_csv(import_form.cleaned_data["csv_file"])
+    except PilotUserCsvValidationError as error:
+        for message in error.messages:
+            import_form.add_error("csv_file", message)
+        return render(
+            request,
+            "videos/site_admin_pilot_users.html",
+            _pilot_user_context(import_form=import_form),
+            status=400,
+        )
+
+    with transaction.atomic():
+        users = [provision_pilot_user(**row) for row in rows]
+
+    response = HttpResponse(content_type="text/csv; charset=utf-8")
+    response["Content-Disposition"] = 'attachment; filename="pilot-user-setup-links.csv"'
+    writer = csv.writer(response)
+    writer.writerow(["username", "email", "setup_url"])
+    for user in users:
+        writer.writerow(
+            [
+                user.username,
+                user.email,
+                request.build_absolute_uri(password_setup_path(user)),
+            ]
+        )
+    return response
 
 
 @staff_member_required

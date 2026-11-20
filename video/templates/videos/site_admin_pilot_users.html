@@ -33,6 +33,17 @@
                     <button type="submit" class="btn btn-primary">Create pilot user</button>
                 </form>
             </div>
+
+            <div class="form-panel mt-4">
+                <h2 class="h4">Import users from CSV</h2>
+                <p class="text-muted">The entire file is validated before any account is created. A successful import downloads a CSV containing each new user’s password-setup link.</p>
+                <form method="post" action="{% url 'site_admin_pilot_user_csv_import' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ import_form.as_p }}
+                    <button type="submit" class="btn btn-outline-primary">Import pilot users</button>
+                </form>
+                <p class="text-muted small mt-3 mb-0">Headers: <code>username,email</code>; optional <code>first_name,last_name</code>. Maximum 200 users / 100 KB. No temporary passwords are included in the download.</p>
+            </div>
         </div>
 
         <div class="col-lg-7">
