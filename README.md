@@ -1,5 +1,11 @@
 # ytclone
 
+<!-- madmallard-badges:start -->
+![Python](https://img.shields.io/badge/Python-3.15-3776AB?logo=python&logoColor=white) ![Django](https://img.shields.io/badge/Django-6.1.3-092E20?logo=django&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white) ![Docker Compose](https://img.shields.io/badge/Docker%20Compose-2496ED?logo=docker&logoColor=white) ![Terraform](https://img.shields.io/badge/Terraform-1.17.2-844FBA?logo=terraform&logoColor=white) ![AWS target](https://img.shields.io/badge/AWS%20target-232F3E?logo=amazonwebservices&logoColor=white)
+
+[![django](https://github.com/drakeg/ytclone/actions/workflows/django.yml/badge.svg)](https://github.com/drakeg/ytclone/actions/workflows/django.yml) [![security](https://github.com/drakeg/ytclone/actions/workflows/security.yml/badge.svg)](https://github.com/drakeg/ytclone/actions/workflows/security.yml) [![standards](https://github.com/drakeg/ytclone/actions/workflows/standards.yml/badge.svg)](https://github.com/drakeg/ytclone/actions/workflows/standards.yml) [![terraform](https://github.com/drakeg/ytclone/actions/workflows/terraform.yml/badge.svg)](https://github.com/drakeg/ytclone/actions/workflows/terraform.yml) [![Issues](https://img.shields.io/github/issues/drakeg/ytclone)](https://github.com/drakeg/ytclone/issues) [![Pull requests](https://img.shields.io/github/issues-pr/drakeg/ytclone)](https://github.com/drakeg/ytclone/pulls)
+<!-- madmallard-badges:end -->
+
 A Django-based video-sharing application being modernized into a secure, low-cost creator and viewer platform that runs locally with Docker and can later deploy to AWS through Terraform.
 
 ## Current capabilities
@@ -68,6 +74,12 @@ The current supported repository baseline is:
 - Terraform 1.17.2 for infrastructure validation
 
 Dependency updates should keep Docker, CI, requirements, and contributor documentation aligned.
+
+## Development standards and product direction
+
+This repository follows the Mad Mallard Development Standards and the shared `drakeg/madmallard-repository-standards` conventions where they do not conflict with stricter project requirements. Current sprint scope and priorities live in `SPRINTS.md` and `BACKLOG.md`; contribution, release, agent, and security policies live in `CONTRIBUTING.md`, `RELEASES.md`, `AGENTS.md`, and `SECURITY.md`.
+
+The current commercialization direction is an **unvalidated SMB hypothesis**, not claimed market validation. See `docs/commercialization.md` for the target buyer, problem/value hypotheses, competitive frame, pricing hypotheses, and validation plan.
 
 ## Local development with Docker
 
