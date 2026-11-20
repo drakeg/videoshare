@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils import timezone
 
 from .models import Channel
@@ -28,3 +29,7 @@ def unread_notifications(request):
         "owns_channel": owns_channel,
         "pending_team_invitation_count": pending_team_invitation_count,
     }
+
+
+def registration_policy(request):
+    return {"public_registration_enabled": settings.ALLOW_PUBLIC_REGISTRATION}

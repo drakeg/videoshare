@@ -34,6 +34,7 @@ DEBUG = env_bool("DJANGO_DEBUG", False)
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1")
 CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS")
 CSRF_FAILURE_VIEW = "video.security_views.csrf_failure"
+ALLOW_PUBLIC_REGISTRATION = env_bool("DJANGO_ALLOW_PUBLIC_REGISTRATION", True)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -72,6 +73,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "video.context_processors.unread_notifications",
+                "video.context_processors.registration_policy",
             ],
         },
     },
