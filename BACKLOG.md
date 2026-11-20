@@ -20,7 +20,7 @@
 | P1 | Optional pilot-user setup email delivery | Reduce manual setup-link delivery while keeping providers optional | Delivered in PR #293 |
 | P1 | Customer-facing deployment/runbook hardening | Reduce setup/support cost for pilots | Preflight delivered; continue as deployment needs emerge |
 | P0 | Accessibility regression checks for key workflows | Reduces product and customer risk | Delivered in PR #287 |
-| P2 | Category detail filtering/pagination | Useful scale improvement but lower commercial urgency | Backlog |
+| P2 | Category detail filtering/pagination | Useful scale improvement but lower commercial urgency | Implemented on current PR; awaiting CI/merge |
 | P2 | Additional discovery/recommendation ranking | Useful engagement work after pilot requirements are clearer | Backlog |
 
 ## Prioritization rules
