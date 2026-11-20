@@ -41,3 +41,18 @@ A generic hardcoded product name makes every pilot look like a developer demo. E
 - Custom domains
 - Theme/color editing
 - White-label removal of all product attribution
+
+## Delivered
+
+- Added `DJANGO_SITE_NAME` with `VideoShare` as the default and blank-value fallback.
+- Added a global template context processor for site branding.
+- Replaced hardcoded product-name copy across shared navigation, page titles, search placeholders, authentication pages, channel/playlist defaults, creator/viewer surfaces, and monetization templates.
+- Documented the environment setting in `.env.example`.
+- Added regression tests for the default brand and an SMB-specific custom brand.
+
+## Verification results
+
+- `git diff --check` passed locally.
+- `python3 -m compileall -q video monetization yt` passed locally.
+- GitHub Actions Django checks run #625 passed configuration and migration-drift checks and all 912 tests with one expected skip.
+- Local Docker focused tests were attempted twice, but the host Docker daemon stalled at container creation; no local Docker test success is claimed for this sprint.

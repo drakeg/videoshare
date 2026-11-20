@@ -1334,10 +1334,14 @@ No schema, migration, dependency, worker, queue, AWS resource, paid service, or 
 
 Plan and verification: `docs/channel-content-sorting-sprint.md`.
 
-## Active sprint: Configurable site branding
+## Completed sprint: Configurable site branding
 
 Goal: make SMB demo/pilot deployments brandable through environment configuration while preserving VideoShare as the default and avoiding schema or infrastructure changes.
 
-Commercial rationale: a hardcoded product name weakens customer-facing demos; environment-driven branding improves pilot credibility with minimal implementation/support cost.
+Delivered in PR #282 with `DJANGO_SITE_NAME`, global template branding, and replacement of hardcoded product-name copy across the shared shell and user-facing templates.
+
+Commercial rationale: deployments can now present a customer/prospect-facing name without source edits, reducing demo setup friction and making pilots look less like a generic developer build.
+
+Verification passed in GitHub Actions run #625: configuration and migration-drift checks succeeded and all 912 tests passed with one expected skip. Local Docker test-container creation remained blocked by another host Docker operation, so no local Docker test success is claimed.
 
 Plan and verification: `docs/configurable-site-branding-sprint.md`.
