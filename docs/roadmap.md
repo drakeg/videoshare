@@ -1448,8 +1448,12 @@ Verification passed in GitHub Actions run #666: configuration and migration-drif
 Plan and verification: `docs/pilot-user-setup-email-sprint.md`.
 
 
-## Active sprint: Pilot user directory management
+## Completed sprint: Pilot user directory management
 
 Goal: add bounded search, account-state filtering, and pagination to the staff Pilot Users directory so cohorts created by bulk import remain manageable.
+
+Delivered in PR #294 with username/email/name search, All/Active/Suspended filtering, 50-user pagination, safe fallback, and preserved pager state.
+
+Verification passed in GitHub Actions run #669 with all 999 tests and one expected skip; repository standards also passed.
 
 Plan and verification: `docs/pilot-user-directory-management-sprint.md`.

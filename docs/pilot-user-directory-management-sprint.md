@@ -46,3 +46,20 @@ Bulk import supports cohorts up to 200 users, but the current Pilot Users page o
 - Bulk suspension/reactivation
 - Additional roles/permissions
 - Exporting the full user directory
+
+## Delivered
+
+- Added bounded case-insensitive search across username, email, first name, and last name.
+- Added validated All / Active / Suspended filtering with safe fallback.
+- Added 50-user pagination with search/filter state preserved in pager links.
+- New filter submissions reset stale page state.
+- Existing provisioning, reset/setup, email, CSV import, and privilege boundaries remain unchanged.
+
+## Verification results
+
+- `python3 -m compileall -q video` passed locally.
+- `git diff --check` passed locally.
+- `docker compose config --quiet` passed locally.
+- The focused local Docker invocation stalled before test output and was terminated; no local focused pass is claimed.
+- GitHub Actions Django checks run #669 passed configuration and migration-drift checks and all 999 tests with one expected skip.
+- Repository standards workflow run #31 passed.

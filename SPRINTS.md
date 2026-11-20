@@ -56,16 +56,14 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** focused Docker email/preflight 23/23; accessibility 8/8; GitHub Actions run #666 passed all 990 tests with one expected skip; repository standards passed.
 
-## Current sprint — Pilot user directory management
+## Completed sprint — Pilot user directory management
 
-**Goal:** Make larger closed-pilot cohorts manageable by adding search/filter/pagination to the staff Pilot Users directory without weakening account-state or privilege boundaries.
+**Delivered:** bounded username/email/name search, account-state filtering, 50-user pagination, and preserved directory state.
 
-**Deliverables**
-- [ ] Bounded username/email/name search
-- [ ] All/Active/Suspended filtering
-- [ ] 50-user pagination with preserved state
-- [ ] Safe invalid-filter/page fallback
-- [ ] Focused regression coverage
-- [ ] Full CI verification and reviewable PR
+**Verification:** GitHub Actions run #669 passed all 999 tests with one expected skip; repository standards passed.
+
+## Next sprint — Pilot onboarding status visibility
+
+**Goal:** Help operators identify users who have never successfully signed in after provisioning so setup assistance can be targeted without adding a new account-state model.
 
 No live payment activation or paid infrastructure is required.
