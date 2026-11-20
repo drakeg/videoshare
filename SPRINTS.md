@@ -62,8 +62,16 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** GitHub Actions run #669 passed all 999 tests with one expected skip; repository standards passed.
 
-## Next sprint — Pilot onboarding status visibility
+## Current sprint — Pilot onboarding status visibility
 
 **Goal:** Help operators identify users who have never successfully signed in after provisioning so setup assistance can be targeted without adding a new account-state model.
+
+**Deliverables**
+- [ ] Last-successful-sign-in column with clear never-signed-in state
+- [ ] All / Never signed in / Has signed in filter
+- [ ] Composed search/account/onboarding filtering
+- [ ] Pager state preservation and safe fallback
+- [ ] Focused regression coverage
+- [ ] Full CI verification and reviewable PR
 
 No live payment activation or paid infrastructure is required.
