@@ -8,16 +8,16 @@
         <div>
             <p class="eyebrow mb-1">Site administration</p>
             <h1 class="mb-1">Pilot Users</h1>
-            <p class="text-muted mb-0">Create ordinary accounts for a closed pilot without reopening public registration or sharing temporary passwords.</p>
+            <p class="text-muted mb-0">Create ordinary accounts for a closed pilot without reopening public registration or sharing temporary passwords.</p><p class="text-muted small mb-0 mt-1">Generating a reset link does not revoke older links by itself; reset links become invalid after a password/account state change or timeout.</p>
         </div>
         <a class="btn btn-outline-secondary" href="{% url 'site_admin_dashboard' %}">Back to Site Administration</a>
     </div>
 
-    {% if provisioned_user and setup_url %}
+    {% if setup_user and setup_url %}
     <div class="alert alert-success" role="status">
-        <h2 class="h5">Account created for @{{ provisioned_user.username }}</h2>
-        <p class="mb-2">Share this password-setup link through your approved channel. Treat it as sensitive until the user chooses a password.</p>
-        <label class="form-label" for="password-setup-url">Password-setup URL</label>
+        <h2 class="h5">{{ setup_heading }}</h2>
+        <p class="mb-2">{{ setup_description }}</p>
+        <label class="form-label" for="password-setup-url">Password setup/reset URL</label>
         <input id="password-setup-url" class="form-control" type="text" value="{{ setup_url }}" readonly>
     </div>
     {% endif %}
@@ -44,7 +44,7 @@
                 <div class="table-responsive">
                     <table class="table align-middle mb-0">
                         <thead>
-                            <tr><th>User</th><th>Email</th><th>Joined</th><th>Status</th></tr>
+                            <tr><th>User</th><th>Email</th><th>Joined</th><th>Status</th><th>Access help</th></tr>
                         </thead>
                         <tbody>
                             {% for account in pilot_users %}
@@ -53,9 +53,10 @@
                                 <td>{{ account.email|default:"—" }}</td>
                                 <td>{{ account.date_joined }}</td>
                                 <td>{% if account.is_active %}Active{% else %}<span class="badge text-bg-warning">Suspended</span>{% endif %}</td>
+                                <td>{% if account.is_active %}<form method="post" action="{% url 'site_admin_pilot_user_reset_link' account.pk %}">{% csrf_token %}<button class="btn btn-sm btn-outline-primary" type="submit">Generate reset link</button></form>{% else %}<span class="text-muted small">Reactivate first</span>{% endif %}</td>
                             </tr>
                             {% empty %}
-                            <tr><td colspan="4" class="text-muted">No ordinary users yet.</td></tr>
+                            <tr><td colspan="5" class="text-muted">No ordinary users yet.</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>

@@ -38,8 +38,14 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** focused Docker 15/15; GitHub Actions run #660 passed all 961 tests with one expected skip; repository standards passed.
 
-## Next sprint — Existing pilot user setup-link recovery
+## Completed sprint — Existing pilot user reset links
 
-**Goal:** Let trusted staff regenerate a secure password setup/reset link for an existing ordinary pilot user without reopening public registration or navigating raw Django admin.
+**Delivered:** staff-only reset/setup-link generation for active ordinary users, eligibility enforcement, branded output, and password/account-state safety coverage.
+
+**Verification:** focused Docker 14/14; GitHub Actions run #662 passed all 968 tests with one expected skip; repository standards passed.
+
+## Next sprint — Bulk pilot user import
+
+**Goal:** Reduce onboarding time for multi-user SMB pilots by importing ordinary users from a validated CSV without opening public registration or creating elevated accounts.
 
 No live payment activation or paid infrastructure is required.
