@@ -44,8 +44,17 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** focused Docker 14/14; GitHub Actions run #662 passed all 968 tests with one expected skip; repository standards passed.
 
-## Next sprint — Bulk pilot user import
+## Current sprint — Bulk pilot user CSV import
 
-**Goal:** Reduce onboarding time for multi-user SMB pilots by importing ordinary users from a validated CSV without opening public registration or creating elevated accounts.
+**Goal:** Reduce onboarding time for multi-user SMB pilots with an atomic, validated CSV import that creates ordinary users and returns setup links.
+
+**Deliverables**
+- [ ] Staff-only CSV upload
+- [ ] Bounded UTF-8/header/row validation
+- [ ] Atomic all-or-nothing creation
+- [ ] Duplicate/collision protection
+- [ ] Downloadable setup-link CSV
+- [ ] Focused rollback/security tests
+- [ ] Full CI verification and reviewable PR
 
 No live payment activation or paid infrastructure is required.
