@@ -1380,3 +1380,12 @@ Commercial rationale: catches branding, access-policy, host, secret, debug, HTTP
 Verification passed in GitHub Actions run #648: configuration and migration-drift checks succeeded and all 945 tests passed with one expected skip. Focused Docker tests passed 11/11, the real local public-profile command reported 4 PASS / 2 WARN / 0 FAIL, and local source/Compose checks passed.
 
 Plan and verification: `docs/pilot-deployment-preflight-sprint.md`.
+
+
+## Active sprint: Accessibility regression gate
+
+Goal: add a zero-cost rendered-HTML accessibility regression baseline for core viewer, auth, creator, and private-pilot workflows.
+
+The gate checks common structural accessibility failures on every Django CI run without adding a browser runtime or paid scanning service.
+
+Plan and verification: `docs/accessibility-regression-gate-sprint.md`.

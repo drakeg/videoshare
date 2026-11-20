@@ -20,8 +20,16 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** focused Docker 11/11; GitHub Actions run #648 passed all 945 tests with one expected skip; real local public preflight reported 4 PASS / 2 WARN / 0 FAIL.
 
-## Next sprint — Accessibility regression gate
+## Current sprint — Accessibility regression gate
 
-**Goal:** Add automated accessibility regression checks for the highest-value anonymous/auth/private-pilot workflows without introducing a paid scanning service.
+**Goal:** Add automated rendered-HTML accessibility regression checks for the highest-value viewer/auth/creator/private-pilot workflows without introducing a paid scanner or new runtime dependency.
+
+**Deliverables**
+- [ ] Standard-library HTML accessibility auditor
+- [ ] Core viewer/auth page regression coverage
+- [ ] Creator upload regression coverage
+- [ ] Private-portal login regression coverage
+- [ ] Fix concrete markup defects found by the gate
+- [ ] Full CI verification and reviewable PR
 
 No live payment activation or paid infrastructure is required.

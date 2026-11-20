@@ -10,7 +10,7 @@
 | P1 | Branded portal/demo gaps identified by pilot audit | Strengthen value versus generic public video hosting | Initial branding control delivered; further discovery required |
 | P1 | Privacy/access workflow gaps identified by pilot audit | SMB training/client content often needs controlled access | Private portal + registration control delivered; further discovery required |
 | P1 | Customer-facing deployment/runbook hardening | Reduce setup/support cost for pilots | Preflight delivered; continue as deployment needs emerge |
-| P0 | Accessibility regression checks for key workflows | Reduces product and customer risk | Next |
+| P0 | Accessibility regression checks for key workflows | Reduces product and customer risk | In progress |
 | P2 | Category detail filtering/pagination | Useful scale improvement but lower commercial urgency | Backlog |
 | P2 | Additional discovery/recommendation ranking | Useful engagement work after pilot requirements are clearer | Backlog |
 
