@@ -3,6 +3,21 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+PILOT_USER_CSV_MAX_BYTES = 100 * 1024
+
+
+class PilotUserCsvImportForm(forms.Form):
+    csv_file = forms.FileField(
+        label="Pilot users CSV",
+        help_text="UTF-8 CSV up to 100 KB. Required headers: username,email. Optional: first_name,last_name.",
+    )
+
+    def clean_csv_file(self):
+        csv_file = self.cleaned_data["csv_file"]
+        if csv_file.size > PILOT_USER_CSV_MAX_BYTES:
+            raise forms.ValidationError("CSV files must be 100 KB or smaller.")
+        return csv_file
+
 
 class PilotUserProvisioningForm(forms.Form):
     username = forms.CharField(max_length=150)

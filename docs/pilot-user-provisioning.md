@@ -42,3 +42,41 @@ The provisioning form rejects duplicate usernames and duplicate email addresses 
 - Public registration stays controlled by `DJANGO_ALLOW_PUBLIC_REGISTRATION`.
 - Private portal access stays controlled by `DJANGO_PRIVATE_PORTAL`.
 - Account suspension/reactivation remains in the existing Site Administration moderation workflow.
+
+
+## Bulk CSV import
+
+For a multi-user pilot, use the **Import users from CSV** form on the Pilot Users page.
+
+Required headers:
+
+```text
+username,email
+```
+
+Optional headers:
+
+```text
+first_name,last_name
+```
+
+Example:
+
+```csv
+username,email,first_name,last_name
+alice,alice@example.com,Alice,Example
+bob,bob@example.com,Bob,Example
+```
+
+Limits and safety rules:
+
+- UTF-8 CSV only
+- maximum 100 KB
+- maximum 200 non-blank user rows
+- only `username`, `email`, `first_name`, and `last_name` headers are accepted
+- usernames and emails must be unique case-insensitively within the file and against existing accounts
+- the complete file is validated before any user is created
+- if any row is invalid, **zero users are created**
+- successful imports create ordinary active users only
+
+On success, the browser downloads `pilot-user-setup-links.csv` containing each new username, email address, and signed password-setup URL. The download contains no temporary plaintext passwords. Treat the setup-link CSV as sensitive until users have completed password setup.
