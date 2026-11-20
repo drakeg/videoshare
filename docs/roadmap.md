@@ -1404,10 +1404,12 @@ Verification passed in GitHub Actions run #652 with all 953 tests and one expect
 Plan and verification: `docs/local-docker-test-parity-sprint.md`.
 
 
-## Active sprint: Closed pilot user provisioning
+## Completed sprint: Closed pilot user provisioning
 
 Goal: add a staff-only branded account-provisioning workflow with password-setup links for private pilots where public registration is disabled.
 
-The sprint also completes the currently missing password-reset templates required by the existing Lost password flow.
+Delivered in PR #290 with a Pilot Users page, ordinary-user provisioning, signed password-setup URLs, branded password-reset pages/emails, and accessibility coverage. The sprint also fixed the previously incomplete Lost password flow.
+
+Verification passed in GitHub Actions run #660: configuration and migration-drift checks succeeded and all 961 tests passed with one expected skip. Focused Docker provisioning/accessibility tests passed 15/15.
 
 Plan and verification: `docs/pilot-user-provisioning-sprint.md`.

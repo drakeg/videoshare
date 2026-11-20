@@ -56,3 +56,22 @@ Closed pilots need operator-controlled account creation. Requiring operators to 
 - SSO/SAML/OIDC
 - Role/group administration
 - Staff/superuser creation
+
+## Delivered
+
+- Added a staff-only **Site Administration → Pilot users** page.
+- Added ordinary-user provisioning with case-insensitive duplicate username/email validation.
+- Provisioned users are always active, non-staff, and non-superusers.
+- Temporary plaintext passwords are never displayed or emailed; a random internal password is set and the operator receives a signed password-setup URL instead.
+- Added branded password-reset form/done/confirm/complete/email templates and explicitly bound auth reset routes to unique app templates so Django admin templates cannot override them.
+- Added Site Administration navigation plus operator documentation in `docs/pilot-user-provisioning.md`.
+- Extended the accessibility regression gate to the Pilot Users page and password-reset entry pages.
+
+## Verification results
+
+- Focused Docker provisioning/accessibility suite passed 15/15 in 6.773s.
+- `python3 -m compileall -q video yt` passed locally.
+- `git diff --check` passed locally.
+- `docker compose config --quiet` passed locally.
+- GitHub Actions Django checks run #660 passed configuration and migration-drift checks and all 961 tests with one expected skip.
+- Repository standards workflow run #22 passed.
