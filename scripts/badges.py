@@ -38,7 +38,7 @@ def tech(root: Path):
     dv=req_version(req,"Django")
     if dv: out.append(("Django","092E20","django",dv))
     compose=read(root/"compose.yaml")+read(root/"compose.yml")
-    settings=read(root/"yt"/"settings.py")
+    settings=read(root/"videoshare"/"settings.py")
     if "sqlite3" in settings.lower() or "DJANGO_DB_PATH" in compose:
         out.append(("SQLite","003B57","sqlite",None))
     if dockerfile: out.append(("Docker","2496ED","docker",None))
