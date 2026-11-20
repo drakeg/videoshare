@@ -1358,8 +1358,12 @@ No schema, migration, dependency, worker, queue, AWS resource, paid service, or 
 
 Plan and verification: `docs/category-directory-search-pagination-sprint.md`.
 
-## Active sprint: SMB pilot configuration
+## Completed sprint: SMB pilot configuration
 
 Goal: consolidate configurable site branding and optional public-registration shutdown into one reviewable SMB pilot configuration change on top of the merged private-portal mode.
+
+Delivered in PR #285, superseding PRs #282 and #284. The combined change adds environment-driven site naming and optional public-registration shutdown while preserving the merged private-portal mode and existing authorization boundaries.
+
+Verification passed in GitHub Actions run #637: configuration and migration-drift checks succeeded and all 925 tests passed with one expected skip. Local source compilation, diff validation, and Compose configuration validation also passed.
 
 Plan and verification: `docs/smb-pilot-configuration-sprint.md`.

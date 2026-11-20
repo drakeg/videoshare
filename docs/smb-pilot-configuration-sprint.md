@@ -43,3 +43,20 @@ This gives an SMB pilot three complementary deployment controls: customer-facing
 - SSO/SAML/OIDC
 - Invitation-only onboarding
 - Per-tenant settings
+
+## Delivered
+
+- Added `DJANGO_SITE_NAME` with `VideoShare` fallback.
+- Applied the configured site name across shared navigation, page titles, search placeholders, auth pages, and customer-facing template copy.
+- Added `DJANGO_ALLOW_PUBLIC_REGISTRATION=true` with existing signup behavior unchanged by default.
+- Disabled registration GET/POST requests return HTTP 403 and do not create users.
+- Signup links are hidden when public registration is disabled.
+- Existing-user login, password reset, admin provisioning, private portal behavior, visibility rules, and media authorization remain intact.
+- Consolidated the overlapping work from PRs #282 and #284 onto current `main`.
+
+## Verification results
+
+- `git diff --check` passed locally.
+- `python3 -m compileall -q video monetization yt` passed locally.
+- `docker compose config --quiet` passed locally.
+- GitHub Actions Django checks run #637 passed configuration and migration-drift checks and all 925 tests with one expected skip.
