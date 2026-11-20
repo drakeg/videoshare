@@ -8,33 +8,20 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 ## Recently completed
 
-- Channel directory search, pagination, and sorting
-- Channel content search and sorting
-- Local Docker/LAN reliability
-- Creator video/trash search and pagination
-- Category directory search/pagination is implemented in PR #279 and remains pending merge/review
+- Repository standards adoption (#281)
+- Private portal mode (#283)
+- Category directory search/pagination (#279)
+- SMB pilot configuration: branding + registration control (#285)
+- Stripe 17.1 runtime update (#280)
 
-## Current sprint — Repository standards adoption
+## Completed sprint — SMB pilot deployment preflight
 
-**Goal:** Bring the repository into compliance with the Mad Mallard Development Standards without altering completed application behavior.
+**Delivered:** read-only PASS/WARN/FAIL preflight service and `manage.py pilot_check` with public/private profiles, deployment hardening, focused regression coverage, and operator documentation.
 
-**Deliverables**
-- [x] Required governance/development documents
-- [x] Verified README badge block and badge maintenance tooling
-- [x] Standards validation workflow
-- [x] Dependency security workflow
-- [x] SMB commercialization hypothesis and validation plan
-- [ ] PR review/merge
+**Verification:** focused Docker 11/11; GitHub Actions run #648 passed all 945 tests with one expected skip; real local public preflight reported 4 PASS / 2 WARN / 0 FAIL.
 
-**Acceptance:** standards audit/check passes, badge generation is idempotent, security/standards workflows are dynamic and read-only, existing Django/Terraform CI remains green.
+## Next sprint — Accessibility regression gate
 
-## Next sprint — SMB pilot readiness
+**Goal:** Add automated accessibility regression checks for the highest-value anonymous/auth/private-pilot workflows without introducing a paid scanning service.
 
-**Goal:** Improve the fastest credible path from a working demo to an SMB pilot.
-
-Planned discovery/implementation order:
-1. Audit existing branding, sharing, privacy, team, analytics, and onboarding flows against the pilot use case.
-2. Choose the smallest missing user-visible capability that materially improves an SMB demo.
-3. Implement, deploy locally, test real workflows, fix defects, and update pilot documentation.
-
-No live payment activation or paid infrastructure is required for this sprint.
+No live payment activation or paid infrastructure is required.

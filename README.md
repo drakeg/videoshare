@@ -201,6 +201,18 @@ python manage.py runserver
 
 On Windows PowerShell, activate the environment with `.venv\Scripts\Activate.ps1` instead.
 
+## SMB pilot deployment preflight
+
+Before a customer demo or pilot handoff, run the read-only configuration preflight:
+
+```bash
+docker compose run --rm --entrypoint python test manage.py pilot_check --profile public
+```
+
+For a login-required private portal, use `--profile private`. For an internet-facing deployment after TLS is configured, add `--deployment` to require debug/HTTPS/cookie hardening. FAIL results exit non-zero; WARN results are actionable review items and do not modify the deployment.
+
+See `docs/pilot-deployment-preflight.md` for private-pilot requirements, deployment checks, result meanings, and an example configuration.
+
 ## Administrator access
 
 For a new administrator when running without Docker:
@@ -304,6 +316,7 @@ When `DJANGO_DEBUG=true`, the container starts Django's development server. With
 
 - `docs/roadmap.md` — completed work, current sprint status, delivery checklist, and next candidates
 - `docs/development-handoff.md` — repository continuity guide for a new development session or assistant
+- `docs/pilot-deployment-preflight.md` — public/private pilot readiness and deployment-hardening checks
 - `docs/shorts-current-state.md` — current Shorts architecture, behavior, safeguards, and maintenance candidates
 - `docs/unlisted-sharing.md` — revocable direct links and privacy boundaries
 - `docs/publication-management.md` — creator filters, bulk visibility safeguards, and tests
