@@ -68,8 +68,16 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** GitHub Actions run #671 passed all 1004 tests with one expected skip; repository standards passed.
 
-## Next sprint — Pilot user access-state controls
+## Current sprint — Pilot user access-state controls
 
 **Goal:** Let staff suspend/reactivate ordinary pilot users directly from the filtered Pilot Users directory while preserving moderation safeguards and directory return state.
+
+**Deliverables**
+- [ ] Staff-only ordinary-user suspend/reactivate action
+- [ ] Required moderation reason and audit reuse
+- [ ] Safe preserved directory return state
+- [ ] In-place active/suspended controls
+- [ ] Focused regression coverage
+- [ ] Full CI verification and reviewable PR
 
 No live payment activation or paid infrastructure is required.

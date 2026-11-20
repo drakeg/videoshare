@@ -1468,3 +1468,10 @@ Delivered in PR #295 with last-sign-in display, a clear Never signed in state, a
 Verification passed in GitHub Actions run #671 with all 1004 tests and one expected skip; repository standards also passed.
 
 Plan and verification: `docs/pilot-onboarding-status-sprint.md`.
+
+
+## Active sprint: Pilot user access-state controls
+
+Goal: let staff suspend/reactivate ordinary pilot users directly from the filtered Pilot Users directory using the existing audited moderation service and safe return-state preservation.
+
+Plan and verification: `docs/pilot-user-access-state-sprint.md`.
