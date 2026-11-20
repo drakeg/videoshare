@@ -27,32 +27,68 @@ def site_admin_dashboard(request):
     return render(request, "videos/site_admin_dashboard.html", get_site_admin_overview())
 
 
+def _pilot_user_context(*, form=None, setup_user=None, setup_url=None, setup_heading=None, setup_description=None):
+    return {
+        "form": form or PilotUserProvisioningForm(),
+        "pilot_users": (
+            User.objects.filter(is_staff=False, is_superuser=False)
+            .order_by("-date_joined", "-pk")[:50]
+        ),
+        "setup_user": setup_user,
+        "setup_url": setup_url,
+        "setup_heading": setup_heading,
+        "setup_description": setup_description,
+    }
+
+
 @staff_member_required
 def site_admin_pilot_users(request):
-    setup_url = None
-    provisioned_user = None
-    if request.method == "POST":
-        form = PilotUserProvisioningForm(request.POST)
-        if form.is_valid():
-            provisioned_user = provision_pilot_user(**form.cleaned_data)
-            setup_url = request.build_absolute_uri(password_setup_path(provisioned_user))
-            form = PilotUserProvisioningForm()
-    else:
-        form = PilotUserProvisioningForm()
+    form = PilotUserProvisioningForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        user = provision_pilot_user(**form.cleaned_data)
+        return render(
+            request,
+            "videos/site_admin_pilot_users.html",
+            _pilot_user_context(
+                setup_user=user,
+                setup_url=request.build_absolute_uri(password_setup_path(user)),
+                setup_heading=f"Account created for @{user.username}",
+                setup_description=(
+                    "Share this password-setup link through your approved channel. "
+                    "Treat it as sensitive until the user chooses a password."
+                ),
+            ),
+        )
 
-    pilot_users = (
-        User.objects.filter(is_staff=False, is_superuser=False)
-        .order_by("-date_joined", "-pk")[:50]
+    return render(
+        request,
+        "videos/site_admin_pilot_users.html",
+        _pilot_user_context(form=form),
+    )
+
+
+@staff_member_required
+@require_POST
+def site_admin_pilot_user_reset_link(request, pk):
+    user = get_object_or_404(
+        User,
+        pk=pk,
+        is_staff=False,
+        is_superuser=False,
+        is_active=True,
     )
     return render(
         request,
         "videos/site_admin_pilot_users.html",
-        {
-            "form": form,
-            "pilot_users": pilot_users,
-            "provisioned_user": provisioned_user,
-            "setup_url": setup_url,
-        },
+        _pilot_user_context(
+            setup_user=user,
+            setup_url=request.build_absolute_uri(password_setup_path(user)),
+            setup_heading=f"Reset link generated for @{user.username}",
+            setup_description=(
+                "Share this reset/setup link through your approved channel. "
+                "It does not change the user's current password until they submit a new one."
+            ),
+        ),
     )
 
 
