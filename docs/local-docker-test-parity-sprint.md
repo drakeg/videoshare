@@ -57,6 +57,6 @@ The 900+ test suite was observed running serially in Docker even though CI alrea
 - A shell-level execution check verified `docker/test.sh` emits `python manage.py test --parallel 4` by default and `--parallel 1` when overridden.
 - GitHub Actions Django checks run #652 passed configuration and migration-drift checks and all 953 tests with one expected skip using the shared process-count variable.
 - Repository standards workflow run #14 passed.
-- Actual one-off Docker test containers repeatedly stalled in the host Docker daemon before test output. Two stranded ephemeral `ytclone-test-run-*` containers (one Dead, one Created) were identified and removed without touching named volumes or application data; the daemon still stalled afterward. No full local Docker-suite pass is claimed for this sprint.
+- Actual one-off Docker test containers repeatedly stalled in the host Docker daemon before test output. Two stranded ephemeral `videoshare-test-run-*` containers (one Dead, one Created) were identified and removed without touching named volumes or application data; the daemon still stalled afterward. No full local Docker-suite pass is claimed for this sprint.
 
 The repository runner behavior is validated, but a Docker Desktop/daemon restart may be needed on the development host before local container execution is reliable again. Restarting Docker was not performed because it could interrupt unrelated running containers.
