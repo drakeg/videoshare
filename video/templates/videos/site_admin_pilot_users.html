@@ -120,7 +120,7 @@
                                         <form method="post" action="{% url 'site_admin_pilot_user_reset_link' account.pk %}">{% csrf_token %}<button class="btn btn-sm btn-outline-primary" type="submit">Generate reset link</button></form>
                                         {% if pilot_setup_email_enabled and account.email %}<form method="post" action="{% url 'site_admin_pilot_user_reset_link' account.pk %}">{% csrf_token %}<input type="hidden" name="delivery" value="email"><button class="btn btn-sm btn-outline-secondary" type="submit">Email reset link</button></form>{% endif %}
                                     </div>
-                                    {% else %}<span class="text-muted small">Reactivate to restore setup/reset actions</span>{% endif %}
+                                    {% else %}<span class="text-muted small">Reactivate first to restore setup/reset actions</span>{% endif %}
                                 </td>
                             </tr>
                             {% empty %}

@@ -185,7 +185,7 @@ class PilotUserAccessStateTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Reactivate")
-        self.assertContains(response, "Reactivate to restore setup/reset actions")
+        self.assertContains(response, "Reactivate first to restore setup/reset actions")
         self.assertNotContains(
             response,
             reverse(
