@@ -1333,3 +1333,11 @@ Verification passed: focused Docker tests passed 15/15, and GitHub Actions Djang
 No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
 
 Plan and verification: `docs/channel-content-sorting-sprint.md`.
+
+## Active sprint: Private portal mode
+
+Goal: add an opt-in login-required deployment mode for SMB training/client/internal-content pilots while preserving the public site as the default.
+
+Commercial rationale: controlled site access is a stronger pilot requirement than additional discovery features for many SMB training and client-content workflows.
+
+Plan and verification: `docs/private-portal-mode-sprint.md`.
