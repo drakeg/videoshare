@@ -86,7 +86,7 @@ class ChannelTeamTests(TestCase):
         self.assertIn(self.channel, owner_form.fields["channel"].queryset)
         self.assertNotIn(self.foreign_channel, owner_form.fields["channel"].queryset)
 
-    @override_settings(MEDIA_ROOT="/tmp/ytclone-channel-team-tests")
+    @override_settings(MEDIA_ROOT="/tmp/videoshare-channel-team-tests")
     def test_editor_can_upload_to_assigned_channel(self):
         self.add_editor()
         self.client.login(username="editor", password="password123")
