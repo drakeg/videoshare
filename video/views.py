@@ -31,6 +31,7 @@ from .services.analytics import get_channel_analytics, get_creator_analytics
 from .services.channels import can_edit_video
 from .services.chapters import replace_chapters
 from .services.category_directory import get_category_directory
+from .services.category_detail import CATEGORY_UPLOAD_FILTERS, CATEGORY_VIDEO_SORTS, get_category_videos
 from .services.bookmarks import BookmarkValidationError, get_visible_bookmarks, save_bookmark
 from .services.discovery import get_discovery_sections
 from .services.notifications import clear_team_invitation_notification, notify_comment, notify_new_upload, notify_reaction, notify_reply, notify_subscription, notify_team_invitation
@@ -590,11 +591,27 @@ def category_list(request):
 
 def category_detail(request, pk):
     category = get_object_or_404(Category, pk=pk)
-    videos = Video.objects.visible_to(request.user).filter(category=category)
+    videos, selected_query, selected_sort, selected_upload = get_category_videos(
+        request.user,
+        category,
+        query=request.GET.get("q", ""),
+        sort=request.GET.get("sort", "newest"),
+        uploaded=request.GET.get("uploaded", "any"),
+    )
+    videos_page = Paginator(videos, 24).get_page(request.GET.get("page"))
     return render(
         request,
         "videos/category_detail.html",
-        {"category": category, "videos": videos},
+        {
+            "category": category,
+            "videos": videos_page,
+            "videos_page": videos_page,
+            "selected_query": selected_query,
+            "selected_sort": selected_sort,
+            "selected_upload": selected_upload,
+            "sort_options": CATEGORY_VIDEO_SORTS,
+            "upload_filters": CATEGORY_UPLOAD_FILTERS,
+        },
     )
 
 
