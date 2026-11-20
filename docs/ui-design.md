@@ -61,3 +61,18 @@ Visual verification covers the homepage and video detail at desktop and mobile w
 - Native mobile applications
 - A front-end framework, asset pipeline, or third-party design service
 - User-selectable themes in this first design-system pass
+
+
+## Automated accessibility regression baseline
+
+The Django test suite now audits rendered HTML for common structural regressions across core viewer, authentication, creator-upload, and private-portal login workflows. The standard-library auditor checks document language/title, skip-link/main targeting, unique IDs, `aria-labelledby` references, image `alt` attributes, interactive accessible names, and form-control labels.
+
+Critical design-system color pairs are also checked with the WCAG contrast-ratio formula. The first run found and fixed two defects: the coral `--accent-deep` token was below 4.5:1 on the canvas, and the small side-navigation section label used a low-contrast hardcoded gray. The corrected values are regression-tested.
+
+Run the focused gate with:
+
+```bash
+docker compose run --rm --entrypoint python test manage.py test video.test_accessibility_regression
+```
+
+This automated baseline is intentionally scoped. Passing it does not claim WCAG conformance and does not replace periodic keyboard, browser, screen-reader, zoom/reflow, or other assistive-technology testing.

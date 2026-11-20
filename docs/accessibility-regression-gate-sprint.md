@@ -48,3 +48,23 @@ Accessibility defects create customer risk and support friction, especially for 
 ## Boundaries
 
 This is a regression baseline, not a claim of WCAG conformance and not a replacement for periodic browser/assistive-technology testing.
+
+## Delivered
+
+- Added a standard-library rendered-HTML accessibility auditor in the Django regression suite.
+- Added coverage for core anonymous viewer pages, search, login/registration, authenticated creator upload, and private-portal login.
+- Added self-tests proving representative missing labels, names, alt attributes, duplicate IDs, missing language/title, and broken `aria-labelledby` references fail.
+- Added WCAG contrast-ratio checks for critical design tokens.
+- Fixed `--accent-deep` from `#cc3f58` to `#c23954`, raising contrast on the canvas above the 4.5:1 normal-text floor.
+- Replaced the small side-nav label's low-contrast `#97929e` with the accessible `--ink-soft` token.
+
+## Verification results
+
+- Focused Docker accessibility suite passed 7/7 in 0.900s.
+- `python3 -m compileall -q video` passed locally.
+- `git diff --check` passed locally.
+- `docker compose config --quiet` passed locally.
+- GitHub Actions Django checks run #650 passed configuration and migration-drift checks and all 952 tests with one expected skip.
+- Repository standards workflow run #12 passed.
+
+This gate is a regression baseline, not a claim of WCAG conformance.
