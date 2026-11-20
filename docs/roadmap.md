@@ -1367,3 +1367,12 @@ Delivered in PR #285, superseding PRs #282 and #284. The combined change adds en
 Verification passed in GitHub Actions run #641: configuration and migration-drift checks succeeded and all 934 tests passed with one expected skip. Local source compilation, diff validation, and Compose configuration validation also passed.
 
 Plan and verification: `docs/smb-pilot-configuration-sprint.md`.
+
+
+## Active sprint: SMB pilot deployment preflight
+
+Goal: add a deterministic, read-only preflight command for public/private pilot configuration and optional deployment-hardening checks.
+
+Commercial rationale: catch branding, access-policy, host, secret, debug, and HTTPS/cookie misconfiguration before a customer demo or pilot.
+
+Plan and verification: `docs/pilot-deployment-preflight-sprint.md`.
