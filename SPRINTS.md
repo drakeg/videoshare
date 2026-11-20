@@ -32,8 +32,16 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** GitHub Actions run #652 passed all 953 tests with one expected skip; Compose and shell-runner behavior verified locally. Full local container execution remains blocked by the host Docker daemon and is not claimed as passed.
 
-## Next sprint — Pilot operator onboarding
+## Current sprint — Closed pilot user provisioning
 
-**Goal:** Review the remaining account-provisioning/support friction for closed private pilots now that branding, access control, preflight, accessibility checks, and test-runner parity are in place.
+**Goal:** Give trusted staff a branded, password-safe workflow for creating ordinary users in closed pilots without reopening public registration.
+
+**Deliverables**
+- [ ] Staff-only Pilot Users page
+- [ ] Ordinary-user provisioning form
+- [ ] Password-setup link generation
+- [ ] Complete branded password-reset templates
+- [ ] Permission/validation/token regression coverage
+- [ ] Full CI verification and reviewable PR
 
 No live payment activation or paid infrastructure is required.
