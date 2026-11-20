@@ -50,8 +50,16 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** focused Docker 10/10; GitHub Actions run #664 passed all 978 tests with one expected skip; repository standards passed.
 
-## Next sprint — Pilot user onboarding delivery
+## Current sprint — Optional pilot-user setup email
 
-**Goal:** Reduce manual link-delivery friction while keeping email/invitation delivery opt-in and provider-agnostic.
+**Goal:** Reduce manual setup-link delivery for closed pilots while keeping email provider-independent and disabled by default.
+
+**Deliverables**
+- [ ] `DJANGO_PILOT_USER_SETUP_EMAIL_ENABLED=false`
+- [ ] Branded provider-agnostic setup/reset email service
+- [ ] Optional email delivery after single-user provisioning
+- [ ] Existing-user reset/setup email action
+- [ ] Manual-link fallback on disabled/missing-email/backend-failure paths
+- [ ] Focused regression coverage and operator documentation
 
 No live payment activation or paid infrastructure is required.

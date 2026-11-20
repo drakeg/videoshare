@@ -1435,3 +1435,10 @@ Delivered in PR #292 with full-file validation, atomic ordinary-user creation, s
 Verification passed in GitHub Actions run #664: configuration and migration-drift checks succeeded and all 978 tests passed with one expected skip. Focused Docker CSV-import tests passed 10/10.
 
 Plan and verification: `docs/pilot-user-csv-import-sprint.md`.
+
+
+## Active sprint: Optional pilot-user setup email
+
+Goal: add opt-in provider-agnostic email delivery for individual pilot-user setup/reset links while preserving manual-link fallback and the disabled-by-default deployment posture.
+
+Plan and verification: `docs/pilot-user-setup-email-sprint.md`.
