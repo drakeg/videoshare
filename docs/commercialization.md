@@ -16,7 +16,7 @@ These teams may need a low-cost branded place to host/share video, organize cont
 
 ## Competitive frame
 
-Alternatives include YouTube/unlisted YouTube, Vimeo, Wistia, Loom, course/community platforms, and custom website integrations. The project should not try to out-feature all of them. Pilot work should focus on a narrow buyer/problem where deployment control, branding, access control, or workflow ownership creates meaningful value.
+Alternatives include large public video hosts, Vimeo, Wistia, Loom, course/community platforms, and custom website integrations. The project should not try to out-feature all of them. Pilot work should focus on a narrow buyer/problem where deployment control, branding, access control, or workflow ownership creates meaningful value.
 
 ## Pricing hypothesis
 
