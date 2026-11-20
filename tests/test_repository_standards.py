@@ -58,7 +58,7 @@ class RepositoryStandardsTests(unittest.TestCase):
 
 
     def test_repository_has_no_legacy_video_platform_branding(self):
-        forbidden = ("youtube", "ytclone", "drakeg/ytclone")
+        forbidden = ("you" + "tube", "yt" + "clone", "drakeg/" + "yt" + "clone")
         ignored_dirs = {".git", ".venv", "node_modules", "__pycache__"}
         matches = []
         for path in ROOT.rglob("*"):
