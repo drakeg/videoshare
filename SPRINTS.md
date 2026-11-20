@@ -38,15 +38,14 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** focused Docker 15/15; GitHub Actions run #660 passed all 961 tests with one expected skip; repository standards passed.
 
-## Current sprint — Existing pilot user reset links
+## Completed sprint — Existing pilot user reset links
 
-**Goal:** Let trusted staff generate a secure password reset/setup link for an existing active ordinary pilot user from the branded Pilot Users workflow.
+**Delivered:** staff-only reset/setup-link generation for active ordinary users, eligibility enforcement, branded output, and password/account-state safety coverage.
 
-**Deliverables**
-- [ ] Staff-only POST action from Pilot Users
-- [ ] Active ordinary-user eligibility enforcement
-- [ ] Signed reset/setup URL display
-- [ ] Non-mutation/password-safety regression coverage
-- [ ] Full CI verification and reviewable PR
+**Verification:** focused Docker 14/14; GitHub Actions run #662 passed all 968 tests with one expected skip; repository standards passed.
+
+## Next sprint — Bulk pilot user import
+
+**Goal:** Reduce onboarding time for multi-user SMB pilots by importing ordinary users from a validated CSV without opening public registration or creating elevated accounts.
 
 No live payment activation or paid infrastructure is required.

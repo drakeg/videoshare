@@ -40,3 +40,21 @@ Generating a new Django reset token does not revoke older still-valid reset toke
     python manage.py test video.test_pilot_user_reset_links
     python manage.py test --parallel 4
     docker compose config --quiet
+
+## Delivered
+
+- Added a staff-only, POST-only reset/setup-link action from Pilot Users.
+- Restricted the custom action to active ordinary users; inactive/staff/superuser targets are rejected.
+- Added reset/setup link output to the existing branded Pilot Users page.
+- Added clear guidance that generating a token does not mutate the existing password and does not revoke older valid tokens by itself.
+- Suspended users show **Reactivate first** rather than a reset action.
+- Added end-to-end regression coverage proving the existing password hash/role/account state remain unchanged until the target user completes the reset.
+
+## Verification results
+
+- Focused Docker pilot-user lifecycle suite passed 14/14 in 10.194s.
+- `python3 -m compileall -q video` passed locally.
+- `git diff --check` passed locally.
+- `docker compose config --quiet` passed locally.
+- GitHub Actions Django checks run #662 passed configuration and migration-drift checks and all 968 tests with one expected skip.
+- Repository standards workflow run #24 passed.
