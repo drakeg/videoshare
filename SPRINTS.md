@@ -20,8 +20,14 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** focused Docker 11/11; GitHub Actions run #648 passed all 945 tests with one expected skip; real local public preflight reported 4 PASS / 2 WARN / 0 FAIL.
 
-## Next sprint — Accessibility regression gate
+## Completed sprint — Accessibility regression gate
 
-**Goal:** Add automated accessibility regression checks for the highest-value anonymous/auth/private-pilot workflows without introducing a paid scanning service.
+**Delivered:** rendered-HTML structural accessibility auditing, critical design-token contrast checks, core viewer/auth/creator/private-pilot coverage, and two contrast fixes.
+
+**Verification:** focused Docker 7/7; GitHub Actions run #650 passed all 952 tests with one expected skip; repository standards passed.
+
+## Next sprint — Local Docker test parity
+
+**Goal:** Align the local Docker full-suite runner with CI's parallel test execution after the serial runner was observed to be unnecessarily slow.
 
 No live payment activation or paid infrastructure is required.

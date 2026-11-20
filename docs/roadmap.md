@@ -1380,3 +1380,14 @@ Commercial rationale: catches branding, access-policy, host, secret, debug, HTTP
 Verification passed in GitHub Actions run #648: configuration and migration-drift checks succeeded and all 945 tests passed with one expected skip. Focused Docker tests passed 11/11, the real local public-profile command reported 4 PASS / 2 WARN / 0 FAIL, and local source/Compose checks passed.
 
 Plan and verification: `docs/pilot-deployment-preflight-sprint.md`.
+
+
+## Completed sprint: Accessibility regression gate
+
+Goal: add a zero-cost rendered-HTML accessibility regression baseline for core viewer, auth, creator, and private-pilot workflows.
+
+Delivered in PR #287 with structural rendered-HTML auditing, critical design-token contrast checks, and fixes for two concrete low-contrast text treatments.
+
+Verification passed in GitHub Actions run #650: configuration and migration-drift checks succeeded and all 952 tests passed with one expected skip. Focused Docker accessibility tests passed 7/7 and repository-standards validation passed.
+
+Plan and verification: `docs/accessibility-regression-gate-sprint.md`.
