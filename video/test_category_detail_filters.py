@@ -104,7 +104,7 @@ class CategoryDetailFilteringTests(TestCase):
     def test_visibility_rules_still_apply(self):
         public = self.video("Public")
         private = self.video("Private")
-        private.publication_status = Video.PublicationStatus.PRIVATE
+        private.publication_status = Video.PublicationStatus.DRAFT
         private.save(update_fields=["publication_status"])
 
         response = self.client.get(self.url)
