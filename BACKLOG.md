@@ -11,7 +11,7 @@
 | P1 | Branded portal/demo gaps identified by pilot audit | Strengthen value versus generic public video hosting | Initial branding control delivered; further discovery required |
 | P1 | Privacy/access workflow gaps identified by pilot audit | SMB training/client content often needs controlled access | Private portal + registration control delivered; further discovery required |
 | P0 | Closed-pilot operator account provisioning workflow | Reduce admin/support friction when public registration is disabled | Delivered in PR #290 |
-| P0 | Existing pilot user setup-link recovery | Let staff recover onboarding/reset without Django admin or public signup | Next |
+| P0 | Existing pilot user setup-link recovery | Let staff recover onboarding/reset without Django admin or public signup | In progress |
 | P1 | Customer-facing deployment/runbook hardening | Reduce setup/support cost for pilots | Preflight delivered; continue as deployment needs emerge |
 | P0 | Accessibility regression checks for key workflows | Reduces product and customer risk | Delivered in PR #287 |
 | P2 | Category detail filtering/pagination | Useful scale improvement but lower commercial urgency | Backlog |

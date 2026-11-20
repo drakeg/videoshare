@@ -38,8 +38,15 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** focused Docker 15/15; GitHub Actions run #660 passed all 961 tests with one expected skip; repository standards passed.
 
-## Next sprint — Existing pilot user setup-link recovery
+## Current sprint — Existing pilot user reset links
 
-**Goal:** Let trusted staff regenerate a secure password setup/reset link for an existing ordinary pilot user without reopening public registration or navigating raw Django admin.
+**Goal:** Let trusted staff generate a secure password reset/setup link for an existing active ordinary pilot user from the branded Pilot Users workflow.
+
+**Deliverables**
+- [ ] Staff-only POST action from Pilot Users
+- [ ] Active ordinary-user eligibility enforcement
+- [ ] Signed reset/setup URL display
+- [ ] Non-mutation/password-safety regression coverage
+- [ ] Full CI verification and reviewable PR
 
 No live payment activation or paid infrastructure is required.

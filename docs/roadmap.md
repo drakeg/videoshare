@@ -1413,3 +1413,12 @@ Delivered in PR #290 with a Pilot Users page, ordinary-user provisioning, signed
 Verification passed in GitHub Actions run #660: configuration and migration-drift checks succeeded and all 961 tests passed with one expected skip. Focused Docker provisioning/accessibility tests passed 15/15.
 
 Plan and verification: `docs/pilot-user-provisioning-sprint.md`.
+
+
+## Active sprint: Existing pilot user reset links
+
+Goal: let staff generate a signed password reset/setup link for an existing active ordinary pilot user directly from the branded Pilot Users workflow.
+
+The action is POST-only, staff-only, and does not mutate the target account before the user actually changes their password.
+
+Plan and verification: `docs/pilot-user-reset-links-sprint.md`.
