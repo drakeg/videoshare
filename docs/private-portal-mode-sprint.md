@@ -48,3 +48,20 @@ This is a Django request-layer access gate, not a replacement for object/storage
 - Per-tenant portals
 - Custom domains
 - Storage-policy redesign
+
+## Delivered
+
+- Added `DJANGO_PRIVATE_PORTAL=false` with public behavior unchanged by default.
+- Added a middleware-level login gate immediately after Django authentication.
+- Anonymous application requests preserve their requested destination through the normal `next` parameter.
+- Login, registration, password-reset routes, Django admin authentication, and static assets remain reachable while signed out.
+- Local `/media/` requests are not exempted from the private gate.
+- Existing per-object visibility and protected video-file authorization remain unchanged after login.
+- Added focused regression coverage for default/public mode, redirects, query-string preservation, authenticated access, public exceptions, static assets, and media gating.
+
+## Verification results
+
+- `git diff --check` passed locally.
+- `python3 -m compileall -q video yt` passed locally.
+- GitHub Actions Django checks run #627 passed configuration and migration-drift checks and all 916 tests with one expected skip.
+- Local Docker focused tests were attempted, but the host Docker daemon stalled before test-container creation; no local Docker test success is claimed for this sprint.

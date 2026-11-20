@@ -1334,10 +1334,14 @@ No schema, migration, dependency, worker, queue, AWS resource, paid service, or 
 
 Plan and verification: `docs/channel-content-sorting-sprint.md`.
 
-## Active sprint: Private portal mode
+## Completed sprint: Private portal mode
 
 Goal: add an opt-in login-required deployment mode for SMB training/client/internal-content pilots while preserving the public site as the default.
 
-Commercial rationale: controlled site access is a stronger pilot requirement than additional discovery features for many SMB training and client-content workflows.
+Delivered in PR #283 with `DJANGO_PRIVATE_PORTAL`, middleware-level login gating, preserved `next` destinations, public auth/admin/static exceptions, and anonymous local-media gating.
+
+Commercial rationale: controlled site access materially expands the product's fit for training, client-content, and internal-video pilots without adding SSO or paid infrastructure.
+
+Verification passed in GitHub Actions run #627: configuration and migration-drift checks succeeded and all 916 tests passed with one expected skip. Local Docker test-container creation remained blocked by another host Docker operation, so no local Docker test success is claimed.
 
 Plan and verification: `docs/private-portal-mode-sprint.md`.
