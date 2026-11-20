@@ -14,7 +14,8 @@
 | P0 | Existing pilot user setup-link recovery | Let staff recover onboarding/reset without Django admin or public signup | Delivered in PR #291 |
 | P0 | Bulk pilot user CSV import | Reduce repetitive onboarding work for multi-user SMB pilots | Delivered in PR #292 |
 | P1 | Pilot user directory search/filter/pagination | Keep larger closed-pilot cohorts manageable after bulk import | Delivered in PR #294 |
-| P1 | Pilot onboarding status visibility | Identify never-signed-in users who still need setup help | In progress |
+| P1 | Pilot onboarding status visibility | Identify never-signed-in users who still need setup help | Delivered in PR #295 |
+| P1 | Pilot user access-state controls | Suspend/reactivate ordinary pilot users without leaving the directory | Next |
 | P1 | Optional pilot-user setup email delivery | Reduce manual setup-link delivery while keeping providers optional | Delivered in PR #293 |
 | P1 | Customer-facing deployment/runbook hardening | Reduce setup/support cost for pilots | Preflight delivered; continue as deployment needs emerge |
 | P0 | Accessibility regression checks for key workflows | Reduces product and customer risk | Delivered in PR #287 |

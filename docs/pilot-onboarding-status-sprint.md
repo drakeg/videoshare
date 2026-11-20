@@ -43,3 +43,20 @@ After provisioning a cohort, operators need a low-cost way to identify who likel
 - Password-setup completion tracking separate from successful login
 - New account-state models
 - Automated reminders
+
+## Delivered
+
+- Added last-successful-sign-in visibility to the Pilot Users directory.
+- Added explicit `Never signed in` display for users whose Django `last_login` is null.
+- Added validated All / Never signed in / Has signed in filtering.
+- Composed onboarding status with existing search and Active/Suspended filters.
+- Preserved onboarding/search/account state across pagination.
+- Kept wording limited to successful sign-in state; no email-read or password-setup completion claim is made.
+
+## Verification results
+
+- `python3 -m compileall -q video` passed locally.
+- `git diff --check` passed locally.
+- `docker compose config --quiet` passed locally.
+- GitHub Actions Django checks run #671 passed configuration and migration-drift checks and all 1004 tests with one expected skip.
+- Repository standards workflow run #33 passed.

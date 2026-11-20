@@ -1459,8 +1459,12 @@ Verification passed in GitHub Actions run #669 with all 999 tests and one expect
 Plan and verification: `docs/pilot-user-directory-management-sprint.md`.
 
 
-## Active sprint: Pilot onboarding status visibility
+## Completed sprint: Pilot onboarding status visibility
 
 Goal: expose last successful sign-in and filter never-signed-in versus signed-in pilot users using Django's existing `last_login`, without adding schema or delivery tracking.
+
+Delivered in PR #295 with last-sign-in display, a clear Never signed in state, and composable onboarding-status filtering.
+
+Verification passed in GitHub Actions run #671 with all 1004 tests and one expected skip; repository standards also passed.
 
 Plan and verification: `docs/pilot-onboarding-status-sprint.md`.
