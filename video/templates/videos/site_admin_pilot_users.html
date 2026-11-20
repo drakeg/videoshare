@@ -57,9 +57,28 @@
 
         <div class="col-lg-7">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <strong>Recent ordinary users</strong>
-                    <span class="text-muted small">Latest 50</span>
+                <div class="card-header">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                        <strong>Pilot user directory</strong>
+                        <span class="text-muted small">{{ pilot_users.paginator.count }} matching user{{ pilot_users.paginator.count|pluralize }}</span>
+                    </div>
+                    <form method="get" class="row g-2 align-items-end" aria-label="Filter pilot users">
+                        <div class="col-md-7">
+                            <label class="form-label" for="pilot-user-search">Search users</label>
+                            <input id="pilot-user-search" class="form-control" type="search" name="q" value="{{ pilot_user_query }}" maxlength="100" placeholder="Username, email, first or last name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="pilot-user-status">Account status</label>
+                            <select id="pilot-user-status" class="form-select" name="status">
+                                <option value="all"{% if pilot_user_status == "all" %} selected{% endif %}>All</option>
+                                <option value="active"{% if pilot_user_status == "active" %} selected{% endif %}>Active</option>
+                                <option value="suspended"{% if pilot_user_status == "suspended" %} selected{% endif %}>Suspended</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-grid">
+                            <button class="btn btn-outline-primary" type="submit">Apply</button>
+                        </div>
+                    </form>
                 </div>
                 <div class="table-responsive">
                     <table class="table align-middle mb-0">
@@ -88,6 +107,15 @@
                         </tbody>
                     </table>
                 </div>
+                {% if pilot_users.paginator.num_pages > 1 %}
+                <nav class="card-footer d-flex justify-content-between align-items-center gap-3" aria-label="Pilot user pages">
+                    <span class="text-muted small">Page {{ pilot_users.number }} of {{ pilot_users.paginator.num_pages }}</span>
+                    <div class="d-flex gap-2">
+                        {% if pilot_users.has_previous %}<a class="btn btn-sm btn-outline-secondary" href="?q={{ pilot_user_query|urlencode }}&status={{ pilot_user_status }}&page={{ pilot_users.previous_page_number }}">Previous</a>{% endif %}
+                        {% if pilot_users.has_next %}<a class="btn btn-sm btn-outline-secondary" href="?q={{ pilot_user_query|urlencode }}&status={{ pilot_user_status }}&page={{ pilot_users.next_page_number }}">Next</a>{% endif %}
+                    </div>
+                </nav>
+                {% endif %}
             </div>
         </div>
     </div>

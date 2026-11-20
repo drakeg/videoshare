@@ -2,6 +2,8 @@ import secrets
 
 from django.conf import settings
 from django.core.mail import send_mail
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
@@ -10,6 +12,36 @@ from django.utils.http import urlsafe_base64_encode
 
 User = get_user_model()
 
+PILOT_USER_SEARCH_MAX_LENGTH = 100
+PILOT_USER_PAGE_SIZE = 50
+PILOT_USER_STATUSES = {"all", "active", "suspended"}
+
+
+
+
+def pilot_user_directory(*, query="", status="all", page=None):
+    normalized_query = (query or "").strip()[:PILOT_USER_SEARCH_MAX_LENGTH]
+    normalized_status = status if status in PILOT_USER_STATUSES else "all"
+
+    queryset = User.objects.filter(is_staff=False, is_superuser=False)
+    if normalized_query:
+        queryset = queryset.filter(
+            Q(username__icontains=normalized_query)
+            | Q(email__icontains=normalized_query)
+            | Q(first_name__icontains=normalized_query)
+            | Q(last_name__icontains=normalized_query)
+        )
+    if normalized_status == "active":
+        queryset = queryset.filter(is_active=True)
+    elif normalized_status == "suspended":
+        queryset = queryset.filter(is_active=False)
+
+    queryset = queryset.order_by("-date_joined", "-pk")
+    return (
+        Paginator(queryset, PILOT_USER_PAGE_SIZE).get_page(page),
+        normalized_query,
+        normalized_status,
+    )
 
 def provision_pilot_user(*, username, email, first_name="", last_name=""):
     """Create an ordinary active user without exposing a temporary password."""
