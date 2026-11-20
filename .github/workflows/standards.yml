@@ -1,0 +1,56 @@
+name: Repository standards
+
+on:
+  pull_request:
+    paths:
+      - "README.md"
+      - "AGENTS.md"
+      - "CONTRIBUTING.md"
+      - "SPRINTS.md"
+      - "BACKLOG.md"
+      - "RELEASES.md"
+      - "SECURITY.md"
+      - "scripts/**"
+      - "tests/**"
+      - ".github/workflows/standards.yml"
+      - ".github/workflows/security.yml"
+      - "requirements.txt"
+      - "Dockerfile"
+      - "compose.yaml"
+      - "terraform/**"
+  push:
+    branches: [main]
+    paths:
+      - "README.md"
+      - "AGENTS.md"
+      - "CONTRIBUTING.md"
+      - "SPRINTS.md"
+      - "BACKLOG.md"
+      - "RELEASES.md"
+      - "SECURITY.md"
+      - "scripts/**"
+      - "tests/**"
+      - ".github/workflows/standards.yml"
+      - ".github/workflows/security.yml"
+      - "requirements.txt"
+      - "Dockerfile"
+      - "compose.yaml"
+      - "terraform/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.15"
+      - name: Audit required repository documents
+        run: python3 scripts/audit.py --check
+      - name: Validate README badges
+        run: python3 scripts/badges.py --mode check
+      - name: Test standards tooling
+        run: python3 -m unittest discover -s tests -v
