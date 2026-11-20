@@ -63,7 +63,7 @@
                         <span class="text-muted small">{{ pilot_users.paginator.count }} matching user{{ pilot_users.paginator.count|pluralize }}</span>
                     </div>
                     <form method="get" class="row g-2 align-items-end" aria-label="Filter pilot users">
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                             <label class="form-label" for="pilot-user-search">Search users</label>
                             <input id="pilot-user-search" class="form-control" type="search" name="q" value="{{ pilot_user_query }}" maxlength="100" placeholder="Username, email, first or last name">
                         </div>
@@ -75,6 +75,14 @@
                                 <option value="suspended"{% if pilot_user_status == "suspended" %} selected{% endif %}>Suspended</option>
                             </select>
                         </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="pilot-user-onboarding">Sign-in status</label>
+                            <select id="pilot-user-onboarding" class="form-select" name="onboarding">
+                                <option value="all"{% if pilot_user_onboarding == "all" %} selected{% endif %}>All</option>
+                                <option value="never"{% if pilot_user_onboarding == "never" %} selected{% endif %}>Never signed in</option>
+                                <option value="signed-in"{% if pilot_user_onboarding == "signed-in" %} selected{% endif %}>Has signed in</option>
+                            </select>
+                        </div>
                         <div class="col-md-2 d-grid">
                             <button class="btn btn-outline-primary" type="submit">Apply</button>
                         </div>
@@ -83,7 +91,7 @@
                 <div class="table-responsive">
                     <table class="table align-middle mb-0">
                         <thead>
-                            <tr><th>User</th><th>Email</th><th>Joined</th><th>Status</th><th>Access help</th></tr>
+                            <tr><th>User</th><th>Email</th><th>Joined</th><th>Last sign-in</th><th>Status</th><th>Access help</th></tr>
                         </thead>
                         <tbody>
                             {% for account in pilot_users %}
@@ -91,6 +99,7 @@
                                 <td>@{{ account.username }}</td>
                                 <td>{{ account.email|default:"—" }}</td>
                                 <td>{{ account.date_joined }}</td>
+                                <td>{% if account.last_login %}{{ account.last_login }}{% else %}<span class="text-muted">Never signed in</span>{% endif %}</td>
                                 <td>{% if account.is_active %}Active{% else %}<span class="badge text-bg-warning">Suspended</span>{% endif %}</td>
                                 <td>
                                     {% if account.is_active %}
@@ -102,7 +111,7 @@
                                 </td>
                             </tr>
                             {% empty %}
-                            <tr><td colspan="5" class="text-muted">No ordinary users yet.</td></tr>
+                            <tr><td colspan="6" class="text-muted">No matching ordinary users.</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -111,8 +120,8 @@
                 <nav class="card-footer d-flex justify-content-between align-items-center gap-3" aria-label="Pilot user pages">
                     <span class="text-muted small">Page {{ pilot_users.number }} of {{ pilot_users.paginator.num_pages }}</span>
                     <div class="d-flex gap-2">
-                        {% if pilot_users.has_previous %}<a class="btn btn-sm btn-outline-secondary" href="?q={{ pilot_user_query|urlencode }}&status={{ pilot_user_status }}&page={{ pilot_users.previous_page_number }}">Previous</a>{% endif %}
-                        {% if pilot_users.has_next %}<a class="btn btn-sm btn-outline-secondary" href="?q={{ pilot_user_query|urlencode }}&status={{ pilot_user_status }}&page={{ pilot_users.next_page_number }}">Next</a>{% endif %}
+                        {% if pilot_users.has_previous %}<a class="btn btn-sm btn-outline-secondary" href="?q={{ pilot_user_query|urlencode }}&status={{ pilot_user_status }}&onboarding={{ pilot_user_onboarding }}&page={{ pilot_users.previous_page_number }}">Previous</a>{% endif %}
+                        {% if pilot_users.has_next %}<a class="btn btn-sm btn-outline-secondary" href="?q={{ pilot_user_query|urlencode }}&status={{ pilot_user_status }}&onboarding={{ pilot_user_onboarding }}&page={{ pilot_users.next_page_number }}">Next</a>{% endif %}
                     </div>
                 </nav>
                 {% endif %}

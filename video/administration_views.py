@@ -34,9 +34,15 @@ def site_admin_dashboard(request):
 
 def _pilot_user_context(request, *, form=None, import_form=None, setup_user=None, setup_url=None, setup_heading=None, setup_description=None, email_delivery_status=None):
     email_enabled = getattr(settings, "PILOT_USER_SETUP_EMAIL_ENABLED", False)
-    pilot_users, pilot_user_query, pilot_user_status = pilot_user_directory(
+    (
+        pilot_users,
+        pilot_user_query,
+        pilot_user_status,
+        pilot_user_onboarding,
+    ) = pilot_user_directory(
         query=request.GET.get("q", ""),
         status=request.GET.get("status", "all"),
+        onboarding=request.GET.get("onboarding", "all"),
         page=request.GET.get("page"),
     )
     return {
@@ -45,6 +51,7 @@ def _pilot_user_context(request, *, form=None, import_form=None, setup_user=None
         "pilot_users": pilot_users,
         "pilot_user_query": pilot_user_query,
         "pilot_user_status": pilot_user_status,
+        "pilot_user_onboarding": pilot_user_onboarding,
         "setup_user": setup_user,
         "setup_url": setup_url,
         "setup_heading": setup_heading,

@@ -29,8 +29,9 @@ class PilotUserDirectoryServiceTests(TestCase):
             "TARGETLAST",
         ):
             with self.subTest(query=query):
-                page, normalized_query, status = pilot_user_directory(query=query)
+                page, normalized_query, status, onboarding = pilot_user_directory(query=query)
                 self.assertEqual(status, "all")
+                self.assertEqual(onboarding, "all")
                 self.assertEqual(list(page.object_list), [target])
                 self.assertEqual(normalized_query, query.strip()[:PILOT_USER_SEARCH_MAX_LENGTH])
 
@@ -39,7 +40,7 @@ class PilotUserDirectoryServiceTests(TestCase):
             username=f"{long_prefix}tail",
             email="bounded@example.com",
         )
-        page, normalized_query, _ = pilot_user_directory(
+        page, normalized_query, _, _ = pilot_user_directory(
             query=f"  {long_prefix}ignored-suffix  "
         )
         self.assertEqual(len(normalized_query), PILOT_USER_SEARCH_MAX_LENGTH)
@@ -49,9 +50,9 @@ class PilotUserDirectoryServiceTests(TestCase):
         active = User.objects.create(username="active-user", is_active=True)
         suspended = User.objects.create(username="suspended-user", is_active=False)
 
-        active_page, _, active_status = pilot_user_directory(status="active")
-        suspended_page, _, suspended_status = pilot_user_directory(status="suspended")
-        fallback_page, _, fallback_status = pilot_user_directory(status="invalid")
+        active_page, _, active_status, _ = pilot_user_directory(status="active")
+        suspended_page, _, suspended_status, _ = pilot_user_directory(status="suspended")
+        fallback_page, _, fallback_status, _ = pilot_user_directory(status="invalid")
 
         self.assertEqual(active_status, "active")
         self.assertEqual(list(active_page.object_list), [active])
@@ -65,7 +66,7 @@ class PilotUserDirectoryServiceTests(TestCase):
         User.objects.create(username="staff", is_staff=True)
         User.objects.create(username="super", is_staff=True, is_superuser=True)
 
-        page, _, _ = pilot_user_directory()
+        page, _, _, _ = pilot_user_directory()
 
         self.assertEqual(list(page.object_list), [ordinary])
 
@@ -74,8 +75,8 @@ class PilotUserDirectoryServiceTests(TestCase):
             [User(username=f"pilot-{index:03d}") for index in range(PILOT_USER_PAGE_SIZE + 11)]
         )
 
-        first_page, _, _ = pilot_user_directory(page=1)
-        second_page, _, _ = pilot_user_directory(page=2)
+        first_page, _, _, _ = pilot_user_directory(page=1)
+        second_page, _, _, _ = pilot_user_directory(page=2)
 
         self.assertEqual(first_page.paginator.per_page, PILOT_USER_PAGE_SIZE)
         self.assertEqual(first_page.paginator.count, PILOT_USER_PAGE_SIZE + 11)
@@ -179,7 +180,7 @@ class PilotUserDirectoryViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Page 1 of 2")
-        self.assertContains(response, "q=cohort&status=active&page=2")
+        self.assertContains(response, "q=cohort&status=active&onboarding=all&page=2")
         self.assertContains(response, ">Next</a>", html=False)
 
     def test_search_form_resets_stale_page_and_caps_input(self):
