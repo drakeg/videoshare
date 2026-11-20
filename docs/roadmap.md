@@ -1333,3 +1333,11 @@ Verification passed: focused Docker tests passed 15/15, and GitHub Actions Djang
 No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
 
 Plan and verification: `docs/channel-content-sorting-sprint.md`.
+
+## Active sprint: Public registration control
+
+Goal: let SMB/private deployments disable public self-signup while preserving existing public registration as the default.
+
+Commercial rationale: closed-access pilots need operator-controlled membership; a login gate alone is insufficient if anonymous users can create accounts.
+
+Plan and verification: `docs/public-registration-control-sprint.md`.
