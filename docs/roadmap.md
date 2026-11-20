@@ -1437,8 +1437,12 @@ Verification passed in GitHub Actions run #664: configuration and migration-drif
 Plan and verification: `docs/pilot-user-csv-import-sprint.md`.
 
 
-## Active sprint: Optional pilot-user setup email
+## Completed sprint: Optional pilot-user setup email
 
 Goal: add opt-in provider-agnostic email delivery for individual pilot-user setup/reset links while preserving manual-link fallback and the disabled-by-default deployment posture.
+
+Delivered in PR #293 with individual setup/reset email actions, branded provider-agnostic mail, manual-link fallback, preflight checks, and operator documentation. Bulk CSV imports intentionally remain non-delivery-only.
+
+Verification passed in GitHub Actions run #666: configuration and migration-drift checks succeeded and all 990 tests passed with one expected skip. Focused Docker email/preflight tests passed 23/23 and accessibility tests passed 8/8.
 
 Plan and verification: `docs/pilot-user-setup-email-sprint.md`.
