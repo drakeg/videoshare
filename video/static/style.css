@@ -6,7 +6,7 @@
     --ink-soft: #666270;
     --line: #dedbe2;
     --accent: #ef5f5f;
-    --accent-deep: #cc3f58;
+    --accent-deep: #c23954;
     --accent-soft: #ffe7e3;
     --violet: #6c5ce7;
     --success: #147d64;
@@ -73,7 +73,7 @@ h2 { font-size: clamp(1.45rem, 2.5vw, 2rem); }
 .side-nav a, .side-nav-form button { display: flex; width: 100%; align-items: center; gap: .9rem; padding: .72rem .9rem; border: 0; border-radius: .85rem; background: transparent; color: var(--ink-soft); font: inherit; font-weight: 650; text-align: left; text-decoration: none; cursor: pointer; transition: background .18s, color .18s, transform .18s; }
 .side-nav a:hover, .side-nav-form button:hover { background: var(--surface); color: var(--ink); transform: translateX(2px); }
 .side-nav a.active { background: var(--ink); color: white; box-shadow: var(--shadow-sm); }
-.side-nav-label { margin: 1.25rem .9rem .4rem; color: #97929e; font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.side-nav-label { margin: 1.25rem .9rem .4rem; color: var(--ink-soft); font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .main-content { min-width: 0; width: 100%; max-width: 106rem; padding: 2rem clamp(1.25rem, 3vw, 3.25rem) 5rem; outline: none; }
 
 .page-header { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin: .8rem 0 2.4rem; }
