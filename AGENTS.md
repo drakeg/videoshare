@@ -24,7 +24,7 @@ This repository follows the Mad Mallard Development Standards and the shared gui
 - Run `python3 scripts/badges.py --mode check` and `python3 scripts/audit.py --check` when standards-related files change.
 - Update badge detection when supported technologies, workflows, release state, or licensing change.
 
-## ytclone-specific guardrails
+## VideoShare-specific guardrails
 
 - Centralize visibility through `Video.objects.visible_to(user)` and existing permission services.
 - Keep business logic in services where practical; views/templates should remain thin.
