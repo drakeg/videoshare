@@ -1479,3 +1479,10 @@ Delivered in PR #296 with audited in-directory Suspend/Reactivate actions, requi
 Verification passed in GitHub Actions run #674 with all 1012 tests and one expected skip; repository standards also passed.
 
 Plan and verification: `docs/pilot-user-access-state-sprint.md`.
+
+
+## Active sprint: Filtered pilot user directory export
+
+Goal: add a staff-only CSV export that reuses Pilot Users search/account/onboarding filters while excluding authentication secrets and neutralizing spreadsheet-formula input.
+
+Plan and verification: `docs/pilot-user-directory-export-sprint.md`.
