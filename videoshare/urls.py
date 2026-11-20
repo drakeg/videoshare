@@ -1,0 +1,53 @@
+"""VideoShare URL configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/4.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.urls import include, path
+from django.views.generic import RedirectView
+
+from video import access_views, notification_views
+from video.account_views import current_profile
+from .views import RegistrationView
+
+urlpatterns = [
+    path('', RedirectView.as_view(pattern_name='video_list', permanent=False), name='home'),
+    path('admin/', admin.site.urls),
+    path('accounts/register/', RegistrationView.as_view(), name='register'),
+    path('accounts/password_reset/', auth_views.PasswordResetView.as_view(
+        template_name='accounts/password_reset_form.html',
+        email_template_name='accounts/password_reset_email.html',
+        subject_template_name='accounts/password_reset_subject.txt',
+        extra_email_context={'site_name': settings.SITE_NAME},
+    ), name='password_reset'),
+    path('accounts/password_reset/done/', auth_views.PasswordResetDoneView.as_view(
+        template_name='accounts/password_reset_done.html',
+    ), name='password_reset_done'),
+    path('accounts/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
+        template_name='accounts/password_reset_confirm.html',
+    ), name='password_reset_confirm'),
+    path('accounts/reset/done/', auth_views.PasswordResetCompleteView.as_view(
+        template_name='accounts/password_reset_complete.html',
+    ), name='password_reset_complete'),
+    path('accounts/profile/', current_profile, name='current_profile'),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('monetization/', include('monetization.urls')),
+    path('media/videos/files/<path:path>', access_views.media_video_file, name='protected_video_media'),
+    # Keep the existing named routes in video.urls for reverse compatibility while
+    # dispatching notification requests through the focused paginated views first.
+    path('videos/notifications/', notification_views.notification_list),
+    path('videos/notifications/read-all/', notification_views.notification_mark_all_read),
+    path('videos/notifications/<int:pk>/read/', notification_views.notification_mark_read),
+    path('videos/', include('video.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
