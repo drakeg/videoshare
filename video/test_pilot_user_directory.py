@@ -179,7 +179,7 @@ class PilotUserDirectoryViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Page 1 of 2")
-        self.assertContains(response, "q=cohort&amp;status=active&amp;page=2")
+        self.assertContains(response, "q=cohort&status=active&page=2")
         self.assertContains(response, ">Next</a>", html=False)
 
     def test_search_form_resets_stale_page_and_caps_input(self):
