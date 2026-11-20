@@ -14,22 +14,14 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 - SMB pilot configuration: branding + registration control (#285)
 - Stripe 17.1 runtime update (#280)
 
-## Current sprint — SMB pilot deployment preflight
+## Completed sprint — SMB pilot deployment preflight
 
-**Goal:** Add a deterministic, read-only preflight command for public and private SMB pilot deployments.
+**Delivered:** read-only PASS/WARN/FAIL preflight service and `manage.py pilot_check` with public/private profiles, deployment hardening, focused regression coverage, and operator documentation.
 
-**Deliverables**
-- [ ] Reusable PASS/WARN/FAIL preflight service
-- [ ] `manage.py pilot_check` command with public/private profiles
-- [ ] Optional deployment-hardening checks
-- [ ] Focused regression tests
-- [ ] README/deployment documentation
-- [ ] Full CI verification and reviewable PR
+**Verification:** focused Docker 11/11; GitHub Actions run #648 passed all 945 tests with one expected skip; real local public preflight reported 4 PASS / 2 WARN / 0 FAIL.
 
-**Acceptance:** operators receive actionable failures/warnings for branding, access policy, hosts, secrets, debug mode, HTTPS redirect, and secure cookies without the command mutating state.
+## Next sprint — Accessibility regression gate
 
-## Next sprint — SMB pilot operations
-
-**Goal:** Continue reducing pilot setup/support friction based on the next highest-value non-blocked backlog item after preflight is validated.
+**Goal:** Add automated accessibility regression checks for the highest-value anonymous/auth/private-pilot workflows without introducing a paid scanning service.
 
 No live payment activation or paid infrastructure is required.

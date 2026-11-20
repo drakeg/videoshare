@@ -51,3 +51,25 @@ Pilot setup errors create support cost and can undermine a customer demo. A sing
 - DNS/TLS automation
 - Live Stripe activation
 - Automatic secret generation or settings mutation
+
+## Delivered
+
+- Added reusable PASS/WARN/FAIL pilot-preflight evaluation.
+- Added `manage.py pilot_check` with public/private profiles and optional deployment hardening.
+- Added failures for wildcard hosts and the committed example secret.
+- Added private-pilot policy checks for login gating and closed registration.
+- Added deployment checks for debug mode, HTTPS redirect, and secure session/CSRF cookies.
+- Added branding and payment-provider guidance without enabling live payments.
+- Added operator documentation and README workflow.
+- Added 11 focused regression tests.
+
+## Verification results
+
+- Focused Docker tests passed 11/11 in 0.039s.
+- Real local public-profile preflight reported 4 PASS, 2 WARN, 0 FAIL.
+- `python3 -m compileall -q video yt` passed locally.
+- `git diff --check` passed locally.
+- `docker compose config --quiet` passed locally.
+- GitHub Actions Django checks run #648 passed configuration and migration-drift checks and all 945 tests with one expected skip.
+- Repository standards workflow run #10 passed.
+- A full serial local Docker suite was also launched and was still progressing normally when this closeout was prepared; no full-local pass is claimed here unless a later closeout update records completion.
