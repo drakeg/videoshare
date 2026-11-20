@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Move {{ video.title }} to trash?</h1>
-    <p>The video will disappear from VideoShare immediately, but its related activity will remain recoverable for 30 days.</p>
+    <p>The video will disappear from {{ site_name }} immediately, but its related activity will remain recoverable for 30 days.</p>
     <p>Restored videos return as drafts and must be published again explicitly.</p>
     <form method="post">
         {% csrf_token %}

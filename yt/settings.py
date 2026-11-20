@@ -35,6 +35,7 @@ ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1")
 CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS")
 CSRF_FAILURE_VIEW = "video.security_views.csrf_failure"
 PRIVATE_PORTAL = env_bool("DJANGO_PRIVATE_PORTAL", False)
+SITE_NAME = os.getenv("DJANGO_SITE_NAME", "VideoShare").strip() or "VideoShare"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -74,6 +75,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "video.context_processors.unread_notifications",
+                "video.context_processors.site_branding",
             ],
         },
     },

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}{% if tier %}Edit{% else %}Create{% endif %} membership tier · {{ channel.name }} · VideoShare{% endblock %}
+{% block title %}{% if tier %}Edit{% else %}Create{% endif %} membership tier · {{ channel.name }} · {{ site_name }}{% endblock %}
 {% block content %}
 <header class="page-header"><div><p class="eyebrow">Monetization</p><h1>{% if tier %}Edit {{ tier.name }}{% else %}Create membership tier{% endif %}</h1><p>{{ channel.name }}</p></div></header>
 <form class="form-panel" method="post">
