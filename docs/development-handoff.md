@@ -23,7 +23,7 @@ already-completed work from this document.
 - Django 6.1.3
 - Pillow 13.0.0
 - python-dotenv 1.2.4
-- Stripe 17.0.0
+- Stripe 17.1.0
 - Terraform 1.17.2 in Terraform CI
 
 Recent dependency maintenance:
