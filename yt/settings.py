@@ -76,11 +76,8 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "video.context_processors.unread_notifications",
-<<<<<<< HEAD
                 "video.context_processors.site_branding",
-=======
                 "video.context_processors.registration_policy",
->>>>>>> 39e7b10 (feat: add public registration control)
             ],
         },
     },
