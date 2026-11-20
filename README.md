@@ -239,7 +239,7 @@ Administrator access grants full Django administration privileges, including
 the ability to change or delete application data. Grant it only to trusted
 accounts.
 
-For closed pilots, staff do not need to use Django admin to create ordinary viewer accounts. Open **Site Administration → Pilot users** to provision a non-staff account and generate a password-setup link without exposing a temporary plaintext password. The same page supports an atomic CSV import for cohorts of up to 200 users and downloads their setup links on success. See `docs/pilot-user-provisioning.md` for the operator workflow, CSV format, and security boundaries.
+For closed pilots, staff do not need to use Django admin to create ordinary viewer accounts. Open **Site Administration → Pilot users** to provision a non-staff account and generate a password-setup link without exposing a temporary plaintext password. The same page supports existing-user reset/setup links and an atomic CSV import for cohorts of up to 200 users. Optional individual setup/reset email delivery can be enabled with `DJANGO_PILOT_USER_SETUP_EMAIL_ENABLED=true`; manual links always remain available and bulk CSV imports do not auto-send. See `docs/pilot-user-provisioning.md` for the operator workflow, CSV format, email configuration, and security boundaries.
 
 ## Run the full test suite locally
 
