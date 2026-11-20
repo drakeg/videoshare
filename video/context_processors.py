@@ -33,3 +33,7 @@ def unread_notifications(request):
 
 def site_branding(request):
     return {"site_name": settings.SITE_NAME}
+
+
+def registration_policy(request):
+    return {"public_registration_enabled": settings.ALLOW_PUBLIC_REGISTRATION}

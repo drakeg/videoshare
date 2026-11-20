@@ -36,6 +36,7 @@ CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS")
 CSRF_FAILURE_VIEW = "video.security_views.csrf_failure"
 PRIVATE_PORTAL = env_bool("DJANGO_PRIVATE_PORTAL", False)
 SITE_NAME = os.getenv("DJANGO_SITE_NAME", "VideoShare").strip() or "VideoShare"
+ALLOW_PUBLIC_REGISTRATION = env_bool("DJANGO_ALLOW_PUBLIC_REGISTRATION", True)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -75,7 +76,11 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "video.context_processors.unread_notifications",
+<<<<<<< HEAD
                 "video.context_processors.site_branding",
+=======
+                "video.context_processors.registration_policy",
+>>>>>>> 39e7b10 (feat: add public registration control)
             ],
         },
     },

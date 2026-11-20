@@ -31,7 +31,7 @@
                     <a class="icon-action notification-action" href="{% url 'notification_list' %}" aria-label="Notifications{% if unread_notification_count %}, {{ unread_notification_count }} unread{% endif %}" title="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/></svg>{% if unread_notification_count %}<span class="notification-dot">{{ unread_notification_count }}</span>{% endif %}</a>
                     <a class="avatar-action" href="{% url 'user_profile' user.username %}" aria-label="View your profile">{{ user.username|slice:":1"|upper }}</a>
                 {% else %}
-                    <a class="button button-secondary button-compact" href="{% url 'register' %}">Sign up</a><a class="button button-primary button-compact" href="{% url 'login' %}">Log in</a>
+                    {% if public_registration_enabled %}<a class="button button-secondary button-compact" href="{% url 'register' %}">Sign up</a>{% endif %}<a class="button button-primary button-compact" href="{% url 'login' %}">Log in</a>
                 {% endif %}
             </nav>
         </div>
