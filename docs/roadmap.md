@@ -1357,3 +1357,13 @@ Verification passed: focused Docker tests passed 9/9, and GitHub Actions Django 
 No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
 
 Plan and verification: `docs/category-directory-search-pagination-sprint.md`.
+
+## Completed sprint: SMB pilot configuration
+
+Goal: consolidate configurable site branding and optional public-registration shutdown into one reviewable SMB pilot configuration change on top of the merged private-portal mode.
+
+Delivered in PR #285, superseding PRs #282 and #284. The combined change adds environment-driven site naming and optional public-registration shutdown while preserving the merged private-portal mode and existing authorization boundaries.
+
+Verification passed in GitHub Actions run #641: configuration and migration-drift checks succeeded and all 934 tests passed with one expected skip. Local source compilation, diff validation, and Compose configuration validation also passed.
+
+Plan and verification: `docs/smb-pilot-configuration-sprint.md`.

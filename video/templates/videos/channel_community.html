@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Community · {{ channel.name }} · VideoShare{% endblock %}
+{% block title %}Community · {{ channel.name }} · {{ site_name }}{% endblock %}
 {% block content %}
 <header class="identity-banner">
     {% include 'videos/_channel_avatar.html' with channel=channel size='lg' %}
