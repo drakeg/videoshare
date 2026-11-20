@@ -1345,3 +1345,15 @@ Commercial rationale: controlled site access materially expands the product's fi
 Verification passed in GitHub Actions run #627: configuration and migration-drift checks succeeded and all 916 tests passed with one expected skip. Local Docker test-container creation remained blocked by another host Docker operation, so no local Docker test success is claimed.
 
 Plan and verification: `docs/private-portal-mode-sprint.md`.
+
+## Completed sprint: Category directory search and pagination
+
+Goal: add bounded category search, A–Z/Z–A ordering, and 24-per-page pagination while preserving current category creation and detail behavior.
+
+Delivered in PR #279 with bounded name/description search, validated A–Z/Z–A ordering, 24-per-page pagination, and preserved search/sort state across pager links.
+
+Verification passed: focused Docker tests passed 9/9, and GitHub Actions Django checks run #620 passed configuration, migration-drift checks, and all 917 tests with one expected skip.
+
+No schema, migration, dependency, worker, queue, AWS resource, paid service, or live-payment change is introduced.
+
+Plan and verification: `docs/category-directory-search-pagination-sprint.md`.

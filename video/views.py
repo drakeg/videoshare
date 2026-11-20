@@ -30,6 +30,7 @@ from .models import (
 from .services.analytics import get_channel_analytics, get_creator_analytics
 from .services.channels import can_edit_video
 from .services.chapters import replace_chapters
+from .services.category_directory import get_category_directory
 from .services.bookmarks import BookmarkValidationError, get_visible_bookmarks, save_bookmark
 from .services.discovery import get_discovery_sections
 from .services.notifications import clear_team_invitation_notification, notify_comment, notify_new_upload, notify_reaction, notify_reply, notify_subscription, notify_team_invitation
@@ -571,8 +572,20 @@ def subscribe(request, pk):
 
 
 def category_list(request):
-    categories = Category.objects.all()
-    return render(request, "videos/category_list.html", {"categories": categories})
+    categories, selected_query, selected_sort = get_category_directory(
+        request.GET.get("q", ""),
+        request.GET.get("sort", "name"),
+    )
+    categories_page = Paginator(categories, 24).get_page(request.GET.get("page"))
+    return render(
+        request,
+        "videos/category_list.html",
+        {
+            "categories": categories_page,
+            "category_query": selected_query,
+            "category_sort": selected_sort,
+        },
+    )
 
 
 def category_detail(request, pk):
