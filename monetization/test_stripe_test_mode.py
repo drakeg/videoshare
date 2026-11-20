@@ -108,9 +108,9 @@ class StripeTestModeViewsTests(TestCase):
             "data": {"object": {
                 "subscription": "sub_parallel",
                 "metadata": {
-                    "ytclone_kind": "membership",
-                    "ytclone_tier_id": str(second_tier.pk),
-                    "ytclone_payer_id": str(self.viewer.pk),
+                    "videoshare_kind": "membership",
+                    "videoshare_tier_id": str(second_tier.pk),
+                    "videoshare_payer_id": str(self.viewer.pk),
                 },
             }},
         }
@@ -163,11 +163,11 @@ class StripeTestModeViewsTests(TestCase):
                     "currency": "usd",
                     "payment_intent": "pi_test_1",
                     "metadata": {
-                        "ytclone_kind": "tip",
-                        "ytclone_channel_id": str(self.channel.pk),
-                        "ytclone_payer_id": str(self.viewer.pk),
-                        "ytclone_gross_minor": "1000",
-                        "ytclone_platform_fee_minor": "100",
+                        "videoshare_kind": "tip",
+                        "videoshare_channel_id": str(self.channel.pk),
+                        "videoshare_payer_id": str(self.viewer.pk),
+                        "videoshare_gross_minor": "1000",
+                        "videoshare_platform_fee_minor": "100",
                     },
                 }
             },
