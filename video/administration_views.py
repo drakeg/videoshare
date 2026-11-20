@@ -1,5 +1,6 @@
 import csv
 
+from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -13,7 +14,7 @@ from .models import Channel, Video
 from .pilot_user_forms import PilotUserCsvImportForm, PilotUserProvisioningForm
 from .services.administration import get_creator_audience, get_site_admin_overview, moderate_site_comment
 from .services.pilot_user_import import PilotUserCsvValidationError, validate_pilot_user_csv
-from .services.pilot_users import password_setup_path, provision_pilot_user
+from .services.pilot_users import password_setup_path, provision_pilot_user, send_pilot_user_setup_email
 from .services.moderation_actions import (
     restore_video,
     set_channel_suspended,
@@ -31,9 +32,10 @@ def site_admin_dashboard(request):
     return render(request, "videos/site_admin_dashboard.html", get_site_admin_overview())
 
 
-def _pilot_user_context(*, form=None, import_form=None, setup_user=None, setup_url=None, setup_heading=None, setup_description=None):
+def _pilot_user_context(*, form=None, import_form=None, setup_user=None, setup_url=None, setup_heading=None, setup_description=None, email_delivery_status=None):
+    email_enabled = getattr(settings, "PILOT_USER_SETUP_EMAIL_ENABLED", False)
     return {
-        "form": form or PilotUserProvisioningForm(),
+        "form": form or PilotUserProvisioningForm(email_delivery_enabled=email_enabled),
         "import_form": import_form or PilotUserCsvImportForm(),
         "pilot_users": (
             User.objects.filter(is_staff=False, is_superuser=False)
@@ -43,25 +45,45 @@ def _pilot_user_context(*, form=None, import_form=None, setup_user=None, setup_u
         "setup_url": setup_url,
         "setup_heading": setup_heading,
         "setup_description": setup_description,
+        "email_delivery_status": email_delivery_status,
+        "pilot_setup_email_enabled": email_enabled,
     }
 
 
 @staff_member_required
 def site_admin_pilot_users(request):
-    form = PilotUserProvisioningForm(request.POST or None)
+    email_enabled = getattr(settings, "PILOT_USER_SETUP_EMAIL_ENABLED", False)
+    form = PilotUserProvisioningForm(
+        request.POST or None,
+        email_delivery_enabled=email_enabled,
+    )
     if request.method == "POST" and form.is_valid():
-        user = provision_pilot_user(**form.cleaned_data)
+        user = provision_pilot_user(
+            username=form.cleaned_data["username"],
+            email=form.cleaned_data["email"],
+            first_name=form.cleaned_data.get("first_name", ""),
+            last_name=form.cleaned_data.get("last_name", ""),
+        )
+        setup_url = request.build_absolute_uri(password_setup_path(user))
+        email_delivery_status = None
+        if form.cleaned_data.get("send_setup_email"):
+            email_delivery_status = send_pilot_user_setup_email(
+                user=user,
+                setup_url=setup_url,
+                purpose="setup",
+            )
         return render(
             request,
             "videos/site_admin_pilot_users.html",
             _pilot_user_context(
                 setup_user=user,
-                setup_url=request.build_absolute_uri(password_setup_path(user)),
+                setup_url=setup_url,
                 setup_heading=f"Account created for @{user.username}",
                 setup_description=(
                     "Share this password-setup link through your approved channel. "
                     "Treat it as sensitive until the user chooses a password."
                 ),
+                email_delivery_status=email_delivery_status,
             ),
         )
 
@@ -124,17 +146,26 @@ def site_admin_pilot_user_reset_link(request, pk):
         is_superuser=False,
         is_active=True,
     )
+    setup_url = request.build_absolute_uri(password_setup_path(user))
+    email_delivery_status = None
+    if request.POST.get("delivery") == "email":
+        email_delivery_status = send_pilot_user_setup_email(
+            user=user,
+            setup_url=setup_url,
+            purpose="reset",
+        )
     return render(
         request,
         "videos/site_admin_pilot_users.html",
         _pilot_user_context(
             setup_user=user,
-            setup_url=request.build_absolute_uri(password_setup_path(user)),
+            setup_url=setup_url,
             setup_heading=f"Reset link generated for @{user.username}",
             setup_description=(
                 "Share this reset/setup link through your approved channel. "
                 "It does not change the user's current password until they submit a new one."
             ),
+            email_delivery_status=email_delivery_status,
         ),
     )
 

@@ -25,6 +25,15 @@ class PilotUserProvisioningForm(forms.Form):
     first_name = forms.CharField(max_length=150, required=False)
     last_name = forms.CharField(max_length=150, required=False)
 
+    def __init__(self, *args, email_delivery_enabled=False, **kwargs):
+        super().__init__(*args, **kwargs)
+        if email_delivery_enabled:
+            self.fields["send_setup_email"] = forms.BooleanField(
+                required=False,
+                label="Email the password-setup link",
+                help_text="Uses the configured Django email backend. The setup URL is still shown after creation.",
+            )
+
     def clean_username(self):
         username = self.cleaned_data["username"].strip()
         if User.objects.filter(username__iexact=username).exists():

@@ -19,6 +19,15 @@
         <p class="mb-2">{{ setup_description }}</p>
         <label class="form-label" for="password-setup-url">Password setup/reset URL</label>
         <input id="password-setup-url" class="form-control" type="text" value="{{ setup_url }}" readonly>
+        {% if email_delivery_status == "sent" %}
+        <p class="mb-0 mt-2"><strong>Email sent.</strong> The manual URL above remains available as a fallback.</p>
+        {% elif email_delivery_status == "failed" %}
+        <p class="mb-0 mt-2 text-danger"><strong>Email could not be sent.</strong> Share the manual URL above instead.</p>
+        {% elif email_delivery_status == "missing_email" %}
+        <p class="mb-0 mt-2 text-warning"><strong>No recipient email is available.</strong> Share the manual URL above instead.</p>
+        {% elif email_delivery_status == "disabled" %}
+        <p class="mb-0 mt-2 text-warning"><strong>Pilot-user email delivery is disabled.</strong> Share the manual URL above instead.</p>
+        {% endif %}
     </div>
     {% endif %}
 
@@ -64,7 +73,14 @@
                                 <td>{{ account.email|default:"—" }}</td>
                                 <td>{{ account.date_joined }}</td>
                                 <td>{% if account.is_active %}Active{% else %}<span class="badge text-bg-warning">Suspended</span>{% endif %}</td>
-                                <td>{% if account.is_active %}<form method="post" action="{% url 'site_admin_pilot_user_reset_link' account.pk %}">{% csrf_token %}<button class="btn btn-sm btn-outline-primary" type="submit">Generate reset link</button></form>{% else %}<span class="text-muted small">Reactivate first</span>{% endif %}</td>
+                                <td>
+                                    {% if account.is_active %}
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <form method="post" action="{% url 'site_admin_pilot_user_reset_link' account.pk %}">{% csrf_token %}<button class="btn btn-sm btn-outline-primary" type="submit">Generate reset link</button></form>
+                                        {% if pilot_setup_email_enabled and account.email %}<form method="post" action="{% url 'site_admin_pilot_user_reset_link' account.pk %}">{% csrf_token %}<input type="hidden" name="delivery" value="email"><button class="btn btn-sm btn-outline-secondary" type="submit">Email reset link</button></form>{% endif %}
+                                    </div>
+                                    {% else %}<span class="text-muted small">Reactivate first</span>{% endif %}
+                                </td>
                             </tr>
                             {% empty %}
                             <tr><td colspan="5" class="text-muted">No ordinary users yet.</td></tr>

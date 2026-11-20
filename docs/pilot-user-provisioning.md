@@ -28,7 +28,27 @@ The user follows the link, chooses a password, and then signs in normally.
 
 The normal **Lost password?** link on the login page now uses the branded password-reset flow.
 
-For password-reset email delivery, configure the deployment's Django email backend. Closed-pilot provisioning itself does not automatically send email in this sprint; the operator receives the setup URL directly.
+Pilot-user setup/reset email delivery is optional and disabled by default. Manual setup/reset URLs always remain available.
+
+To enable staff-triggered delivery, configure the deployment's Django email backend and set:
+
+```text
+DJANGO_PILOT_USER_SETUP_EMAIL_ENABLED=true
+DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+DJANGO_DEFAULT_FROM_EMAIL=noreply@example.com
+```
+
+Use the SMTP/backend-specific host, port, credentials, and TLS/SSL settings already supported by the project. The built-in console backend is useful for local testing but does not deliver mail externally; `pilot_check` warns if pilot-user email is enabled with console/locmem/dummy backends.
+
+When enabled:
+
+- the provisioning form offers **Email the password-setup link** for a new individual account;
+- eligible existing users show **Email reset link** alongside **Generate reset link**;
+- the manual signed URL is still shown after the action whether email succeeds or fails;
+- backend delivery failures do not roll back account creation or change an existing user's password;
+- email subject/body use `DJANGO_SITE_NAME` and `DJANGO_DEFAULT_FROM_EMAIL`.
+
+Bulk CSV imports intentionally continue to download setup links without automatically sending email so a provider outage cannot create ambiguous partial delivery across a cohort.
 
 ## Duplicate protection
 

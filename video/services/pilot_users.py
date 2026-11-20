@@ -1,5 +1,7 @@
 import secrets
 
+from django.conf import settings
+from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
@@ -32,3 +34,39 @@ def password_setup_path(user):
         "password_reset_confirm",
         kwargs={"uidb64": uidb64, "token": token},
     )
+
+
+def send_pilot_user_setup_email(*, user, setup_url, purpose="setup"):
+    """Send an opt-in pilot-user setup/reset link through Django's email backend."""
+    if not getattr(settings, "PILOT_USER_SETUP_EMAIL_ENABLED", False):
+        return "disabled"
+
+    recipient = (user.email or "").strip()
+    if not recipient:
+        return "missing_email"
+
+    site_name = (getattr(settings, "SITE_NAME", "VideoShare") or "VideoShare").strip()
+    display_name = user.get_full_name().strip() or user.username
+    if purpose == "reset":
+        subject = f"Reset your {site_name} password"
+        action = "reset your password"
+    else:
+        subject = f"Set up your {site_name} account"
+        action = "choose your password and finish setting up your account"
+
+    message = (
+        f"Hello {display_name},\n\n"
+        f"Use this link to {action}:\n{setup_url}\n\n"
+        "Treat this link as sensitive. If you were not expecting it, you can ignore this email."
+    )
+    try:
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[recipient],
+            fail_silently=False,
+        )
+    except Exception:
+        return "failed"
+    return "sent"

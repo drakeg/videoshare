@@ -118,6 +118,28 @@ class PilotPreflightServiceTests(SimpleTestCase):
 
         self.assertEqual(self.statuses(results)["payments"], "PASS")
 
+    def test_enabled_pilot_email_with_console_backend_is_warning(self):
+        results = run_pilot_preflight(
+            make_settings(
+                PILOT_USER_SETUP_EMAIL_ENABLED=True,
+                EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend",
+            ),
+            profile="public",
+        )
+
+        self.assertEqual(self.statuses(results)["pilot-user-email"], "WARN")
+
+    def test_enabled_pilot_email_with_real_backend_is_pass(self):
+        results = run_pilot_preflight(
+            make_settings(
+                PILOT_USER_SETUP_EMAIL_ENABLED=True,
+                EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend",
+            ),
+            profile="public",
+        )
+
+        self.assertEqual(self.statuses(results)["pilot-user-email"], "PASS")
+
 
 class PilotCheckCommandTests(SimpleTestCase):
     @override_settings(
