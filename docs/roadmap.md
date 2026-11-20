@@ -1334,10 +1334,14 @@ No schema, migration, dependency, worker, queue, AWS resource, paid service, or 
 
 Plan and verification: `docs/channel-content-sorting-sprint.md`.
 
-## Active sprint: Public registration control
+## Completed sprint: Public registration control
 
 Goal: let SMB/private deployments disable public self-signup while preserving existing public registration as the default.
 
-Commercial rationale: closed-access pilots need operator-controlled membership; a login gate alone is insufficient if anonymous users can create accounts.
+Delivered in PR #284 with `DJANGO_ALLOW_PUBLIC_REGISTRATION`, a configuration-aware registration view, hidden signup links, and regression coverage that preserves existing-user login.
+
+Commercial rationale: private/login-required pilots can now be closed to arbitrary self-signup while remaining simple to operate through existing Django admin user provisioning.
+
+Verification passed in GitHub Actions run #629: configuration and migration-drift checks succeeded and all 913 tests passed with one expected skip. Local Compose configuration validation also passed.
 
 Plan and verification: `docs/public-registration-control-sprint.md`.

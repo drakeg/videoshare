@@ -42,3 +42,20 @@ A login-required portal is not meaningfully closed if any visitor can still self
 - SSO/SAML/OIDC
 - Admin bulk user import
 - Per-tenant registration policy
+
+## Delivered
+
+- Added `DJANGO_ALLOW_PUBLIC_REGISTRATION=true` with existing signup behavior unchanged by default.
+- Replaced the always-on registration route with a configuration-aware registration view.
+- Disabled registration GET/POST requests return HTTP 403 and do not create users.
+- Shared anonymous navigation and the login page hide Sign up links when registration is disabled.
+- Added a global template context flag for registration availability.
+- Existing-user login, password reset, and Django admin provisioning remain unchanged.
+- Added focused regression coverage for enabled/disabled registration, blocked POST creation, hidden links, and existing-user login.
+
+## Verification results
+
+- `git diff --check` passed locally.
+- `python3 -m compileall -q video yt` passed locally.
+- `docker compose config --quiet` passed locally.
+- GitHub Actions Django checks run #629 passed configuration and migration-drift checks and all 913 tests with one expected skip.
