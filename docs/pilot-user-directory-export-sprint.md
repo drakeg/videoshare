@@ -45,3 +45,21 @@ SMB operators often need a simple roster/status file for pilot coordination. A f
 - Bulk email
 - Import/export synchronization
 - Background export jobs
+
+## Delivered
+
+- Added a staff-only filtered Pilot Users CSV export.
+- Reused the exact directory search/account/onboarding filter semantics.
+- Exported all matching ordinary users independent of UI pagination.
+- Limited columns to operational identity/status/timestamp fields.
+- Excluded staff/superusers, password hashes, setup/reset URLs/tokens, and moderation reasons.
+- Neutralized spreadsheet-formula prefixes in user-controlled text cells.
+- Added an Export CSV action that preserves current filters.
+
+## Verification results
+
+- `python3 -m compileall -q video` passed locally.
+- `git diff --check` passed locally.
+- `docker compose config --quiet` passed locally.
+- GitHub Actions Django checks run #676 passed configuration and migration-drift checks and all 1018 tests with one expected skip.
+- Repository standards workflow run #38 passed.

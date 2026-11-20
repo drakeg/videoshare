@@ -1481,8 +1481,12 @@ Verification passed in GitHub Actions run #674 with all 1012 tests and one expec
 Plan and verification: `docs/pilot-user-access-state-sprint.md`.
 
 
-## Active sprint: Filtered pilot user directory export
+## Completed sprint: Filtered pilot user directory export
 
 Goal: add a staff-only CSV export that reuses Pilot Users search/account/onboarding filters while excluding authentication secrets and neutralizing spreadsheet-formula input.
+
+Delivered in PR #297 with filter-parity export, all-match cohort output, spreadsheet-safe text, and strict exclusion of authentication secret material.
+
+Verification passed in GitHub Actions run #676 with all 1018 tests and one expected skip; repository standards also passed.
 
 Plan and verification: `docs/pilot-user-directory-export-sprint.md`.

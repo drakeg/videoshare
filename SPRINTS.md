@@ -74,16 +74,14 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** GitHub Actions run #674 passed all 1012 tests with one expected skip; repository standards passed.
 
-## Current sprint — Filtered pilot user directory export
+## Completed sprint — Filtered pilot user directory export
 
-**Goal:** Let staff download the currently filtered pilot-user directory for operator records without exporting passwords or setup/reset tokens.
+**Delivered:** staff-only filtered CSV export with directory filter parity, all-match cohort output, spreadsheet-safe text handling, and strict secret exclusion.
 
-**Deliverables**
-- [ ] Staff-only filtered CSV export route
-- [ ] Reuse directory search/account/onboarding semantics
-- [ ] Export all matches independent of UI pagination
-- [ ] Spreadsheet-safe user-controlled text fields
-- [ ] No password/setup/reset secret material
-- [ ] Focused regression coverage and full CI verification
+**Verification:** GitHub Actions run #676 passed all 1018 tests with one expected skip; repository standards passed.
+
+## Next sprint — Pilot operations consolidation
+
+**Goal:** Merge/rebase the completed onboarding stack and then continue from the next non-overlapping backlog item without growing the dependent PR chain further.
 
 No live payment activation or paid infrastructure is required.
