@@ -15,7 +15,7 @@ if [ "${DJANGO_DEBUG:-false}" = "true" ]; then
     exec python manage.py runserver "0.0.0.0:${APP_PORT}"
 fi
 
-exec gunicorn yt.wsgi:application \
+exec gunicorn videoshare.wsgi:application \
     --bind "0.0.0.0:${APP_PORT}" \
     --workers "${GUNICORN_WORKERS:-2}" \
     --threads "${GUNICORN_THREADS:-2}" \
