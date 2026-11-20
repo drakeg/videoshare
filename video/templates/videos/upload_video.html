@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Upload · VideoShare{% endblock %}
+{% block title %}Upload · {{ site_name }}{% endblock %}
 {% block content %}
 <header class="page-header"><div><p class="eyebrow">Creator studio</p><h1>Upload video or Short</h1><p>Choose Standard video or Short, then select the channel, media, visibility, and thumbnail for your next release.</p></div></header>
 {% if form.channel.field.queryset %}
