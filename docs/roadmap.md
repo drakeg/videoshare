@@ -1470,8 +1470,12 @@ Verification passed in GitHub Actions run #671 with all 1004 tests and one expec
 Plan and verification: `docs/pilot-onboarding-status-sprint.md`.
 
 
-## Active sprint: Pilot user access-state controls
+## Completed sprint: Pilot user access-state controls
 
 Goal: let staff suspend/reactivate ordinary pilot users directly from the filtered Pilot Users directory using the existing audited moderation service and safe return-state preservation.
+
+Delivered in PR #296 with audited in-directory Suspend/Reactivate actions, required reasons, ordinary-user target restrictions, and validated return-state preservation.
+
+Verification passed in GitHub Actions run #674 with all 1012 tests and one expected skip; repository standards also passed.
 
 Plan and verification: `docs/pilot-user-access-state-sprint.md`.

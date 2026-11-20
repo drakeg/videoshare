@@ -45,3 +45,22 @@ Operators managing a closed pilot should not have to leave the Pilot Users direc
 - Account deletion
 - Staff/superuser state management
 - Automatic inactivity policies
+
+## Delivered
+
+- Added a staff-only ordinary-user suspend/reactivate POST action for Pilot Users.
+- Reused the existing audited `set_user_active` moderation service.
+- Required a moderation reason for both state transitions.
+- Added in-directory Suspend / Reactivate controls.
+- Preserved bounded search, account-status, onboarding-status, and page return state through validated parameters.
+- Restricted targets to non-staff, non-superuser ordinary accounts.
+- Preserved suspended-user reset/setup guidance and action boundaries.
+
+## Verification results
+
+- `python3 -m compileall -q video` passed locally.
+- `git diff --check` passed locally.
+- `docker compose config --quiet` passed locally.
+- Focused local Docker execution stalled at host-daemon container creation and was terminated; no local focused pass is claimed.
+- GitHub Actions Django checks run #674 passed configuration and migration-drift checks and all 1012 tests with one expected skip.
+- Repository standards workflow run #36 passed.
