@@ -39,3 +39,24 @@ The 900+ test suite was observed running serially in Docker even though CI alrea
 - Changing database technology
 - Adding test sharding services
 - Paid CI acceleration
+
+## Delivered
+
+- Added `DJANGO_TEST_PROCESSES` with a default of 4 to the Docker test service.
+- Updated `docker/test.sh` to run Django tests with configurable `--parallel`.
+- Updated GitHub Actions to use the same `DJANGO_TEST_PROCESSES` variable.
+- Documented the default and a one-off `DJANGO_TEST_PROCESSES=1` override.
+- Added runtime regression coverage that keeps Compose, the test script, CI, `.env.example`, and README aligned.
+
+## Verification results
+
+- `git diff --check` passed locally.
+- `sh -n docker/test.sh` passed locally.
+- `docker compose config --quiet` passed locally.
+- Compose interpolation verified `DJANGO_TEST_PROCESSES=4` by default and `=1` with an override.
+- A shell-level execution check verified `docker/test.sh` emits `python manage.py test --parallel 4` by default and `--parallel 1` when overridden.
+- GitHub Actions Django checks run #652 passed configuration and migration-drift checks and all 953 tests with one expected skip using the shared process-count variable.
+- Repository standards workflow run #14 passed.
+- Actual one-off Docker test containers repeatedly stalled in the host Docker daemon before test output. Two stranded ephemeral `ytclone-test-run-*` containers (one Dead, one Created) were identified and removed without touching named volumes or application data; the daemon still stalled afterward. No full local Docker-suite pass is claimed for this sprint.
+
+The repository runner behavior is validated, but a Docker Desktop/daemon restart may be needed on the development host before local container execution is reliable again. Restarting Docker was not performed because it could interrupt unrelated running containers.

@@ -1393,10 +1393,12 @@ Verification passed in GitHub Actions run #650: configuration and migration-drif
 Plan and verification: `docs/accessibility-regression-gate-sprint.md`.
 
 
-## Active sprint: Local Docker test parity
+## Completed sprint: Local Docker test parity
 
 Goal: align the local Docker full-suite runner with CI's configurable four-process Django test execution.
 
-This directly shortens the Build → Test → Fix loop after the serial local Docker runner was observed taking substantially longer than CI.
+Delivered in PR #288 with configurable `DJANGO_TEST_PROCESSES`, matching Docker/CI `--parallel` execution, runtime drift tests, and documentation.
+
+Verification passed in GitHub Actions run #652 with all 953 tests and one expected skip. Compose interpolation and shell-level runner behavior were verified locally. Actual local test-container execution remained blocked by the host Docker daemon after stranded ephemeral test containers were removed, so no full local Docker pass is claimed.
 
 Plan and verification: `docs/local-docker-test-parity-sprint.md`.
