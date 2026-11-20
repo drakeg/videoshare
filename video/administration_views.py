@@ -1,3 +1,4 @@
+from urllib.parse import urlencode
 import csv
 
 from django.conf import settings
@@ -7,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from .community_models import CommunityPost, CommunityReply
@@ -14,7 +16,7 @@ from .models import Channel, Video
 from .pilot_user_forms import PilotUserCsvImportForm, PilotUserProvisioningForm
 from .services.administration import get_creator_audience, get_site_admin_overview, moderate_site_comment
 from .services.pilot_user_import import PilotUserCsvValidationError, validate_pilot_user_csv
-from .services.pilot_users import password_setup_path, pilot_user_directory, provision_pilot_user, send_pilot_user_setup_email
+from .services.pilot_users import PILOT_USER_ONBOARDING_STATUSES, PILOT_USER_SEARCH_MAX_LENGTH, PILOT_USER_STATUSES, password_setup_path, pilot_user_directory, provision_pilot_user, send_pilot_user_setup_email
 from .services.moderation_actions import (
     restore_video,
     set_channel_suspended,
@@ -25,6 +27,24 @@ from .services.moderation_actions import (
 )
 
 User = get_user_model()
+
+
+def _pilot_user_directory_return_url(request):
+    query = (request.POST.get("q", "") or "").strip()[:PILOT_USER_SEARCH_MAX_LENGTH]
+    status = request.POST.get("status", "all")
+    if status not in PILOT_USER_STATUSES:
+        status = "all"
+    onboarding = request.POST.get("onboarding", "all")
+    if onboarding not in PILOT_USER_ONBOARDING_STATUSES:
+        onboarding = "all"
+    try:
+        page = max(1, int(request.POST.get("page", "1")))
+    except (TypeError, ValueError):
+        page = 1
+    params = {"status": status, "onboarding": onboarding, "page": page}
+    if query:
+        params["q"] = query
+    return f"{reverse('site_admin_pilot_users')}?{urlencode(params)}"
 
 
 @staff_member_required
@@ -181,6 +201,30 @@ def site_admin_pilot_user_reset_link(request, pk):
             email_delivery_status=email_delivery_status,
         ),
     )
+
+
+@staff_member_required
+@require_POST
+def site_admin_pilot_user_access_state(request, pk):
+    user = get_object_or_404(
+        User,
+        pk=pk,
+        is_staff=False,
+        is_superuser=False,
+    )
+    action = request.POST.get("action", "")
+    if action not in {"suspend", "reactivate"}:
+        return HttpResponseBadRequest("Invalid pilot user access-state action.")
+    try:
+        set_user_active(
+            actor=request.user,
+            user=user,
+            active=action == "reactivate",
+            reason=request.POST.get("reason", ""),
+        )
+    except ValueError as error:
+        return HttpResponseBadRequest(str(error))
+    return redirect(_pilot_user_directory_return_url(request))
 
 
 @staff_member_required

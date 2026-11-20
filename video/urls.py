@@ -16,6 +16,7 @@ urlpatterns = [
     path("site-admin/pilot-users/", administration_views.site_admin_pilot_users, name="site_admin_pilot_users"),
     path("site-admin/pilot-users/import/", administration_views.site_admin_pilot_user_csv_import, name="site_admin_pilot_user_csv_import"),
     path("site-admin/pilot-users/<int:pk>/reset-link/", administration_views.site_admin_pilot_user_reset_link, name="site_admin_pilot_user_reset_link"),
+    path("site-admin/pilot-users/<int:pk>/access-state/", administration_views.site_admin_pilot_user_access_state, name="site_admin_pilot_user_access_state"),
     path("site-admin/reports/", reporting_views.site_admin_report_queue, name="site_admin_report_queue"),
     path("site-admin/reports/<int:pk>/review/", reporting_views.site_admin_report_review, name="site_admin_report_review"),
     path("site-admin/channels/<int:pk>/moderate/", administration_views.site_admin_channel_moderate, name="site_admin_channel_moderate"),
