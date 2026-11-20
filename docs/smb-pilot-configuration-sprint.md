@@ -59,4 +59,4 @@ This gives an SMB pilot three complementary deployment controls: customer-facing
 - `git diff --check` passed locally.
 - `python3 -m compileall -q video monetization yt` passed locally.
 - `docker compose config --quiet` passed locally.
-- GitHub Actions Django checks run #637 passed configuration and migration-drift checks and all 925 tests with one expected skip.
+- GitHub Actions Django checks run #641 passed configuration and migration-drift checks and all 934 tests with one expected skip.
