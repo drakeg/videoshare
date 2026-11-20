@@ -13,6 +13,7 @@ Class-based views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from django.views.generic import RedirectView
 
@@ -24,6 +25,21 @@ urlpatterns = [
     path('', RedirectView.as_view(pattern_name='video_list', permanent=False), name='home'),
     path('admin/', admin.site.urls),
     path('accounts/register/', RegistrationView.as_view(), name='register'),
+    path('accounts/password_reset/', auth_views.PasswordResetView.as_view(
+        template_name='accounts/password_reset_form.html',
+        email_template_name='accounts/password_reset_email.html',
+        subject_template_name='accounts/password_reset_subject.txt',
+        extra_email_context={'site_name': settings.SITE_NAME},
+    ), name='password_reset'),
+    path('accounts/password_reset/done/', auth_views.PasswordResetDoneView.as_view(
+        template_name='accounts/password_reset_done.html',
+    ), name='password_reset_done'),
+    path('accounts/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
+        template_name='accounts/password_reset_confirm.html',
+    ), name='password_reset_confirm'),
+    path('accounts/reset/done/', auth_views.PasswordResetCompleteView.as_view(
+        template_name='accounts/password_reset_complete.html',
+    ), name='password_reset_complete'),
     path('accounts/profile/', current_profile, name='current_profile'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('monetization/', include('monetization.urls')),

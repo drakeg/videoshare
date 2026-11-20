@@ -7,7 +7,9 @@ from django.views.decorators.http import require_POST
 
 from .community_models import CommunityPost, CommunityReply
 from .models import Channel, Video
+from .pilot_user_forms import PilotUserProvisioningForm
 from .services.administration import get_creator_audience, get_site_admin_overview, moderate_site_comment
+from .services.pilot_users import password_setup_path, provision_pilot_user
 from .services.moderation_actions import (
     restore_video,
     set_channel_suspended,
@@ -23,6 +25,35 @@ User = get_user_model()
 @staff_member_required
 def site_admin_dashboard(request):
     return render(request, "videos/site_admin_dashboard.html", get_site_admin_overview())
+
+
+@staff_member_required
+def site_admin_pilot_users(request):
+    setup_url = None
+    provisioned_user = None
+    if request.method == "POST":
+        form = PilotUserProvisioningForm(request.POST)
+        if form.is_valid():
+            provisioned_user = provision_pilot_user(**form.cleaned_data)
+            setup_url = request.build_absolute_uri(password_setup_path(provisioned_user))
+            form = PilotUserProvisioningForm()
+    else:
+        form = PilotUserProvisioningForm()
+
+    pilot_users = (
+        User.objects.filter(is_staff=False, is_superuser=False)
+        .order_by("-date_joined", "-pk")[:50]
+    )
+    return render(
+        request,
+        "videos/site_admin_pilot_users.html",
+        {
+            "form": form,
+            "pilot_users": pilot_users,
+            "provisioned_user": provisioned_user,
+            "setup_url": setup_url,
+        },
+    )
 
 
 @staff_member_required

@@ -13,6 +13,7 @@ urlpatterns = [
     path("videos/<int:pk>/create-short/", shorts_views.create_short_from_long_form, name="create_short_from_long_form"),
     path("videos/<int:pk>/rerender-short/", shorts_views.rerender_short, name="rerender_short"),
     path("site-admin/", administration_views.site_admin_dashboard, name="site_admin_dashboard"),
+    path("site-admin/pilot-users/", administration_views.site_admin_pilot_users, name="site_admin_pilot_users"),
     path("site-admin/reports/", reporting_views.site_admin_report_queue, name="site_admin_report_queue"),
     path("site-admin/reports/<int:pk>/review/", reporting_views.site_admin_report_review, name="site_admin_report_review"),
     path("site-admin/channels/<int:pk>/moderate/", administration_views.site_admin_channel_moderate, name="site_admin_channel_moderate"),

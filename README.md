@@ -239,6 +239,8 @@ Administrator access grants full Django administration privileges, including
 the ability to change or delete application data. Grant it only to trusted
 accounts.
 
+For closed pilots, staff do not need to use Django admin to create ordinary viewer accounts. Open **Site Administration → Pilot users** to provision a non-staff account and generate a password-setup link without exposing a temporary plaintext password. See `docs/pilot-user-provisioning.md` for the operator workflow and security boundaries.
+
 ## Run the full test suite locally
 
 The Django checks below use the development settings from `.env`. Complete the setup steps for the environment you choose before running them.

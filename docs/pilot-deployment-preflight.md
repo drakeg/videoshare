@@ -29,6 +29,8 @@ The private profile additionally requires:
 
 This confirms the portal is login-gated and anonymous visitors cannot self-register. It does not replace existing per-video/channel visibility or protected-media authorization.
 
+When public registration is disabled, trusted staff can provision ordinary users from **Site Administration → Pilot users** and share the generated password-setup link. See `docs/pilot-user-provisioning.md`.
+
 ## Internet-facing deployment hardening
 
 After TLS is configured, add `--deployment`:
