@@ -9,14 +9,14 @@ from django.db import transaction
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 
 from .community_models import CommunityPost, CommunityReply
 from .models import Channel, Video
 from .pilot_user_forms import PilotUserCsvImportForm, PilotUserProvisioningForm
 from .services.administration import get_creator_audience, get_site_admin_overview, moderate_site_comment
 from .services.pilot_user_import import PilotUserCsvValidationError, validate_pilot_user_csv
-from .services.pilot_users import PILOT_USER_ONBOARDING_STATUSES, PILOT_USER_SEARCH_MAX_LENGTH, PILOT_USER_STATUSES, password_setup_path, pilot_user_directory, provision_pilot_user, send_pilot_user_setup_email
+from .services.pilot_users import PILOT_USER_ONBOARDING_STATUSES, PILOT_USER_SEARCH_MAX_LENGTH, PILOT_USER_STATUSES, password_setup_path, pilot_user_directory, pilot_user_queryset, provision_pilot_user, send_pilot_user_setup_email, spreadsheet_safe_text
 from .services.moderation_actions import (
     restore_video,
     set_channel_suspended,
@@ -124,6 +124,45 @@ def site_admin_pilot_users(request):
         "videos/site_admin_pilot_users.html",
         _pilot_user_context(request, form=form),
     )
+
+
+@staff_member_required
+@require_GET
+def site_admin_pilot_user_export(request):
+    users, _, _, _ = pilot_user_queryset(
+        query=request.GET.get("q", ""),
+        status=request.GET.get("status", "all"),
+        onboarding=request.GET.get("onboarding", "all"),
+    )
+    response = HttpResponse(content_type="text/csv; charset=utf-8")
+    response["Content-Disposition"] = 'attachment; filename="pilot-users.csv"'
+    writer = csv.writer(response)
+    writer.writerow(
+        [
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "account_status",
+            "sign_in_status",
+            "last_login",
+            "date_joined",
+        ]
+    )
+    for user in users.iterator():
+        writer.writerow(
+            [
+                spreadsheet_safe_text(user.username),
+                spreadsheet_safe_text(user.email),
+                spreadsheet_safe_text(user.first_name),
+                spreadsheet_safe_text(user.last_name),
+                "active" if user.is_active else "suspended",
+                "signed-in" if user.last_login else "never",
+                user.last_login.isoformat() if user.last_login else "",
+                user.date_joined.isoformat(),
+            ]
+        )
+    return response
 
 
 @staff_member_required

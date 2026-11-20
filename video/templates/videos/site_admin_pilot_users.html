@@ -59,8 +59,11 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-                        <strong>Pilot user directory</strong>
-                        <span class="text-muted small">{{ pilot_users.paginator.count }} matching user{{ pilot_users.paginator.count|pluralize }}</span>
+                        <div>
+                            <strong>Pilot user directory</strong>
+                            <span class="text-muted small ms-2">{{ pilot_users.paginator.count }} matching user{{ pilot_users.paginator.count|pluralize }}</span>
+                        </div>
+                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'site_admin_pilot_user_export' %}?q={{ pilot_user_query|urlencode }}&status={{ pilot_user_status }}&onboarding={{ pilot_user_onboarding }}">Export CSV</a>
                     </div>
                     <form method="get" class="row g-2 align-items-end" aria-label="Filter pilot users">
                         <div class="col-md-5">

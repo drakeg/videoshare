@@ -20,7 +20,7 @@ PILOT_USER_ONBOARDING_STATUSES = {"all", "never", "signed-in"}
 
 
 
-def pilot_user_directory(*, query="", status="all", onboarding="all", page=None):
+def pilot_user_queryset(*, query="", status="all", onboarding="all"):
     normalized_query = (query or "").strip()[:PILOT_USER_SEARCH_MAX_LENGTH]
     normalized_status = status if status in PILOT_USER_STATUSES else "all"
     normalized_onboarding = (
@@ -45,13 +45,35 @@ def pilot_user_directory(*, query="", status="all", onboarding="all", page=None)
     elif normalized_onboarding == "signed-in":
         queryset = queryset.filter(last_login__isnull=False)
 
-    queryset = queryset.order_by("-date_joined", "-pk")
+    return (
+        queryset.order_by("-date_joined", "-pk"),
+        normalized_query,
+        normalized_status,
+        normalized_onboarding,
+    )
+
+
+def pilot_user_directory(*, query="", status="all", onboarding="all", page=None):
+    queryset, normalized_query, normalized_status, normalized_onboarding = (
+        pilot_user_queryset(
+            query=query,
+            status=status,
+            onboarding=onboarding,
+        )
+    )
     return (
         Paginator(queryset, PILOT_USER_PAGE_SIZE).get_page(page),
         normalized_query,
         normalized_status,
         normalized_onboarding,
     )
+
+
+def spreadsheet_safe_text(value):
+    text = str(value or "")
+    if text.lstrip().startswith(("=", "+", "-", "@")):
+        return "'" + text
+    return text
 
 def provision_pilot_user(*, username, email, first_name="", last_name=""):
     """Create an ordinary active user without exposing a temporary password."""
