@@ -3,7 +3,7 @@
 | Priority | Item | Why it matters | Status |
 | --- | --- | --- | --- |
 | P0 | Keep CI/build/deployment green | Broken software blocks every user and pilot | Ongoing |
-| P0 | Align local Docker full-suite execution with CI parallelism | Shorten development feedback loops and avoid unnecessary serial test time | Next |
+| P0 | Align local Docker full-suite execution with CI parallelism | Shorten development feedback loops and avoid unnecessary serial test time | In progress |
 | P0 | Keep Mad Mallard repository standards current | Makes development/review/release behavior repeatable | Ongoing |
 | P0 | SMB pilot deployment preflight | Reduce setup mistakes and customer-demo risk | Delivered in PR #286 |
 | P1 | Choose and add an explicit open-source license | Public source without a license does not grant normal reuse rights; license choice requires owner authorization | Owner decision required |

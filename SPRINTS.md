@@ -26,8 +26,15 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** focused Docker 7/7; GitHub Actions run #650 passed all 952 tests with one expected skip; repository standards passed.
 
-## Next sprint — Local Docker test parity
+## Current sprint — Local Docker test parity
 
 **Goal:** Align the local Docker full-suite runner with CI's parallel test execution after the serial runner was observed to be unnecessarily slow.
+
+**Deliverables**
+- [ ] Configurable `DJANGO_TEST_PROCESSES` with default 4
+- [ ] Docker test runner uses Django `--parallel`
+- [ ] GitHub Actions uses the same process-count variable
+- [ ] Runtime regression coverage and documentation
+- [ ] Full local Docker verification
 
 No live payment activation or paid infrastructure is required.

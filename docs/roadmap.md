@@ -1391,3 +1391,12 @@ Delivered in PR #287 with structural rendered-HTML auditing, critical design-tok
 Verification passed in GitHub Actions run #650: configuration and migration-drift checks succeeded and all 952 tests passed with one expected skip. Focused Docker accessibility tests passed 7/7 and repository-standards validation passed.
 
 Plan and verification: `docs/accessibility-regression-gate-sprint.md`.
+
+
+## Active sprint: Local Docker test parity
+
+Goal: align the local Docker full-suite runner with CI's configurable four-process Django test execution.
+
+This directly shortens the Build → Test → Fix loop after the serial local Docker runner was observed taking substantially longer than CI.
+
+Plan and verification: `docs/local-docker-test-parity-sprint.md`.
