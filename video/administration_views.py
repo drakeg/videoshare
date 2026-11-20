@@ -14,7 +14,7 @@ from .models import Channel, Video
 from .pilot_user_forms import PilotUserCsvImportForm, PilotUserProvisioningForm
 from .services.administration import get_creator_audience, get_site_admin_overview, moderate_site_comment
 from .services.pilot_user_import import PilotUserCsvValidationError, validate_pilot_user_csv
-from .services.pilot_users import password_setup_path, provision_pilot_user, send_pilot_user_setup_email
+from .services.pilot_users import password_setup_path, pilot_user_directory, provision_pilot_user, send_pilot_user_setup_email
 from .services.moderation_actions import (
     restore_video,
     set_channel_suspended,
@@ -32,15 +32,19 @@ def site_admin_dashboard(request):
     return render(request, "videos/site_admin_dashboard.html", get_site_admin_overview())
 
 
-def _pilot_user_context(*, form=None, import_form=None, setup_user=None, setup_url=None, setup_heading=None, setup_description=None, email_delivery_status=None):
+def _pilot_user_context(request, *, form=None, import_form=None, setup_user=None, setup_url=None, setup_heading=None, setup_description=None, email_delivery_status=None):
     email_enabled = getattr(settings, "PILOT_USER_SETUP_EMAIL_ENABLED", False)
+    pilot_users, pilot_user_query, pilot_user_status = pilot_user_directory(
+        query=request.GET.get("q", ""),
+        status=request.GET.get("status", "all"),
+        page=request.GET.get("page"),
+    )
     return {
         "form": form or PilotUserProvisioningForm(email_delivery_enabled=email_enabled),
         "import_form": import_form or PilotUserCsvImportForm(),
-        "pilot_users": (
-            User.objects.filter(is_staff=False, is_superuser=False)
-            .order_by("-date_joined", "-pk")[:50]
-        ),
+        "pilot_users": pilot_users,
+        "pilot_user_query": pilot_user_query,
+        "pilot_user_status": pilot_user_status,
         "setup_user": setup_user,
         "setup_url": setup_url,
         "setup_heading": setup_heading,
@@ -76,6 +80,7 @@ def site_admin_pilot_users(request):
             request,
             "videos/site_admin_pilot_users.html",
             _pilot_user_context(
+                request,
                 setup_user=user,
                 setup_url=setup_url,
                 setup_heading=f"Account created for @{user.username}",
@@ -90,7 +95,7 @@ def site_admin_pilot_users(request):
     return render(
         request,
         "videos/site_admin_pilot_users.html",
-        _pilot_user_context(form=form),
+        _pilot_user_context(request, form=form),
     )
 
 
@@ -102,7 +107,7 @@ def site_admin_pilot_user_csv_import(request):
         return render(
             request,
             "videos/site_admin_pilot_users.html",
-            _pilot_user_context(import_form=import_form),
+            _pilot_user_context(request, import_form=import_form),
             status=400,
         )
 
@@ -114,7 +119,7 @@ def site_admin_pilot_user_csv_import(request):
         return render(
             request,
             "videos/site_admin_pilot_users.html",
-            _pilot_user_context(import_form=import_form),
+            _pilot_user_context(request, import_form=import_form),
             status=400,
         )
 
@@ -158,6 +163,7 @@ def site_admin_pilot_user_reset_link(request, pk):
         request,
         "videos/site_admin_pilot_users.html",
         _pilot_user_context(
+            request,
             setup_user=user,
             setup_url=setup_url,
             setup_heading=f"Reset link generated for @{user.username}",
