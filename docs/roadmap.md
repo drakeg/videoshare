@@ -1426,10 +1426,12 @@ Verification passed in GitHub Actions run #662: configuration and migration-drif
 Plan and verification: `docs/pilot-user-reset-links-sprint.md`.
 
 
-## Active sprint: Bulk pilot user CSV import
+## Completed sprint: Bulk pilot user CSV import
 
 Goal: add a staff-only, bounded, all-or-nothing CSV import for ordinary pilot users and return their signed password-setup links as a downloadable CSV.
 
-The import performs complete validation before creating any account and never exposes temporary plaintext passwords.
+Delivered in PR #292 with full-file validation, atomic ordinary-user creation, strict duplicate/header/format/size/row safeguards, and a downloadable setup-link CSV.
+
+Verification passed in GitHub Actions run #664: configuration and migration-drift checks succeeded and all 978 tests passed with one expected skip. Focused Docker CSV-import tests passed 10/10.
 
 Plan and verification: `docs/pilot-user-csv-import-sprint.md`.

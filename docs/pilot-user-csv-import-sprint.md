@@ -39,3 +39,22 @@ Small and medium business pilots often begin with a cohort rather than one viewe
     python manage.py test video.test_pilot_user_csv_import
     python manage.py test --parallel 4
     docker compose config --quiet
+
+## Delivered
+
+- Added a staff-only CSV import form to Pilot Users.
+- Added UTF-8/header/size/row-count validation with a 100 KB / 200-user limit.
+- Rejects missing or unexpected headers, malformed UTF-8/CSV, extra row values, invalid fields, duplicates within the file, and case-insensitive collisions with existing users.
+- Validates the complete file before any account creation.
+- Creates all users atomically through the existing ordinary-user provisioning service only after validation succeeds.
+- Successful imports download `pilot-user-setup-links.csv` containing username, email, and signed setup URL only.
+- Added operator documentation and 10 focused rollback/security/output tests.
+
+## Verification results
+
+- Focused Docker CSV-import suite passed 10/10 in 3.694s.
+- `python3 -m compileall -q video` passed locally.
+- `git diff --check` passed locally.
+- `docker compose config --quiet` passed locally.
+- GitHub Actions Django checks run #664 passed configuration and migration-drift checks and all 978 tests with one expected skip.
+- Repository standards workflow run #26 passed.
