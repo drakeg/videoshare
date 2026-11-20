@@ -1446,3 +1446,10 @@ Delivered in PR #293 with individual setup/reset email actions, branded provider
 Verification passed in GitHub Actions run #666: configuration and migration-drift checks succeeded and all 990 tests passed with one expected skip. Focused Docker email/preflight tests passed 23/23 and accessibility tests passed 8/8.
 
 Plan and verification: `docs/pilot-user-setup-email-sprint.md`.
+
+
+## Active sprint: Pilot user directory management
+
+Goal: add bounded search, account-state filtering, and pagination to the staff Pilot Users directory so cohorts created by bulk import remain manageable.
+
+Plan and verification: `docs/pilot-user-directory-management-sprint.md`.
