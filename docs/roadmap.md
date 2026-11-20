@@ -1424,3 +1424,69 @@ Delivered in PR #291 with a staff-only POST action, active ordinary-user eligibi
 Verification passed in GitHub Actions run #662: configuration and migration-drift checks succeeded and all 968 tests passed with one expected skip. Focused Docker lifecycle tests passed 14/14.
 
 Plan and verification: `docs/pilot-user-reset-links-sprint.md`.
+
+
+## Completed sprint: Bulk pilot user CSV import
+
+Goal: add a staff-only, bounded, all-or-nothing CSV import for ordinary pilot users and return their signed password-setup links as a downloadable CSV.
+
+Delivered in PR #292 with full-file validation, atomic ordinary-user creation, strict duplicate/header/format/size/row safeguards, and a downloadable setup-link CSV.
+
+Verification passed in GitHub Actions run #664: configuration and migration-drift checks succeeded and all 978 tests passed with one expected skip. Focused Docker CSV-import tests passed 10/10.
+
+Plan and verification: `docs/pilot-user-csv-import-sprint.md`.
+
+
+## Completed sprint: Optional pilot-user setup email
+
+Goal: add opt-in provider-agnostic email delivery for individual pilot-user setup/reset links while preserving manual-link fallback and the disabled-by-default deployment posture.
+
+Delivered in PR #293 with individual setup/reset email actions, branded provider-agnostic mail, manual-link fallback, preflight checks, and operator documentation. Bulk CSV imports intentionally remain non-delivery-only.
+
+Verification passed in GitHub Actions run #666: configuration and migration-drift checks succeeded and all 990 tests passed with one expected skip. Focused Docker email/preflight tests passed 23/23 and accessibility tests passed 8/8.
+
+Plan and verification: `docs/pilot-user-setup-email-sprint.md`.
+
+
+## Completed sprint: Pilot user directory management
+
+Goal: add bounded search, account-state filtering, and pagination to the staff Pilot Users directory so cohorts created by bulk import remain manageable.
+
+Delivered in PR #294 with username/email/name search, All/Active/Suspended filtering, 50-user pagination, safe fallback, and preserved pager state.
+
+Verification passed in GitHub Actions run #669 with all 999 tests and one expected skip; repository standards also passed.
+
+Plan and verification: `docs/pilot-user-directory-management-sprint.md`.
+
+
+## Completed sprint: Pilot onboarding status visibility
+
+Goal: expose last successful sign-in and filter never-signed-in versus signed-in pilot users using Django's existing `last_login`, without adding schema or delivery tracking.
+
+Delivered in PR #295 with last-sign-in display, a clear Never signed in state, and composable onboarding-status filtering.
+
+Verification passed in GitHub Actions run #671 with all 1004 tests and one expected skip; repository standards also passed.
+
+Plan and verification: `docs/pilot-onboarding-status-sprint.md`.
+
+
+## Completed sprint: Pilot user access-state controls
+
+Goal: let staff suspend/reactivate ordinary pilot users directly from the filtered Pilot Users directory using the existing audited moderation service and safe return-state preservation.
+
+Delivered in PR #296 with audited in-directory Suspend/Reactivate actions, required reasons, ordinary-user target restrictions, and validated return-state preservation.
+
+Verification passed in GitHub Actions run #674 with all 1012 tests and one expected skip; repository standards also passed.
+
+Plan and verification: `docs/pilot-user-access-state-sprint.md`.
+
+
+## Completed sprint: Filtered pilot user directory export
+
+Goal: add a staff-only CSV export that reuses Pilot Users search/account/onboarding filters while excluding authentication secrets and neutralizing spreadsheet-formula input.
+
+Delivered in PR #297 with filter-parity export, all-match cohort output, spreadsheet-safe text, and strict exclusion of authentication secret material.
+
+Verification passed in GitHub Actions run #676 with all 1018 tests and one expected skip; repository standards also passed.
+
+Plan and verification: `docs/pilot-user-directory-export-sprint.md`.

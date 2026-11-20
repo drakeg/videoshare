@@ -12,7 +12,12 @@
 | P1 | Privacy/access workflow gaps identified by pilot audit | SMB training/client content often needs controlled access | Private portal + registration control delivered; further discovery required |
 | P0 | Closed-pilot operator account provisioning workflow | Reduce admin/support friction when public registration is disabled | Delivered in PR #290 |
 | P0 | Existing pilot user setup-link recovery | Let staff recover onboarding/reset without Django admin or public signup | Delivered in PR #291 |
-| P1 | Bulk pilot user CSV import | Reduce repetitive onboarding work for multi-user SMB pilots | Next |
+| P0 | Bulk pilot user CSV import | Reduce repetitive onboarding work for multi-user SMB pilots | Delivered in PR #292 |
+| P1 | Pilot user directory search/filter/pagination | Keep larger closed-pilot cohorts manageable after bulk import | Delivered in PR #294 |
+| P1 | Pilot onboarding status visibility | Identify never-signed-in users who still need setup help | Delivered in PR #295 |
+| P1 | Pilot user access-state controls | Suspend/reactivate ordinary pilot users without leaving the directory | Delivered in PR #296 |
+| P1 | Filtered pilot user directory CSV export | Give operators a portable cohort/status record without sensitive setup tokens | Delivered in PR #297 |
+| P1 | Optional pilot-user setup email delivery | Reduce manual setup-link delivery while keeping providers optional | Delivered in PR #293 |
 | P1 | Customer-facing deployment/runbook hardening | Reduce setup/support cost for pilots | Preflight delivered; continue as deployment needs emerge |
 | P0 | Accessibility regression checks for key workflows | Reduces product and customer risk | Delivered in PR #287 |
 | P2 | Category detail filtering/pagination | Useful scale improvement but lower commercial urgency | Backlog |

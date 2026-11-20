@@ -19,6 +19,15 @@
         <p class="mb-2">{{ setup_description }}</p>
         <label class="form-label" for="password-setup-url">Password setup/reset URL</label>
         <input id="password-setup-url" class="form-control" type="text" value="{{ setup_url }}" readonly>
+        {% if email_delivery_status == "sent" %}
+        <p class="mb-0 mt-2"><strong>Email sent.</strong> The manual URL above remains available as a fallback.</p>
+        {% elif email_delivery_status == "failed" %}
+        <p class="mb-0 mt-2 text-danger"><strong>Email could not be sent.</strong> Share the manual URL above instead.</p>
+        {% elif email_delivery_status == "missing_email" %}
+        <p class="mb-0 mt-2 text-warning"><strong>No recipient email is available.</strong> Share the manual URL above instead.</p>
+        {% elif email_delivery_status == "disabled" %}
+        <p class="mb-0 mt-2 text-warning"><strong>Pilot-user email delivery is disabled.</strong> Share the manual URL above instead.</p>
+        {% endif %}
     </div>
     {% endif %}
 
@@ -33,18 +42,59 @@
                     <button type="submit" class="btn btn-primary">Create pilot user</button>
                 </form>
             </div>
+
+            <div class="form-panel mt-4">
+                <h2 class="h4">Import users from CSV</h2>
+                <p class="text-muted">The entire file is validated before any account is created. A successful import downloads a CSV containing each new user’s password-setup link.</p>
+                <form method="post" action="{% url 'site_admin_pilot_user_csv_import' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ import_form.as_p }}
+                    <button type="submit" class="btn btn-outline-primary">Import pilot users</button>
+                </form>
+                <p class="text-muted small mt-3 mb-0">Headers: <code>username,email</code>; optional <code>first_name,last_name</code>. Maximum 200 users / 100 KB. No temporary passwords are included in the download.</p>
+            </div>
         </div>
 
         <div class="col-lg-7">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <strong>Recent ordinary users</strong>
-                    <span class="text-muted small">Latest 50</span>
+                <div class="card-header">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                        <div>
+                            <strong>Pilot user directory</strong>
+                            <span class="text-muted small ms-2">{{ pilot_users.paginator.count }} matching user{{ pilot_users.paginator.count|pluralize }}</span>
+                        </div>
+                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'site_admin_pilot_user_export' %}?q={{ pilot_user_query|urlencode }}&status={{ pilot_user_status }}&onboarding={{ pilot_user_onboarding }}">Export CSV</a>
+                    </div>
+                    <form method="get" class="row g-2 align-items-end" aria-label="Filter pilot users">
+                        <div class="col-md-5">
+                            <label class="form-label" for="pilot-user-search">Search users</label>
+                            <input id="pilot-user-search" class="form-control" type="search" name="q" value="{{ pilot_user_query }}" maxlength="100" placeholder="Username, email, first or last name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="pilot-user-status">Account status</label>
+                            <select id="pilot-user-status" class="form-select" name="status">
+                                <option value="all"{% if pilot_user_status == "all" %} selected{% endif %}>All</option>
+                                <option value="active"{% if pilot_user_status == "active" %} selected{% endif %}>Active</option>
+                                <option value="suspended"{% if pilot_user_status == "suspended" %} selected{% endif %}>Suspended</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" for="pilot-user-onboarding">Sign-in status</label>
+                            <select id="pilot-user-onboarding" class="form-select" name="onboarding">
+                                <option value="all"{% if pilot_user_onboarding == "all" %} selected{% endif %}>All</option>
+                                <option value="never"{% if pilot_user_onboarding == "never" %} selected{% endif %}>Never signed in</option>
+                                <option value="signed-in"{% if pilot_user_onboarding == "signed-in" %} selected{% endif %}>Has signed in</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-grid">
+                            <button class="btn btn-outline-primary" type="submit">Apply</button>
+                        </div>
+                    </form>
                 </div>
                 <div class="table-responsive">
                     <table class="table align-middle mb-0">
                         <thead>
-                            <tr><th>User</th><th>Email</th><th>Joined</th><th>Status</th><th>Access help</th></tr>
+                            <tr><th>User</th><th>Email</th><th>Joined</th><th>Last sign-in</th><th>Status</th><th>Access help</th></tr>
                         </thead>
                         <tbody>
                             {% for account in pilot_users %}
@@ -52,15 +102,45 @@
                                 <td>@{{ account.username }}</td>
                                 <td>{{ account.email|default:"—" }}</td>
                                 <td>{{ account.date_joined }}</td>
-                                <td>{% if account.is_active %}Active{% else %}<span class="badge text-bg-warning">Suspended</span>{% endif %}</td>
-                                <td>{% if account.is_active %}<form method="post" action="{% url 'site_admin_pilot_user_reset_link' account.pk %}">{% csrf_token %}<button class="btn btn-sm btn-outline-primary" type="submit">Generate reset link</button></form>{% else %}<span class="text-muted small">Reactivate first</span>{% endif %}</td>
+                                <td>{% if account.last_login %}{{ account.last_login }}{% else %}<span class="text-muted">Never signed in</span>{% endif %}</td>
+                                <td>
+                                    <div class="mb-2">{% if account.is_active %}Active{% else %}<span class="badge text-bg-warning">Suspended</span>{% endif %}</div>
+                                    <form method="post" action="{% url 'site_admin_pilot_user_access_state' account.pk %}" class="d-flex flex-wrap gap-2 align-items-center">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="{% if account.is_active %}suspend{% else %}reactivate{% endif %}">
+                                        <input type="hidden" name="q" value="{{ pilot_user_query }}">
+                                        <input type="hidden" name="status" value="{{ pilot_user_status }}">
+                                        <input type="hidden" name="onboarding" value="{{ pilot_user_onboarding }}">
+                                        <input type="hidden" name="page" value="{{ pilot_users.number }}">
+                                        <label class="visually-hidden" for="pilot-user-state-reason-{{ account.pk }}">Reason to {% if account.is_active %}suspend{% else %}reactivate{% endif %} @{{ account.username }}</label>
+                                        <input id="pilot-user-state-reason-{{ account.pk }}" class="form-control form-control-sm" type="text" name="reason" maxlength="1000" required placeholder="Reason">
+                                        <button class="btn btn-sm {% if account.is_active %}btn-outline-danger{% else %}btn-outline-primary{% endif %}" type="submit">{% if account.is_active %}Suspend{% else %}Reactivate{% endif %}</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    {% if account.is_active %}
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <form method="post" action="{% url 'site_admin_pilot_user_reset_link' account.pk %}">{% csrf_token %}<button class="btn btn-sm btn-outline-primary" type="submit">Generate reset link</button></form>
+                                        {% if pilot_setup_email_enabled and account.email %}<form method="post" action="{% url 'site_admin_pilot_user_reset_link' account.pk %}">{% csrf_token %}<input type="hidden" name="delivery" value="email"><button class="btn btn-sm btn-outline-secondary" type="submit">Email reset link</button></form>{% endif %}
+                                    </div>
+                                    {% else %}<span class="text-muted small">Reactivate first to restore setup/reset actions</span>{% endif %}
+                                </td>
                             </tr>
                             {% empty %}
-                            <tr><td colspan="5" class="text-muted">No ordinary users yet.</td></tr>
+                            <tr><td colspan="6" class="text-muted">No matching ordinary users.</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
+                {% if pilot_users.paginator.num_pages > 1 %}
+                <nav class="card-footer d-flex justify-content-between align-items-center gap-3" aria-label="Pilot user pages">
+                    <span class="text-muted small">Page {{ pilot_users.number }} of {{ pilot_users.paginator.num_pages }}</span>
+                    <div class="d-flex gap-2">
+                        {% if pilot_users.has_previous %}<a class="btn btn-sm btn-outline-secondary" href="?q={{ pilot_user_query|urlencode }}&status={{ pilot_user_status }}&onboarding={{ pilot_user_onboarding }}&page={{ pilot_users.previous_page_number }}">Previous</a>{% endif %}
+                        {% if pilot_users.has_next %}<a class="btn btn-sm btn-outline-secondary" href="?q={{ pilot_user_query|urlencode }}&status={{ pilot_user_status }}&onboarding={{ pilot_user_onboarding }}&page={{ pilot_users.next_page_number }}">Next</a>{% endif %}
+                    </div>
+                </nav>
+                {% endif %}
             </div>
         </div>
     </div>

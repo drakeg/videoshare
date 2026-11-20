@@ -1,15 +1,22 @@
+from urllib.parse import urlencode
+import csv
+
+from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponseBadRequest
+from django.db import transaction
+from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.http import require_POST
+from django.urls import reverse
+from django.views.decorators.http import require_GET, require_POST
 
 from .community_models import CommunityPost, CommunityReply
 from .models import Channel, Video
-from .pilot_user_forms import PilotUserProvisioningForm
+from .pilot_user_forms import PilotUserCsvImportForm, PilotUserProvisioningForm
 from .services.administration import get_creator_audience, get_site_admin_overview, moderate_site_comment
-from .services.pilot_users import password_setup_path, provision_pilot_user
+from .services.pilot_user_import import PilotUserCsvValidationError, validate_pilot_user_csv
+from .services.pilot_users import PILOT_USER_ONBOARDING_STATUSES, PILOT_USER_SEARCH_MAX_LENGTH, PILOT_USER_STATUSES, password_setup_path, pilot_user_directory, pilot_user_queryset, provision_pilot_user, send_pilot_user_setup_email, spreadsheet_safe_text
 from .services.moderation_actions import (
     restore_video,
     set_channel_suspended,
@@ -22,49 +29,182 @@ from .services.moderation_actions import (
 User = get_user_model()
 
 
+def _pilot_user_directory_return_url(request):
+    query = (request.POST.get("q", "") or "").strip()[:PILOT_USER_SEARCH_MAX_LENGTH]
+    status = request.POST.get("status", "all")
+    if status not in PILOT_USER_STATUSES:
+        status = "all"
+    onboarding = request.POST.get("onboarding", "all")
+    if onboarding not in PILOT_USER_ONBOARDING_STATUSES:
+        onboarding = "all"
+    try:
+        page = max(1, int(request.POST.get("page", "1")))
+    except (TypeError, ValueError):
+        page = 1
+    params = {"status": status, "onboarding": onboarding, "page": page}
+    if query:
+        params["q"] = query
+    return f"{reverse('site_admin_pilot_users')}?{urlencode(params)}"
+
+
 @staff_member_required
 def site_admin_dashboard(request):
     return render(request, "videos/site_admin_dashboard.html", get_site_admin_overview())
 
 
-def _pilot_user_context(*, form=None, setup_user=None, setup_url=None, setup_heading=None, setup_description=None):
+def _pilot_user_context(request, *, form=None, import_form=None, setup_user=None, setup_url=None, setup_heading=None, setup_description=None, email_delivery_status=None):
+    email_enabled = getattr(settings, "PILOT_USER_SETUP_EMAIL_ENABLED", False)
+    (
+        pilot_users,
+        pilot_user_query,
+        pilot_user_status,
+        pilot_user_onboarding,
+    ) = pilot_user_directory(
+        query=request.GET.get("q", ""),
+        status=request.GET.get("status", "all"),
+        onboarding=request.GET.get("onboarding", "all"),
+        page=request.GET.get("page"),
+    )
     return {
-        "form": form or PilotUserProvisioningForm(),
-        "pilot_users": (
-            User.objects.filter(is_staff=False, is_superuser=False)
-            .order_by("-date_joined", "-pk")[:50]
-        ),
+        "form": form or PilotUserProvisioningForm(email_delivery_enabled=email_enabled),
+        "import_form": import_form or PilotUserCsvImportForm(),
+        "pilot_users": pilot_users,
+        "pilot_user_query": pilot_user_query,
+        "pilot_user_status": pilot_user_status,
+        "pilot_user_onboarding": pilot_user_onboarding,
         "setup_user": setup_user,
         "setup_url": setup_url,
         "setup_heading": setup_heading,
         "setup_description": setup_description,
+        "email_delivery_status": email_delivery_status,
+        "pilot_setup_email_enabled": email_enabled,
     }
 
 
 @staff_member_required
 def site_admin_pilot_users(request):
-    form = PilotUserProvisioningForm(request.POST or None)
+    email_enabled = getattr(settings, "PILOT_USER_SETUP_EMAIL_ENABLED", False)
+    form = PilotUserProvisioningForm(
+        request.POST or None,
+        email_delivery_enabled=email_enabled,
+    )
     if request.method == "POST" and form.is_valid():
-        user = provision_pilot_user(**form.cleaned_data)
+        user = provision_pilot_user(
+            username=form.cleaned_data["username"],
+            email=form.cleaned_data["email"],
+            first_name=form.cleaned_data.get("first_name", ""),
+            last_name=form.cleaned_data.get("last_name", ""),
+        )
+        setup_url = request.build_absolute_uri(password_setup_path(user))
+        email_delivery_status = None
+        if form.cleaned_data.get("send_setup_email"):
+            email_delivery_status = send_pilot_user_setup_email(
+                user=user,
+                setup_url=setup_url,
+                purpose="setup",
+            )
         return render(
             request,
             "videos/site_admin_pilot_users.html",
             _pilot_user_context(
+                request,
                 setup_user=user,
-                setup_url=request.build_absolute_uri(password_setup_path(user)),
+                setup_url=setup_url,
                 setup_heading=f"Account created for @{user.username}",
                 setup_description=(
                     "Share this password-setup link through your approved channel. "
                     "Treat it as sensitive until the user chooses a password."
                 ),
+                email_delivery_status=email_delivery_status,
             ),
         )
 
     return render(
         request,
         "videos/site_admin_pilot_users.html",
-        _pilot_user_context(form=form),
+        _pilot_user_context(request, form=form),
     )
+
+
+@staff_member_required
+@require_GET
+def site_admin_pilot_user_export(request):
+    users, _, _, _ = pilot_user_queryset(
+        query=request.GET.get("q", ""),
+        status=request.GET.get("status", "all"),
+        onboarding=request.GET.get("onboarding", "all"),
+    )
+    response = HttpResponse(content_type="text/csv; charset=utf-8")
+    response["Content-Disposition"] = 'attachment; filename="pilot-users.csv"'
+    writer = csv.writer(response)
+    writer.writerow(
+        [
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "account_status",
+            "sign_in_status",
+            "last_login",
+            "date_joined",
+        ]
+    )
+    for user in users.iterator():
+        writer.writerow(
+            [
+                spreadsheet_safe_text(user.username),
+                spreadsheet_safe_text(user.email),
+                spreadsheet_safe_text(user.first_name),
+                spreadsheet_safe_text(user.last_name),
+                "active" if user.is_active else "suspended",
+                "signed-in" if user.last_login else "never",
+                user.last_login.isoformat() if user.last_login else "",
+                user.date_joined.isoformat(),
+            ]
+        )
+    return response
+
+
+@staff_member_required
+@require_POST
+def site_admin_pilot_user_csv_import(request):
+    import_form = PilotUserCsvImportForm(request.POST, request.FILES)
+    if not import_form.is_valid():
+        return render(
+            request,
+            "videos/site_admin_pilot_users.html",
+            _pilot_user_context(request, import_form=import_form),
+            status=400,
+        )
+
+    try:
+        rows = validate_pilot_user_csv(import_form.cleaned_data["csv_file"])
+    except PilotUserCsvValidationError as error:
+        for message in error.messages:
+            import_form.add_error("csv_file", message)
+        return render(
+            request,
+            "videos/site_admin_pilot_users.html",
+            _pilot_user_context(request, import_form=import_form),
+            status=400,
+        )
+
+    with transaction.atomic():
+        users = [provision_pilot_user(**row) for row in rows]
+
+    response = HttpResponse(content_type="text/csv; charset=utf-8")
+    response["Content-Disposition"] = 'attachment; filename="pilot-user-setup-links.csv"'
+    writer = csv.writer(response)
+    writer.writerow(["username", "email", "setup_url"])
+    for user in users:
+        writer.writerow(
+            [
+                user.username,
+                user.email,
+                request.build_absolute_uri(password_setup_path(user)),
+            ]
+        )
+    return response
 
 
 @staff_member_required
@@ -77,19 +217,53 @@ def site_admin_pilot_user_reset_link(request, pk):
         is_superuser=False,
         is_active=True,
     )
+    setup_url = request.build_absolute_uri(password_setup_path(user))
+    email_delivery_status = None
+    if request.POST.get("delivery") == "email":
+        email_delivery_status = send_pilot_user_setup_email(
+            user=user,
+            setup_url=setup_url,
+            purpose="reset",
+        )
     return render(
         request,
         "videos/site_admin_pilot_users.html",
         _pilot_user_context(
+            request,
             setup_user=user,
-            setup_url=request.build_absolute_uri(password_setup_path(user)),
+            setup_url=setup_url,
             setup_heading=f"Reset link generated for @{user.username}",
             setup_description=(
                 "Share this reset/setup link through your approved channel. "
                 "It does not change the user's current password until they submit a new one."
             ),
+            email_delivery_status=email_delivery_status,
         ),
     )
+
+
+@staff_member_required
+@require_POST
+def site_admin_pilot_user_access_state(request, pk):
+    user = get_object_or_404(
+        User,
+        pk=pk,
+        is_staff=False,
+        is_superuser=False,
+    )
+    action = request.POST.get("action", "")
+    if action not in {"suspend", "reactivate"}:
+        return HttpResponseBadRequest("Invalid pilot user access-state action.")
+    try:
+        set_user_active(
+            actor=request.user,
+            user=user,
+            active=action == "reactivate",
+            reason=request.POST.get("reason", ""),
+        )
+    except ValueError as error:
+        return HttpResponseBadRequest(str(error))
+    return redirect(_pilot_user_directory_return_url(request))
 
 
 @staff_member_required

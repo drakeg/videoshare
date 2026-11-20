@@ -202,6 +202,44 @@ def run_pilot_preflight(settings_obj, *, profile="public", deployment=False):
                 )
             )
 
+    pilot_email_enabled = bool(
+        getattr(settings_obj, "PILOT_USER_SETUP_EMAIL_ENABLED", False)
+    )
+    if pilot_email_enabled:
+        email_backend = str(getattr(settings_obj, "EMAIL_BACKEND", "") or "")
+        non_delivery_backends = (
+            "django.core.mail.backends.console.EmailBackend",
+            "django.core.mail.backends.locmem.EmailBackend",
+            "django.core.mail.backends.dummy.EmailBackend",
+        )
+        if email_backend in non_delivery_backends:
+            results.append(
+                _result(
+                    "WARN",
+                    "pilot-user-email",
+                    "Pilot-user setup email is enabled with a non-delivery/test email backend.",
+                    "Configure a real Django email backend before relying on emailed setup links; manual links remain available.",
+                )
+            )
+        else:
+            results.append(
+                _result(
+                    "PASS",
+                    "pilot-user-email",
+                    "Pilot-user setup email is enabled with a non-test email backend.",
+                    "Send a test message before a customer pilot and keep the manual setup-link fallback available.",
+                )
+            )
+    else:
+        results.append(
+            _result(
+                "PASS",
+                "pilot-user-email",
+                "Pilot-user setup email delivery remains disabled.",
+                "Manual setup/reset links remain available; enable DJANGO_PILOT_USER_SETUP_EMAIL_ENABLED only after email delivery is configured.",
+            )
+        )
+
     provider = str(getattr(settings_obj, "MONETIZATION_PAYMENT_PROVIDER", "sandbox") or "").lower()
     secret = str(getattr(settings_obj, "STRIPE_SECRET_KEY", "") or "")
     if provider == "stripe" and secret.startswith("sk_test_"):

@@ -44,8 +44,44 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** focused Docker 14/14; GitHub Actions run #662 passed all 968 tests with one expected skip; repository standards passed.
 
-## Next sprint — Bulk pilot user import
+## Completed sprint — Bulk pilot user CSV import
 
-**Goal:** Reduce onboarding time for multi-user SMB pilots by importing ordinary users from a validated CSV without opening public registration or creating elevated accounts.
+**Delivered:** staff-only bounded CSV import, complete pre-validation, atomic ordinary-user creation, duplicate/collision safeguards, and downloadable setup-link CSV output.
+
+**Verification:** focused Docker 10/10; GitHub Actions run #664 passed all 978 tests with one expected skip; repository standards passed.
+
+## Completed sprint — Optional pilot-user setup email
+
+**Delivered:** disabled-by-default provider-agnostic setup/reset email delivery for individual pilot users, manual-link fallback, preflight warnings, and operator documentation.
+
+**Verification:** focused Docker email/preflight 23/23; accessibility 8/8; GitHub Actions run #666 passed all 990 tests with one expected skip; repository standards passed.
+
+## Completed sprint — Pilot user directory management
+
+**Delivered:** bounded username/email/name search, account-state filtering, 50-user pagination, and preserved directory state.
+
+**Verification:** GitHub Actions run #669 passed all 999 tests with one expected skip; repository standards passed.
+
+## Completed sprint — Pilot onboarding status visibility
+
+**Delivered:** last-successful-sign-in display, explicit Never signed in state, composable onboarding filtering, and preserved directory state.
+
+**Verification:** GitHub Actions run #671 passed all 1004 tests with one expected skip; repository standards passed.
+
+## Completed sprint — Pilot user access-state controls
+
+**Delivered:** audited in-directory suspend/reactivate controls for ordinary pilot users with required reasons and safe return-state preservation.
+
+**Verification:** GitHub Actions run #674 passed all 1012 tests with one expected skip; repository standards passed.
+
+## Completed sprint — Filtered pilot user directory export
+
+**Delivered:** staff-only filtered CSV export with directory filter parity, all-match cohort output, spreadsheet-safe text handling, and strict secret exclusion.
+
+**Verification:** GitHub Actions run #676 passed all 1018 tests with one expected skip; repository standards passed.
+
+## Next sprint — Pilot operations consolidation
+
+**Goal:** Merge/rebase the completed onboarding stack and then continue from the next non-overlapping backlog item without growing the dependent PR chain further.
 
 No live payment activation or paid infrastructure is required.
