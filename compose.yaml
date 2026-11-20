@@ -40,6 +40,7 @@ services:
       DJANGO_SECURE_SSL_REDIRECT: "false"
       DJANGO_SESSION_COOKIE_SECURE: "false"
       DJANGO_CSRF_COOKIE_SECURE: "false"
+      DJANGO_TEST_PROCESSES: "${DJANGO_TEST_PROCESSES:-4}"
     entrypoint: ["sh", "/app/docker/test.sh"]
     volumes:
       - .:/app

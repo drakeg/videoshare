@@ -1391,3 +1391,14 @@ Delivered in PR #287 with structural rendered-HTML auditing, critical design-tok
 Verification passed in GitHub Actions run #650: configuration and migration-drift checks succeeded and all 952 tests passed with one expected skip. Focused Docker accessibility tests passed 7/7 and repository-standards validation passed.
 
 Plan and verification: `docs/accessibility-regression-gate-sprint.md`.
+
+
+## Completed sprint: Local Docker test parity
+
+Goal: align the local Docker full-suite runner with CI's configurable four-process Django test execution.
+
+Delivered in PR #288 with configurable `DJANGO_TEST_PROCESSES`, matching Docker/CI `--parallel` execution, runtime drift tests, and documentation.
+
+Verification passed in GitHub Actions run #652 with all 953 tests and one expected skip. Compose interpolation and shell-level runner behavior were verified locally. Actual local test-container execution remained blocked by the host Docker daemon after stranded ephemeral test containers were removed, so no full local Docker pass is claimed.
+
+Plan and verification: `docs/local-docker-test-parity-sprint.md`.

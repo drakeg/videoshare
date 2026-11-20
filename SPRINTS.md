@@ -26,8 +26,14 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** focused Docker 7/7; GitHub Actions run #650 passed all 952 tests with one expected skip; repository standards passed.
 
-## Next sprint — Local Docker test parity
+## Completed sprint — Local Docker test parity
 
-**Goal:** Align the local Docker full-suite runner with CI's parallel test execution after the serial runner was observed to be unnecessarily slow.
+**Delivered:** configurable `DJANGO_TEST_PROCESSES`, matching Docker/CI parallel execution, regression coverage, and developer documentation.
+
+**Verification:** GitHub Actions run #652 passed all 953 tests with one expected skip; Compose and shell-runner behavior verified locally. Full local container execution remains blocked by the host Docker daemon and is not claimed as passed.
+
+## Next sprint — Pilot operator onboarding
+
+**Goal:** Review the remaining account-provisioning/support friction for closed private pilots now that branding, access control, preflight, accessibility checks, and test-runner parity are in place.
 
 No live payment activation or paid infrastructure is required.

@@ -19,6 +19,7 @@ jobs:
       DJANGO_SESSION_COOKIE_SECURE: "false"
       DJANGO_CSRF_COOKIE_SECURE: "false"
       DJANGO_FAST_TEST_HASHER: "true"
+      DJANGO_TEST_PROCESSES: "4"
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
 
     steps:
@@ -39,4 +40,4 @@ jobs:
         run: python manage.py makemigrations --check --dry-run
 
       - name: Run tests
-        run: python manage.py test --parallel 4
+        run: python manage.py test --parallel "$DJANGO_TEST_PROCESSES"

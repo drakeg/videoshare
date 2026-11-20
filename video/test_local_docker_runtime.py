@@ -61,3 +61,29 @@ class LocalDockerRuntimeTests(SimpleTestCase):
         self.assertIn("- Django 6.1.3", readme)
         self.assertIn("- Stripe 17.1.0", readme)
         self.assertIn("- Terraform 1.17.2 for infrastructure validation", readme)
+
+    def test_local_docker_and_ci_share_configurable_parallel_test_count(self):
+        compose = (REPOSITORY_ROOT / "compose.yaml").read_text()
+        test_script = (REPOSITORY_ROOT / "docker" / "test.sh").read_text()
+        workflow = (REPOSITORY_ROOT / ".github" / "workflows" / "django.yml").read_text()
+        environment = (REPOSITORY_ROOT / ".env.example").read_text()
+        readme = (REPOSITORY_ROOT / "README.md").read_text()
+
+        self.assertIn(
+            'DJANGO_TEST_PROCESSES: "${DJANGO_TEST_PROCESSES:-4}"',
+            compose,
+        )
+        self.assertIn(
+            'python manage.py test --parallel "${DJANGO_TEST_PROCESSES:-4}"',
+            test_script,
+        )
+        self.assertIn('DJANGO_TEST_PROCESSES: "4"', workflow)
+        self.assertIn(
+            'python manage.py test --parallel "$DJANGO_TEST_PROCESSES"',
+            workflow,
+        )
+        self.assertIn("DJANGO_TEST_PROCESSES=4", environment)
+        self.assertIn(
+            "DJANGO_TEST_PROCESSES=1 docker compose run --rm test",
+            readme,
+        )
