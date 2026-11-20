@@ -1364,6 +1364,6 @@ Goal: consolidate configurable site branding and optional public-registration sh
 
 Delivered in PR #285, superseding PRs #282 and #284. The combined change adds environment-driven site naming and optional public-registration shutdown while preserving the merged private-portal mode and existing authorization boundaries.
 
-Verification passed in GitHub Actions run #637: configuration and migration-drift checks succeeded and all 925 tests passed with one expected skip. Local source compilation, diff validation, and Compose configuration validation also passed.
+Verification passed in GitHub Actions run #641: configuration and migration-drift checks succeeded and all 934 tests passed with one expected skip. Local source compilation, diff validation, and Compose configuration validation also passed.
 
 Plan and verification: `docs/smb-pilot-configuration-sprint.md`.
