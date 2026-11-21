@@ -2,7 +2,7 @@
 
 ## Delivered behavior
 
-The application's prototype styling is replaced by an original, cohesive video-platform interface that is polished on desktop and mobile without reproducing YouTube's branding or page layouts.
+The application's prototype styling is replaced by an original, cohesive video-platform interface that is polished on desktop and mobile without reproducing another platform's branding or page layouts.
 
 ## Visual direction
 
@@ -56,7 +56,7 @@ Visual verification covers the homepage and video detail at desktop and mobile w
 
 ## Out of scope
 
-- Copying YouTube branding, icons, or pixel-level layouts
+- Copying third-party branding, icons, or pixel-level layouts
 - Recommendation, playback, upload, or permission changes
 - Native mobile applications
 - A front-end framework, asset pipeline, or third-party design service

@@ -66,7 +66,7 @@ class StripeAccountingWebhookTests(TestCase):
                 "billing_reason": "subscription_cycle",
                 "amount_paid": 500,
                 "currency": "usd",
-                "metadata": {"ytclone_platform_fee_bps": "1000"},
+                "metadata": {"videoshare_platform_fee_bps": "1000"},
             }},
         }
         self.post_event(event)

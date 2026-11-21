@@ -6,9 +6,9 @@ state are authoritative when they differ from this dated snapshot.
 
 ## Handoff snapshot — October 18, 2026
 
-- Repository: `drakeg/ytclone`
+- Repository: `drakeg/videoshare`
 - Default branch: `main`
-- Latest merged work reviewed at handoff: [#246 — Pillow 13 dependency update](https://github.com/drakeg/ytclone/pull/246)
+- Latest merged work reviewed at handoff: [#246 — Pillow 13 dependency update](https://github.com/drakeg/videoshare/pull/246)
 - Current continuation branch: `main`
 - Latest migration on `main`: `video/0039_videobookmark_sort_position`
 - Current merged baseline includes dependency/runtime updates through PR #246; re-read live GitHub Actions before quoting a test count because the suite continues to grow.
@@ -272,7 +272,7 @@ scope.
 ## Suggested opening prompt for a new ChatGPT session
 
 ```text
-Work with the drakeg/ytclone repository. First inspect current main, open pull
+Work with the drakeg/videoshare repository. First inspect current main, open pull
 requests, README.md, docs/development-handoff.md, docs/shorts-current-state.md, and
 docs/roadmap.md. Do not assume the handoff snapshot is current. Preserve existing
 changes and follow the documented sprint process: sprint-start docs must be the

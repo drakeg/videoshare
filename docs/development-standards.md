@@ -1,6 +1,6 @@
 # Development Standards
 
-This document defines the default engineering workflow for VideoShare/YTClone. It is a living project standard and should be updated whenever the repository's development process changes.
+This document defines the default engineering workflow for VideoShare. It is a living project standard and should be updated whenever the repository's development process changes.
 
 ## Sprint workflow
 

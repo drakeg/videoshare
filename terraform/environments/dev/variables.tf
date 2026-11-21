@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "project_name" {
   description = "Project tag value used for naming and cost allocation."
   type        = string
-  default     = "ytclone"
+  default     = "videoshare"
 }
 
 variable "media_bucket_name" {

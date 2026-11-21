@@ -357,15 +357,15 @@ def stripe_webhook(request):
 
     if event_type == "checkout.session.completed":
         metadata = _meta(obj)
-        kind = metadata.get("ytclone_kind")
-        payer_id = metadata.get("ytclone_payer_id")
+        kind = metadata.get("videoshare_kind")
+        payer_id = metadata.get("videoshare_payer_id")
         payer = get_user_model().objects.filter(pk=payer_id).first()
         if kind == "tip":
-            channel = Channel.objects.filter(pk=metadata.get("ytclone_channel_id")).first()
+            channel = Channel.objects.filter(pk=metadata.get("videoshare_channel_id")).first()
             if channel and payer:
                 account = CreatorMonetizationAccount.objects.filter(channel=channel, provider="stripe").first()
-                gross = int(metadata.get("ytclone_gross_minor", 0))
-                fee = int(metadata.get("ytclone_platform_fee_minor", 0))
+                gross = int(metadata.get("videoshare_gross_minor", 0))
+                fee = int(metadata.get("videoshare_platform_fee_minor", 0))
                 if account and gross > 0:
                     MonetizationTransaction.objects.get_or_create(
                         provider_event_id=event_id,
@@ -383,7 +383,7 @@ def stripe_webhook(request):
                         },
                     )
         elif kind == "membership":
-            tier = MembershipTier.objects.select_related("monetization_account").filter(pk=metadata.get("ytclone_tier_id")).first()
+            tier = MembershipTier.objects.select_related("monetization_account").filter(pk=metadata.get("videoshare_tier_id")).first()
             provider_subscription_id = str(_field(obj, "subscription", "") or "")
             if tier and payer and provider_subscription_id:
                 subscription, unused = ChannelMembershipSubscription.objects.get_or_create(tier=tier, subscriber=payer)

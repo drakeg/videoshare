@@ -83,19 +83,19 @@ def create_tip_checkout(*, connected_account_id: str, amount_minor: int, channel
                 "application_fee_amount": fee_minor,
                 "transfer_data": {"destination": connected_account_id},
                 "metadata": {
-                    "ytclone_kind": "tip",
-                    "ytclone_channel_id": str(channel_id),
-                    "ytclone_payer_id": str(payer_id),
-                    "ytclone_platform_fee_bps": str(settings.MONETIZATION_PLATFORM_FEE_BPS),
+                    "videoshare_kind": "tip",
+                    "videoshare_channel_id": str(channel_id),
+                    "videoshare_payer_id": str(payer_id),
+                    "videoshare_platform_fee_bps": str(settings.MONETIZATION_PLATFORM_FEE_BPS),
                 },
             },
             "metadata": {
-                "ytclone_kind": "tip",
-                "ytclone_channel_id": str(channel_id),
-                "ytclone_payer_id": str(payer_id),
-                "ytclone_gross_minor": str(amount_minor),
-                "ytclone_platform_fee_minor": str(fee_minor),
-                "ytclone_platform_fee_bps": str(settings.MONETIZATION_PLATFORM_FEE_BPS),
+                "videoshare_kind": "tip",
+                "videoshare_channel_id": str(channel_id),
+                "videoshare_payer_id": str(payer_id),
+                "videoshare_gross_minor": str(amount_minor),
+                "videoshare_platform_fee_minor": str(fee_minor),
+                "videoshare_platform_fee_bps": str(settings.MONETIZATION_PLATFORM_FEE_BPS),
             },
         }
     )
@@ -104,11 +104,11 @@ def create_tip_checkout(*, connected_account_id: str, amount_minor: int, channel
 
 def create_membership_checkout(*, connected_account_id: str, tier_id: int, tier_name: str, price_minor: int, channel_id: int, payer_id: int, success_url: str, cancel_url: str) -> CheckoutTarget:
     common_metadata = {
-        "ytclone_kind": "membership",
-        "ytclone_tier_id": str(tier_id),
-        "ytclone_channel_id": str(channel_id),
-        "ytclone_payer_id": str(payer_id),
-        "ytclone_platform_fee_bps": str(settings.MONETIZATION_PLATFORM_FEE_BPS),
+        "videoshare_kind": "membership",
+        "videoshare_tier_id": str(tier_id),
+        "videoshare_channel_id": str(channel_id),
+        "videoshare_payer_id": str(payer_id),
+        "videoshare_platform_fee_bps": str(settings.MONETIZATION_PLATFORM_FEE_BPS),
     }
     session = _client().v1.checkout.sessions.create(
         {

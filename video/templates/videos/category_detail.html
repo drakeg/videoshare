@@ -1,3 +1,61 @@
 {% extends 'base.html' %}
 {% block title %}{{ category.name }} · {{ site_name }}{% endblock %}
-{% block content %}<header class="page-header"><div><p class="eyebrow">Category</p><h1>{{ category.name }}</h1><p>{{ category.description }}</p></div></header>{% include 'videos/_video_cards.html' with videos=videos %}{% endblock %}
+{% block content %}
+<header class="page-header">
+    <div>
+        <p class="eyebrow">Category</p>
+        <h1>{{ category.name }}</h1>
+        <p>{{ category.description }}</p>
+    </div>
+</header>
+
+<form class="row g-3 align-items-end mb-3" method="get" action="{% url 'category_detail' category.pk %}" aria-label="Category video filters">
+    <div class="col-lg-5">
+        <label class="form-label" for="category-video-search">Search this category</label>
+        <input class="form-control" id="category-video-search" type="search" name="q" value="{{ selected_query }}" maxlength="120" placeholder="Title, description, creator, or channel">
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <label class="form-label" for="category-video-uploaded">Uploaded</label>
+        <select class="form-select" id="category-video-uploaded" name="uploaded">
+            {% for value, label in upload_filters.items %}
+                <option value="{{ value }}"{% if selected_upload == value %} selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <label class="form-label" for="category-video-sort">Sort</label>
+        <select class="form-select" id="category-video-sort" name="sort">
+            {% for value, label in sort_options.items %}
+                <option value="{{ value }}"{% if selected_sort == value %} selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary" type="submit">Apply</button>
+    </div>
+</form>
+
+{% include 'videos/_video_cards.html' with videos=videos %}
+
+{% if videos_page.paginator.num_pages > 1 %}
+<nav class="mt-4" aria-label="{{ category.name }} video pages">
+    <ul class="pagination justify-content-center">
+        <li class="page-item{% if not videos_page.has_previous %} disabled{% endif %}">
+            {% if videos_page.has_previous %}
+                <a class="page-link" href="?{% if selected_query %}q={{ selected_query|urlencode }}&amp;{% endif %}uploaded={{ selected_upload }}&amp;sort={{ selected_sort }}&amp;page={{ videos_page.previous_page_number }}">Previous</a>
+            {% else %}
+                <span class="page-link">Previous</span>
+            {% endif %}
+        </li>
+        <li class="page-item disabled"><span class="page-link">Page {{ videos_page.number }} of {{ videos_page.paginator.num_pages }}</span></li>
+        <li class="page-item{% if not videos_page.has_next %} disabled{% endif %}">
+            {% if videos_page.has_next %}
+                <a class="page-link" href="?{% if selected_query %}q={{ selected_query|urlencode }}&amp;{% endif %}uploaded={{ selected_upload }}&amp;sort={{ selected_sort }}&amp;page={{ videos_page.next_page_number }}">Next</a>
+            {% else %}
+                <span class="page-link">Next</span>
+            {% endif %}
+        </li>
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

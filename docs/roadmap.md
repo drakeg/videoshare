@@ -884,7 +884,7 @@ Delivered:
 
 Out of scope:
 
-- YouTube branding or pixel-level imitation
+- third-party platform branding or pixel-level imitation
 - Product behavior, permissions, recommendation logic, or infrastructure changes
 - Front-end frameworks, paid services, and user-selectable themes
 

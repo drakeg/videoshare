@@ -1,6 +1,6 @@
 # Terraform
 
-This directory contains the AWS infrastructure for ytclone. The initial scope is intentionally small and cost-conscious: a private S3 media bucket and an AWS monthly cost budget.
+This directory contains the AWS infrastructure for VideoShare. The initial scope is intentionally small and cost-conscious: a private S3 media bucket and an AWS monthly cost budget.
 
 ## Structure
 

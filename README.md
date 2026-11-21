@@ -1,9 +1,9 @@
-# ytclone
+# VideoShare
 
 <!-- madmallard-badges:start -->
 ![Python](https://img.shields.io/badge/Python-3.15-3776AB?logo=python&logoColor=white) ![Django](https://img.shields.io/badge/Django-6.1.3-092E20?logo=django&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white) ![Docker Compose](https://img.shields.io/badge/Docker%20Compose-2496ED?logo=docker&logoColor=white) ![Terraform](https://img.shields.io/badge/Terraform-1.17.2-844FBA?logo=terraform&logoColor=white) ![AWS target](https://img.shields.io/badge/AWS%20target-232F3E?logo=amazonwebservices&logoColor=white)
 
-[![django](https://github.com/drakeg/ytclone/actions/workflows/django.yml/badge.svg)](https://github.com/drakeg/ytclone/actions/workflows/django.yml) [![security](https://github.com/drakeg/ytclone/actions/workflows/security.yml/badge.svg)](https://github.com/drakeg/ytclone/actions/workflows/security.yml) [![standards](https://github.com/drakeg/ytclone/actions/workflows/standards.yml/badge.svg)](https://github.com/drakeg/ytclone/actions/workflows/standards.yml) [![terraform](https://github.com/drakeg/ytclone/actions/workflows/terraform.yml/badge.svg)](https://github.com/drakeg/ytclone/actions/workflows/terraform.yml) [![Issues](https://img.shields.io/github/issues/drakeg/ytclone)](https://github.com/drakeg/ytclone/issues) [![Pull requests](https://img.shields.io/github/issues-pr/drakeg/ytclone)](https://github.com/drakeg/ytclone/pulls)
+[![django](https://github.com/drakeg/videoshare/actions/workflows/django.yml/badge.svg)](https://github.com/drakeg/videoshare/actions/workflows/django.yml) [![security](https://github.com/drakeg/videoshare/actions/workflows/security.yml/badge.svg)](https://github.com/drakeg/videoshare/actions/workflows/security.yml) [![standards](https://github.com/drakeg/videoshare/actions/workflows/standards.yml/badge.svg)](https://github.com/drakeg/videoshare/actions/workflows/standards.yml) [![terraform](https://github.com/drakeg/videoshare/actions/workflows/terraform.yml/badge.svg)](https://github.com/drakeg/videoshare/actions/workflows/terraform.yml) [![Issues](https://img.shields.io/github/issues/drakeg/videoshare)](https://github.com/drakeg/videoshare/issues) [![Pull requests](https://img.shields.io/github/issues-pr/drakeg/videoshare)](https://github.com/drakeg/videoshare/pulls)
 <!-- madmallard-badges:end -->
 
 A Django-based video-sharing application being modernized into a secure, low-cost creator and viewer platform that runs locally with Docker and can later deploy to AWS through Terraform.
@@ -23,6 +23,7 @@ A Django-based video-sharing application being modernized into a secure, low-cos
 - Paginated search results with content-type, category, upload-date, and sort filters
 - Homepage discovery for new, viewed, liked, recently watched, and public playlist content
 - Paginated video browsing with category and upload-date filters
+- Category detail pages with scoped search, sorting, upload-date filters, and pagination
 - Personalized discovery with creator affinities, tags, and hashtags
 - A private, paginated subscriptions feed with channel filtering
 - Private playback progress with Continue Watching and automatic resume

@@ -80,8 +80,14 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Verification:** GitHub Actions run #676 passed all 1018 tests with one expected skip; repository standards passed.
 
-## Next sprint — Pilot operations consolidation
+## Completed sprint — VideoShare identity cleanup
 
-**Goal:** Merge/rebase the completed onboarding stack and then continue from the next non-overlapping backlog item without growing the dependent PR chain further.
+**Delivered:** repository/runtime identity aligned to `drakeg/videoshare`, Django project package renamed to `videoshare`, legacy branding guardrails added, Docker/Terraform/badges updated.
+
+## Current sprint — Category detail filtering and pagination
+
+**Goal:** Keep growing category collections usable with scoped search, sorting, upload-date filters, and pagination while preserving centralized visibility rules.
+
+**Delivered on current branch:** in-category search, newest/views/likes sorting, upload-date filters, 24-item pagination, filter-preserving navigation, regression coverage, and sprint documentation.
 
 No live payment activation or paid infrastructure is required.

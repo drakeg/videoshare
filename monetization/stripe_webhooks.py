@@ -53,27 +53,27 @@ def invoice_metadata(invoice):
 
 def _fee_bps(meta):
     try:
-        return int(meta.get("ytclone_platform_fee_bps", settings.MONETIZATION_PLATFORM_FEE_BPS))
+        return int(meta.get("videoshare_platform_fee_bps", settings.MONETIZATION_PLATFORM_FEE_BPS))
     except (TypeError, ValueError):
         return settings.MONETIZATION_PLATFORM_FEE_BPS
 
 
 def handle_checkout_completed(event_id, session):
     meta = metadata(session)
-    kind = meta.get("ytclone_kind")
-    payer = get_user_model().objects.filter(pk=meta.get("ytclone_payer_id")).first()
+    kind = meta.get("videoshare_kind")
+    payer = get_user_model().objects.filter(pk=meta.get("videoshare_payer_id")).first()
     if not payer:
         return
 
     if kind == "tip":
-        channel = Channel.objects.filter(pk=meta.get("ytclone_channel_id")).first()
+        channel = Channel.objects.filter(pk=meta.get("videoshare_channel_id")).first()
         account = (
             CreatorMonetizationAccount.objects.filter(channel=channel, provider="stripe").first()
             if channel
             else None
         )
-        gross = int(meta.get("ytclone_gross_minor", 0) or 0)
-        fee = int(meta.get("ytclone_platform_fee_minor", 0) or 0)
+        gross = int(meta.get("videoshare_gross_minor", 0) or 0)
+        fee = int(meta.get("videoshare_platform_fee_minor", 0) or 0)
         if account and gross > 0:
             MonetizationTransaction.objects.get_or_create(
                 provider_event_id=event_id,
@@ -95,7 +95,7 @@ def handle_checkout_completed(event_id, session):
     if kind != "membership":
         return
     tier = MembershipTier.objects.select_related("monetization_account").filter(
-        pk=meta.get("ytclone_tier_id")
+        pk=meta.get("videoshare_tier_id")
     ).first()
     provider_subscription_id = str(field(session, "subscription", "") or "")
     if not tier or not provider_subscription_id:
@@ -154,8 +154,8 @@ def _subscription_for_invoice(invoice):
         return subscription
 
     meta = invoice_metadata(invoice)
-    tier_id = meta.get("ytclone_tier_id")
-    payer_id = meta.get("ytclone_payer_id")
+    tier_id = meta.get("videoshare_tier_id")
+    payer_id = meta.get("videoshare_payer_id")
     if not tier_id or not payer_id or not provider_subscription_id:
         return None
     tier = MembershipTier.objects.select_related("monetization_account").filter(pk=tier_id).first()

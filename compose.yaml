@@ -35,7 +35,7 @@ services:
       - .env
     environment:
       DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,testserver
-      DJANGO_DB_PATH: /tmp/ytclone-test.sqlite3
+      DJANGO_DB_PATH: /tmp/videoshare-test.sqlite3
       DJANGO_DEBUG: "true"
       DJANGO_SECURE_SSL_REDIRECT: "false"
       DJANGO_SESSION_COOKIE_SECURE: "false"

@@ -1,4 +1,4 @@
-"""Django settings for the ytclone project."""
+"""Django settings for the VideoShare project."""
 
 import os
 from pathlib import Path
@@ -62,7 +62,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "yt.urls"
+ROOT_URLCONF = "videoshare.urls"
 
 TEMPLATES = [
     {
@@ -83,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "yt.wsgi.application"
+WSGI_APPLICATION = "videoshare.wsgi.application"
 
 DATABASES = {
     "default": {

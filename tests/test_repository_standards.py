@@ -57,5 +57,24 @@ class RepositoryStandardsTests(unittest.TestCase):
                 badges.apply(root, write=False)
 
 
+    def test_repository_has_no_legacy_video_platform_branding(self):
+        forbidden = ("you" + "tube", "yt" + "clone", "drakeg/" + "yt" + "clone")
+        ignored_dirs = {".git", ".venv", "node_modules", "__pycache__"}
+        matches = []
+        for path in ROOT.rglob("*"):
+            if not path.is_file() or any(part in ignored_dirs for part in path.parts):
+                continue
+            try:
+                text = path.read_text(encoding="utf-8")
+            except (UnicodeDecodeError, OSError):
+                continue
+            lowered = text.lower()
+            for term in forbidden:
+                if term in lowered:
+                    matches.append(f"{path.relative_to(ROOT)}: {term}")
+        self.assertFalse(matches, "Legacy branding remains:\n" + "\n".join(matches))
+        self.assertFalse((ROOT / "yt").exists(), "Legacy top-level yt package must not exist")
+
+
 if __name__ == "__main__":
     unittest.main()
