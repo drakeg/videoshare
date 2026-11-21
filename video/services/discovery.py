@@ -61,6 +61,8 @@ def _personalized_sections(user, videos, limit):
     topic_filter = Q()
     if category_ids:
         topic_filter |= Q(category_id__in=category_ids)
+    if channel_ids:
+        topic_filter |= Q(channel_id__in=channel_ids)
     if tag_names:
         topic_filter |= Q(tags__name__in=tag_names)
     if hashtag_names:
