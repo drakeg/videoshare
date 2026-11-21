@@ -50,15 +50,19 @@ def _personalized_sections(user, videos, limit):
         .prefetch_related("tags", "hashtags")
     )
     category_counts = Counter(video.category_id for video in watched if video.category_id)
+    channel_counts = Counter(video.channel_id for video in watched if video.channel_id)
     tag_counts = Counter(tag.name for video in watched for tag in video.tags.all())
     hashtag_counts = Counter(tag.name for video in watched for tag in video.hashtags.all())
 
     category_ids = tuple(category_counts)
+    channel_ids = tuple(channel_counts)
     tag_names = tuple(tag_counts)
     hashtag_names = tuple(hashtag_counts)
     topic_filter = Q()
     if category_ids:
         topic_filter |= Q(category_id__in=category_ids)
+    if channel_ids:
+        topic_filter |= Q(channel_id__in=channel_ids)
     if tag_names:
         topic_filter |= Q(tags__name__in=tag_names)
     if hashtag_names:
@@ -72,14 +76,32 @@ def _personalized_sections(user, videos, limit):
             .annotate(
                 tag_overlap=Count("tags", filter=Q(tags__name__in=tag_names), distinct=True),
                 hashtag_overlap=Count("hashtags", filter=Q(hashtags__name__in=hashtag_names), distinct=True),
-                category_overlap=Case(
-                    When(category_id__in=category_ids, then=Value(1)),
+                category_affinity=Case(
+                    *[
+                        When(category_id=category_id, then=Value(count * 3))
+                        for category_id, count in category_counts.items()
+                    ],
+                    default=Value(0),
+                    output_field=IntegerField(),
+                ),
+                channel_affinity=Case(
+                    *[
+                        When(channel_id=channel_id, then=Value(count * 2))
+                        for channel_id, count in channel_counts.items()
+                    ],
                     default=Value(0),
                     output_field=IntegerField(),
                 ),
                 like_count=Count("likes", distinct=True),
             )
-            .annotate(topic_score=F("tag_overlap") + F("hashtag_overlap") + F("category_overlap"))
+            .annotate(
+                topic_score=(
+                    F("category_affinity")
+                    + F("channel_affinity")
+                    + F("tag_overlap") * Value(2)
+                    + F("hashtag_overlap") * Value(2)
+                )
+            )
             .order_by("-topic_score", "-like_count", "-views", "-pub_date", "-pk")[:limit]
         )
 
