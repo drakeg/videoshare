@@ -24,7 +24,7 @@ A Django-based video-sharing application being modernized into a secure, low-cos
 - Homepage discovery for new, viewed, liked, recently watched, and public playlist content
 - Paginated video browsing with category and upload-date filters
 - Category detail pages with scoped search, sorting, upload-date filters, and pagination
-- Personalized discovery with creator affinities, tags, and hashtags
+- Personalized discovery with weighted category, channel, tag, and hashtag affinities
 - A private, paginated subscriptions feed with channel filtering
 - Private playback progress with Continue Watching and automatic resume
 - Visibility-safe watch recommendations and optional autoplay-next controls
