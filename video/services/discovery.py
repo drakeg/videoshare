@@ -74,32 +74,34 @@ def _personalized_sections(user, videos, limit):
             videos.filter(topic_filter)
             .exclude(pk__in=watched_ids)
             .annotate(
-                tag_overlap=Count("tags", filter=Q(tags__name__in=tag_names), distinct=True),
-                hashtag_overlap=Count("hashtags", filter=Q(hashtags__name__in=hashtag_names), distinct=True),
                 category_affinity=Case(
                     *[
-                        When(category_id=category_id, then=Value(count * 3))
+                        When(category_id=category_id, then=count * 3)
                         for category_id, count in category_counts.items()
                     ],
-                    default=Value(0),
+                    default=0,
                     output_field=IntegerField(),
                 ),
                 channel_affinity=Case(
                     *[
-                        When(channel_id=channel_id, then=Value(count * 2))
+                        When(channel_id=channel_id, then=count * 2)
                         for channel_id, count in channel_counts.items()
                     ],
-                    default=Value(0),
+                    default=0,
                     output_field=IntegerField(),
                 ),
+            )
+            .annotate(
+                tag_overlap=Count("tags", filter=Q(tags__name__in=tag_names), distinct=True),
+                hashtag_overlap=Count("hashtags", filter=Q(hashtags__name__in=hashtag_names), distinct=True),
                 like_count=Count("likes", distinct=True),
             )
             .annotate(
                 topic_score=(
                     F("category_affinity")
                     + F("channel_affinity")
-                    + F("tag_overlap") * Value(2)
-                    + F("hashtag_overlap") * Value(2)
+                    + F("tag_overlap") * 2
+                    + F("hashtag_overlap") * 2
                 )
             )
             .order_by("-topic_score", "-like_count", "-views", "-pub_date", "-pk")[:limit]
