@@ -1,5 +1,6 @@
 from collections import Counter
 from dataclasses import dataclass
+from typing import Sequence
 
 from django.db.models import Case, Count, F, IntegerField, Max, Q, QuerySet, Value, When
 
@@ -9,6 +10,7 @@ from video.models import Playlist, Video
 DISCOVERY_SECTION_LIMIT = 4
 PERSONALIZATION_HISTORY_LIMIT = 20
 TOPIC_SIGNAL_LIMIT = 6
+RECOMMENDATION_CANDIDATE_LIMIT = 200
 
 
 @dataclass(frozen=True)
@@ -27,7 +29,7 @@ class DiscoverySections:
     recently_watched_videos: QuerySet
     continue_watching_videos: QuerySet
     followed_channel_videos: QuerySet
-    recommended_videos: QuerySet
+    recommended_videos: Sequence[Video]
     topic_signals: tuple[TopicSignal, ...]
     public_playlists: QuerySet
 
@@ -68,44 +70,37 @@ def _personalized_sections(user, videos, limit):
     if hashtag_names:
         topic_filter |= Q(hashtags__name__in=hashtag_names)
 
-    recommended = Video.objects.none()
+    recommended = ()
     if topic_filter:
-        recommended = (
+        candidates = list(
             videos.filter(topic_filter)
             .exclude(pk__in=watched_ids)
-            .annotate(
-                category_affinity=Case(
-                    *[
-                        When(category_id=category_id, then=count * 3)
-                        for category_id, count in category_counts.items()
-                    ],
-                    default=0,
-                    output_field=IntegerField(),
-                ),
-                channel_affinity=Case(
-                    *[
-                        When(channel_id=channel_id, then=count * 2)
-                        for channel_id, count in channel_counts.items()
-                    ],
-                    default=0,
-                    output_field=IntegerField(),
-                ),
-            )
-            .annotate(
-                tag_overlap=Count("tags", filter=Q(tags__name__in=tag_names), distinct=True),
-                hashtag_overlap=Count("hashtags", filter=Q(hashtags__name__in=hashtag_names), distinct=True),
-                like_count=Count("likes", distinct=True),
-            )
-            .annotate(
-                topic_score=(
-                    F("category_affinity")
-                    + F("channel_affinity")
-                    + F("tag_overlap") * 2
-                    + F("hashtag_overlap") * 2
-                )
-            )
-            .order_by("-topic_score", "-like_count", "-views", "-pub_date", "-pk")[:limit]
+            .annotate(like_count=Count("likes", distinct=True))
+            .prefetch_related("tags", "hashtags")
+            .order_by("-pub_date", "-pk")[:RECOMMENDATION_CANDIDATE_LIMIT]
         )
+
+        for candidate in candidates:
+            candidate_tag_names = {tag.name for tag in candidate.tags.all()}
+            candidate_hashtag_names = {tag.name for tag in candidate.hashtags.all()}
+            candidate.topic_score = (
+                category_counts.get(candidate.category_id, 0) * 3
+                + channel_counts.get(candidate.channel_id, 0) * 2
+                + len(candidate_tag_names.intersection(tag_names)) * 2
+                + len(candidate_hashtag_names.intersection(hashtag_names)) * 2
+            )
+
+        candidates.sort(
+            key=lambda candidate: (
+                candidate.topic_score,
+                candidate.like_count,
+                candidate.views,
+                candidate.pub_date,
+                candidate.pk,
+            ),
+            reverse=True,
+        )
+        recommended = tuple(candidates[:limit])
 
     signals = []
     for name, count in tag_counts.items():
