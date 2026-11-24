@@ -2,7 +2,7 @@ from collections import Counter
 from dataclasses import dataclass
 from typing import Sequence
 
-from django.db.models import Case, Count, F, IntegerField, Max, Q, QuerySet, Value, When
+from django.db.models import Count, F, Max, Q, QuerySet
 
 from video.models import Playlist, Video
 
