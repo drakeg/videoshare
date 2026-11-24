@@ -49,6 +49,36 @@ class PersonalizedDiscoveryTests(TestCase):
         self.assertNotIn(watched, list(sections.recommended_videos))
         self.assertNotIn(unrelated, list(sections.recommended_videos))
 
+    def test_repeated_category_history_ranks_stronger_affinity_first(self):
+        cooking = Category.objects.create(name="Cooking")
+        watched_one = self.video("watched-travel-one", category=self.category)
+        watched_two = self.video("watched-travel-two", category=self.category)
+        watched_cooking = self.video("watched-cooking", category=cooking)
+        stronger = self.video("stronger-travel", category=self.category)
+        weaker = self.video("weaker-cooking", category=cooking)
+        WatchHistory.objects.create(user=self.viewer, video=watched_one)
+        WatchHistory.objects.create(user=self.viewer, video=watched_two)
+        WatchHistory.objects.create(user=self.viewer, video=watched_cooking)
+
+        sections = get_discovery_sections(self.viewer)
+
+        recommendations = list(sections.recommended_videos)
+        self.assertLess(recommendations.index(stronger), recommendations.index(weaker))
+        scores = {video.pk: video.topic_score for video in recommendations}
+        self.assertGreater(scores[stronger.pk], scores[weaker.pk])
+
+    def test_watched_channel_affinity_can_recommend_same_channel_without_topic_metadata(self):
+        watched = self.video("watched-channel", channel=self.channel)
+        same_channel = self.video("same-channel", channel=self.channel)
+        unrelated = self.video("unrelated-no-metadata")
+        WatchHistory.objects.create(user=self.viewer, video=watched)
+
+        sections = get_discovery_sections(self.viewer)
+
+        recommendations = list(sections.recommended_videos)
+        self.assertIn(same_channel, recommendations)
+        self.assertNotIn(unrelated, recommendations)
+
     def test_other_users_history_does_not_personalize_viewer(self):
         watched = self.video("other-watched", category=self.category)
         candidate = self.video("other-candidate", category=self.category)

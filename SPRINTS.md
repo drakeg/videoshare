@@ -84,10 +84,17 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 
 **Delivered:** repository/runtime identity aligned to `drakeg/videoshare`, Django project package renamed to `videoshare`, legacy branding guardrails added, Docker/Terraform/badges updated.
 
-## Current sprint — Category detail filtering and pagination
+## Completed sprint — Category detail filtering and pagination
 
 **Goal:** Keep growing category collections usable with scoped search, sorting, upload-date filters, and pagination while preserving centralized visibility rules.
 
-**Delivered on current branch:** in-category search, newest/views/likes sorting, upload-date filters, 24-item pagination, filter-preserving navigation, regression coverage, and sprint documentation.
+**Delivered:** in-category search, newest/views/likes sorting, upload-date filters, 24-item pagination, filter-preserving navigation, regression coverage, and sprint documentation. Merged in PR #299.
 
 No live payment activation or paid infrastructure is required.
+
+
+## Current sprint — Discovery affinity ranking
+
+**Goal:** Improve personalized recommendations using explainable first-party viewing affinity while preserving visibility/privacy boundaries.
+
+**Delivered on current branch:** weighted category/channel affinity, explicit tag/hashtag weighting, deterministic tie-breakers, and regression coverage for stronger repeated interests and channel-based recommendations.
