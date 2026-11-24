@@ -13,6 +13,9 @@ def make_settings(**overrides):
         "SECRET_KEY": "a-unique-secret-key-that-is-long-enough-for-tests",
         "ALLOWED_HOSTS": ["localhost", "pilot.example.test"],
         "SITE_NAME": "Acme Training TV",
+        "SITE_TAGLINE": "Training that travels with your team.",
+        "HOME_HEADLINE": "Everything your crew needs to learn.",
+        "HOME_SUBTITLE": "Private, branded video training for field teams and managers.",
         "PRIVATE_PORTAL": False,
         "ALLOW_PUBLIC_REGISTRATION": True,
         "DEBUG": True,
@@ -74,6 +77,23 @@ class PilotPreflightServiceTests(SimpleTestCase):
         )
 
         self.assertEqual(self.statuses(results)["site-brand"], "WARN")
+
+    def test_default_homepage_messages_are_warning(self):
+        results = run_pilot_preflight(
+            make_settings(
+                SITE_TAGLINE="A calmer place to watch, share, and organize video.",
+                HOME_HEADLINE="Find your next favorite watch.",
+                HOME_SUBTITLE="Fresh uploads, hidden gems, and ideas worth sharing—all in one calmer corner of the internet.",
+            ),
+            profile="public",
+        )
+
+        self.assertEqual(self.statuses(results)["site-message"], "WARN")
+
+    def test_custom_homepage_messages_pass(self):
+        results = run_pilot_preflight(make_settings(), profile="public")
+
+        self.assertEqual(self.statuses(results)["site-message"], "PASS")
 
     def test_deployment_profile_requires_debug_and_https_cookie_hardening(self):
         results = run_pilot_preflight(
@@ -186,6 +206,9 @@ class PilotCheckCommandTests(SimpleTestCase):
         SECRET_KEY="a-unique-secret-key-that-is-long-enough-for-tests",
         ALLOWED_HOSTS=["pilot.example.test"],
         SITE_NAME="Acme Training TV",
+        SITE_TAGLINE="Training that travels with your team.",
+        HOME_HEADLINE="Everything your crew needs to learn.",
+        HOME_SUBTITLE="Private, branded video training for field teams and managers.",
         PRIVATE_PORTAL=True,
         ALLOW_PUBLIC_REGISTRATION=False,
         DEBUG=False,
