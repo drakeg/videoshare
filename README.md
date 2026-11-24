@@ -48,6 +48,7 @@ A Django-based video-sharing application being modernized into a secure, low-cos
 - Owner-managed, consent-based channel editor invitations for delegated uploads and video metadata changes
 - Original responsive interface with accessible navigation, polished video surfaces, and shared creator components
 - Automated rendered-HTML accessibility regression checks plus critical design-token contrast checks
+- Environment-driven white-label site name and homepage messaging for demos/pilots
 - Self-service registration, profile management, and creator-channel onboarding
 - Viewer and creator navigation tailored to each account's role
 - Optional upload categories and thumbnails with drag-and-drop file selection,
