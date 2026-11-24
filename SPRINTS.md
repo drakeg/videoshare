@@ -93,8 +93,15 @@ Completed historical sprint detail remains in `docs/roadmap.md`. This file is th
 No live payment activation or paid infrastructure is required.
 
 
-## Current sprint — Discovery affinity ranking
+## Completed sprint — Discovery affinity ranking
 
 **Goal:** Improve personalized recommendations using explainable first-party viewing affinity while preserving visibility/privacy boundaries.
 
-**Delivered on current branch:** weighted category/channel affinity, explicit tag/hashtag weighting, deterministic tie-breakers, and regression coverage for stronger repeated interests and channel-based recommendations.
+**Delivered:** weighted category/channel affinity, explicit tag/hashtag weighting, deterministic tie-breakers, and regression coverage for stronger repeated interests and channel-based recommendations. Merged in PR #300.
+
+
+## Current sprint — White-label homepage branding
+
+**Goal:** Let an SMB pilot present customer-specific homepage messaging without code changes.
+
+**Delivered on current branch:** environment-driven site tagline, homepage headline/subtitle, shared branding context, meta description branding, pilot-preflight validation, regression coverage, and operator documentation.
