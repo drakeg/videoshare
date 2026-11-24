@@ -4,9 +4,9 @@
 
 {% block content %}
     <header class="hero">
-        <p class="eyebrow">Made by the community</p>
-        <h1>Find your next favorite watch.</h1>
-        <p>Fresh uploads, hidden gems, and ideas worth sharing—all in one calmer corner of the internet.</p>
+        <p class="eyebrow">{{ site_tagline }}</p>
+        <h1>{{ home_headline }}</h1>
+        <p>{{ home_subtitle }}</p>
     </header>
 
     {% if user.is_authenticated %}
