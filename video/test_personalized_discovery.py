@@ -64,7 +64,8 @@ class PersonalizedDiscoveryTests(TestCase):
 
         recommendations = list(sections.recommended_videos)
         self.assertLess(recommendations.index(stronger), recommendations.index(weaker))
-        self.assertGreater(stronger.topic_score, weaker.topic_score)
+        scores = {video.pk: video.topic_score for video in recommendations}
+        self.assertGreater(scores[stronger.pk], scores[weaker.pk])
 
     def test_watched_channel_affinity_can_recommend_same_channel_without_topic_metadata(self):
         watched = self.video("watched-channel", channel=self.channel)
