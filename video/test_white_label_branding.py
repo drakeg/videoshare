@@ -1,8 +1,8 @@
-from django.test import SimpleTestCase, override_settings
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 
-class WhiteLabelBrandingTests(SimpleTestCase):
+class WhiteLabelBrandingTests(TestCase):
     @override_settings(
         SITE_NAME="Acme Training TV",
         SITE_TAGLINE="Training that travels with your team.",
