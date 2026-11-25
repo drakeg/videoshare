@@ -32,7 +32,12 @@ def unread_notifications(request):
 
 
 def site_branding(request):
-    return {"site_name": settings.SITE_NAME}
+    return {
+        "site_name": settings.SITE_NAME,
+        "site_tagline": settings.SITE_TAGLINE,
+        "home_headline": settings.HOME_HEADLINE,
+        "home_subtitle": settings.HOME_SUBTITLE,
+    }
 
 
 def registration_policy(request):

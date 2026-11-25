@@ -88,6 +88,34 @@ def run_pilot_preflight(settings_obj, *, profile="public", deployment=False):
             )
         )
 
+    default_brand_copy = {
+        "SITE_TAGLINE": "A calmer place to watch, share, and organize video.",
+        "HOME_HEADLINE": "Find your next favorite watch.",
+        "HOME_SUBTITLE": "Fresh uploads, hidden gems, and ideas worth sharing—all in one calmer corner of the internet.",
+    }
+    brand_copy = {
+        name: str(getattr(settings_obj, name, default) or "").strip()
+        for name, default in default_brand_copy.items()
+    }
+    if any(not value or value == default_brand_copy[name] for name, value in brand_copy.items()):
+        results.append(
+            _result(
+                "WARN",
+                "site-message",
+                "One or more customer-facing homepage messages still use VideoShare defaults.",
+                "Set DJANGO_SITE_TAGLINE, DJANGO_HOME_HEADLINE, and DJANGO_HOME_SUBTITLE for a customer-branded demo.",
+            )
+        )
+    else:
+        results.append(
+            _result(
+                "PASS",
+                "site-message",
+                "Customer-facing homepage messaging is customized.",
+                "Confirm the tagline and homepage copy with the pilot customer before launch.",
+            )
+        )
+
     private_portal = bool(getattr(settings_obj, "PRIVATE_PORTAL", False))
     public_registration = bool(getattr(settings_obj, "ALLOW_PUBLIC_REGISTRATION", True))
 
