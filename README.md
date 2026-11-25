@@ -1,5 +1,8 @@
 # VideoShare
 
+[![License](https://img.shields.io/github/license/drakeg/videoshare)](https://github.com/drakeg/videoshare/blob/main/LICENSE)
+
+
 <!-- madmallard-badges:start -->
 ![Python](https://img.shields.io/badge/Python-3.15-3776AB?logo=python&logoColor=white) ![Django](https://img.shields.io/badge/Django-6.1.3-092E20?logo=django&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white) ![Docker Compose](https://img.shields.io/badge/Docker%20Compose-2496ED?logo=docker&logoColor=white) ![Terraform](https://img.shields.io/badge/Terraform-1.17.2-844FBA?logo=terraform&logoColor=white) ![AWS target](https://img.shields.io/badge/AWS%20target-232F3E?logo=amazonwebservices&logoColor=white)
 
