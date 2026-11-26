@@ -41,4 +41,7 @@ def site_branding(request):
 
 
 def registration_policy(request):
-    return {"public_registration_enabled": settings.ALLOW_PUBLIC_REGISTRATION}
+    return {
+        "public_registration_enabled": settings.ALLOW_PUBLIC_REGISTRATION,
+        "private_portal_enabled": settings.PRIVATE_PORTAL,
+    }
