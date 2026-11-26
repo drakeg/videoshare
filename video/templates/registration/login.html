@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% block title %}Log in · {{ site_name }}{% endblock %}
+{% block title %}Log in · {{ brand_site_name }}{% endblock %}
 {% block content %}
-<header class="page-header"><div><p class="eyebrow">Welcome back</p><h1>Log in</h1>{% if private_portal_enabled %}<p>Sign in to access {{ site_name }}.</p><p>{{ site_tagline }}</p>{% else %}<p>Continue watching, creating, and collecting.</p>{% endif %}</div></header>
+<header class="page-header"><div><p class="eyebrow">Welcome back</p><h1>Log in</h1>{% if private_portal_enabled %}<p>Sign in to access {{ brand_site_name }}.</p><p>{{ site_tagline }}</p>{% else %}<p>Continue watching, creating, and collecting.</p>{% endif %}</div></header>
 <div class="form-panel">
 {% if form.errors %}<div class="alert alert-danger">Your username and password didn't match. Please try again.</div>{% endif %}
 {% if next %}{% if user.is_authenticated %}<p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>{% else %}<p>Please log in to see this page.</p>{% endif %}{% endif %}
