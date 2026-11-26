@@ -76,3 +76,8 @@ docker compose run --rm --entrypoint python test manage.py test video.test_acces
 ```
 
 This automated baseline is intentionally scoped. Passing it does not claim WCAG conformance and does not replace periodic keyboard, browser, screen-reader, zoom/reflow, or other assistive-technology testing.
+
+
+## Editorial refresh
+
+See `docs/editorial-visual-refresh.md` for the new visual direction and outstanding verification. Historical verification above applies to the earlier design, not the refresh.
