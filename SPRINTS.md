@@ -100,13 +100,21 @@ No live payment activation or paid infrastructure is required.
 **Delivered:** weighted category/channel affinity, explicit tag/hashtag weighting, deterministic tie-breakers, and regression coverage for stronger repeated interests and channel-based recommendations. Merged in PR #300.
 
 
-## Current sprint — White-label homepage branding
+## Completed sprint — White-label homepage branding
 
 **Goal:** Let an SMB pilot present customer-specific homepage messaging without code changes.
 
-**Delivered on current branch:** environment-driven site tagline, homepage headline/subtitle, shared branding context, meta description branding, pilot-preflight validation, regression coverage, and operator documentation.
+**Delivered in PR #301:** environment-driven site tagline, homepage headline/subtitle, shared branding context, meta description branding, pilot-preflight validation, regression coverage, and operator documentation.
 
 
-## Visual refresh sprint — Editorial media library
+## Completed sprint — Private portal sign-in experience
+
+**Goal:** Present customer branding at sign-in and hide inaccessible discovery navigation for anonymous private-portal visitors.
+
+**Acceptance:** Public and authenticated navigation remain unchanged; password recovery and registration policy remain available; focused regression tests and full CI pass before closure.
+
+**Verification:** Merged in PR #303 after Django and repository standards passed.
+
+## Current sprint — Editorial media library visual refresh
 
 **Scope:** Shared shell, navigation, discovery hero/cards, playback surfaces, focus and responsive refinements. See `docs/editorial-visual-refresh.md`. CI and visual checks pending.

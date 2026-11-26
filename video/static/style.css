@@ -13,9 +13,8 @@
     --danger: #b4233c;
     --shadow-sm: 0 2px 12px rgba(23, 21, 31, .06);
     --shadow-lg: 0 18px 50px rgba(23, 21, 31, .12);
-    --radius: 1rem;
     --radius-sm: .75rem;
-    --radius: 1.15rem;
+    --radius: 1rem;
     --radius-lg: 1.75rem;
     --rail: 14.25rem;
     --header: 4.5rem;

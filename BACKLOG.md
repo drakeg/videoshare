@@ -8,8 +8,8 @@
 | P0 | SMB pilot deployment preflight | Reduce setup mistakes and customer-demo risk | Delivered in PR #286 |
 | P1 | Choose and add an explicit open-source license | Public source without a license does not grant normal reuse rights; license choice requires owner authorization | Owner decision required |
 | P1 | Validate SMB buyer/problem interviews | Avoid building commercialization features without demand evidence | Planned |
-| P1 | Branded portal/demo gaps identified by pilot audit | Strengthen value versus generic public video hosting | White-label homepage messaging implemented on current PR; further branding gaps remain |
-| P1 | Privacy/access workflow gaps identified by pilot audit | SMB training/client content often needs controlled access | Private portal + registration control delivered; further discovery required |
+| P1 | Branded portal/demo gaps identified by pilot audit | Strengthen value versus generic public video hosting | White-label homepage messaging delivered in PR #301 |
+| P1 | Privacy/access workflow gaps identified by pilot audit | SMB training/client content often needs controlled access | Private portal + registration control delivered; branded sign-in and anonymous navigation delivered in PR #303 |
 | P0 | Closed-pilot operator account provisioning workflow | Reduce admin/support friction when public registration is disabled | Delivered in PR #290 |
 | P0 | Existing pilot user setup-link recovery | Let staff recover onboarding/reset without Django admin or public signup | Delivered in PR #291 |
 | P0 | Bulk pilot user CSV import | Reduce repetitive onboarding work for multi-user SMB pilots | Delivered in PR #292 |
@@ -22,7 +22,6 @@
 | P0 | Accessibility regression checks for key workflows | Reduces product and customer risk | Delivered in PR #287 |
 | P2 | Category detail filtering/pagination | Useful scale improvement but lower commercial urgency | Delivered in PR #299 |
 | P2 | Additional discovery/recommendation ranking | Useful engagement work after pilot requirements are clearer | Delivered in PR #300 |
-
 | P1 | Editorial visual refresh | Improve viewing hierarchy, mobile navigation and customer demo quality | Implementation awaiting CI and visual QA |
 
 ## Prioritization rules
