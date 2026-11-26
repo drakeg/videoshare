@@ -105,3 +105,8 @@ No live payment activation or paid infrastructure is required.
 **Goal:** Let an SMB pilot present customer-specific homepage messaging without code changes.
 
 **Delivered on current branch:** environment-driven site tagline, homepage headline/subtitle, shared branding context, meta description branding, pilot-preflight validation, regression coverage, and operator documentation.
+
+
+## Visual refresh sprint — Editorial media library
+
+**Scope:** Shared shell, navigation, discovery hero/cards, playback surfaces, focus and responsive refinements. See `docs/editorial-visual-refresh.md`. CI and visual checks pending.
