@@ -115,6 +115,11 @@ No live payment activation or paid infrastructure is required.
 
 **Verification:** Merged in PR #303 after Django and repository standards passed.
 
-## Current sprint — Editorial media library visual refresh
+## Completed sprint — Editorial media library visual refresh
 
-**Scope:** Shared shell, navigation, discovery hero/cards, playback surfaces, focus and responsive refinements. See `docs/editorial-visual-refresh.md`. CI and visual checks pending.
+**Scope:** Shared shell, navigation, discovery hero/cards, playback surfaces, focus and responsive refinements. See `docs/editorial-visual-refresh.md`. Merged in PR #304 after Django and repository standards passed; manual visual QA pending.
+
+
+## Current sprint — Watch-next topic relevance
+
+Prioritize shared tags and hashtags before category/channel fallback; preserve visibility, deterministic newest-first ordering within each tier, and the eight-video limit. Regression coverage added; CI pending.
