@@ -34,6 +34,7 @@ def unread_notifications(request):
 def site_branding(request):
     return {
         "site_name": settings.SITE_NAME,
+        "brand_site_name": settings.SITE_NAME,
         "site_tagline": settings.SITE_TAGLINE,
         "home_headline": settings.HOME_HEADLINE,
         "home_subtitle": settings.HOME_SUBTITLE,
