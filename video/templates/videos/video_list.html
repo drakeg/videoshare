@@ -7,6 +7,10 @@
         <p class="eyebrow">{{ site_tagline }}</p>
         <h1>{{ home_headline }}</h1>
         <p>{{ home_subtitle }}</p>
+        <div class="hero-actions">
+            <a class="button" href="{% url 'video_browse' %}">Browse videos</a>
+            <a class="button hero-secondary" href="{% url 'category_list' %}">Explore categories</a>
+        </div>
     </header>
 
     {% if user.is_authenticated %}
