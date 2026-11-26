@@ -23,6 +23,8 @@
 | P2 | Category detail filtering/pagination | Useful scale improvement but lower commercial urgency | Delivered in PR #299 |
 | P2 | Additional discovery/recommendation ranking | Useful engagement work after pilot requirements are clearer | Delivered in PR #300 |
 
+| P1 | Editorial visual refresh | Improve viewing hierarchy, mobile navigation and customer demo quality | Implementation awaiting CI and visual QA |
+
 ## Prioritization rules
 
 P0 defects and broken CI/build/deployment take precedence. Otherwise prioritize work that improves a credible SMB demo, reduces customer setup/support cost, or validates willingness to pay. Do not report market validation until actual customer evidence exists.
