@@ -5,6 +5,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
+from .metadata_models import Hashtag, Tag
 from .models import Category, Channel, Video
 from .shorts_models import VideoShort
 from .services.recommendations import WATCH_RECOMMENDATION_LIMIT, watch_recommendations
@@ -75,3 +76,32 @@ class WatchRecommendationTests(TestCase):
         self.assertContains(response, "Watch next")
         self.assertContains(response, candidate.title)
         self.assertContains(response, reverse("video_detail", args=[candidate.pk]))
+
+    def test_shared_topics_rank_before_category_and_channel_without_duplicates(self):
+        tag = Tag.objects.create(name="camping")
+        extra = Tag.objects.create(name="outdoors")
+        hashtag = Hashtag.objects.create(name="roadtrip")
+        self.current.tags.add(tag, extra)
+        self.current.hashtags.add(hashtag)
+        both = self.video("Both topics", channel=self.other_channel)
+        both.tags.add(tag, extra)
+        both.hashtags.add(hashtag)
+        tag_only = self.video("Tag only", channel=self.other_channel)
+        tag_only.tags.add(tag)
+        category_only = self.video("Category only", channel=self.other_channel, category=self.category)
+        hidden = self.video("Hidden topics", channel=self.other_channel, status=Video.PublicationStatus.DRAFT)
+        hidden.tags.add(tag)
+        hidden.hashtags.add(hashtag)
+        results = list(watch_recommendations(self.current, AnonymousUser()))
+        self.assertEqual(results, [both, tag_only, category_only])
+
+    def test_hashtag_only_matches_are_recommended(self):
+        hashtag = Hashtag.objects.create(name="training")
+        self.current.hashtags.add(hashtag)
+        related = self.video("Related hashtag", channel=self.other_channel)
+        related.hashtags.add(hashtag)
+        same_channel = self.video("Same channel fallback")
+        self.assertEqual(
+            list(watch_recommendations(self.current, AnonymousUser())),
+            [related, same_channel],
+        )
