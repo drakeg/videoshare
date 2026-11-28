@@ -130,6 +130,11 @@ Prioritize shared tags and hashtags before category/channel fallback; preserve v
 **Goal:** Unify library, analytics and comment moderation navigation, surface filtered counts and thumbnails, and improve accessible filter controls. Preserve existing search, pagination, authorization and bulk actions. Merged in PR #306; Django and repository standards passed; manual visual checks pending.
 
 
-## Current sprint — Extended creator workspace
+## Completed sprint — Extended creator workspace
 
-Centralize permission-aware creator navigation, extend it to audience, trash, upload and editing, improve audience heading/table semantics and trash result counts. Preserve existing authorization and media forms. CI and visual QA pending.
+Centralize permission-aware creator navigation, extend it to audience, trash, upload and editing, improve audience heading/table semantics and trash result counts. Preserve existing authorization and media forms. Merged in PR #307; Django and repository standards passed; visual QA pending.
+
+
+## Current sprint — Customer branding assets
+
+Optional local static customer logo and favicon settings, safe path validation, default identity fallback, operator instructions and rendering regression tests. See `docs/customer-brand-assets.md`. CI and manual visual QA pending.
