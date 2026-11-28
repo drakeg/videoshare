@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#17151f">
     <meta name="description" content="{{ site_tagline }}">
-    <link rel="icon" href="{% static 'video/favicon.svg' %}" type="image/svg+xml">
+    {% if brand_favicon %}<link rel="icon" href="{% static brand_favicon %}">{% else %}<link rel="icon" href="{% static 'video/favicon.svg' %}" type="image/svg+xml">{% endif %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'style.css' %}">
     {% if request.resolver_match.url_name == 'shorts_feed' %}<link rel="stylesheet" href="{% static 'video/shorts.css' %}">{% endif %}
@@ -19,7 +19,7 @@
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
         <div class="header-inner{% if private_portal_enabled and not user.is_authenticated %} auth-header{% endif %}">
-            <a class="brand" href="{% url 'video_list' %}" aria-label="{{ brand_site_name }} home"><span class="brand-mark" aria-hidden="true"><span></span></span><span>{{ brand_site_name }}</span></a>
+            <a class="brand" href="{% url 'video_list' %}" aria-label="{{ brand_site_name }} home">{% if brand_logo %}<img class="brand-logo" src="{% static brand_logo %}" alt="" width="40" height="40">{% else %}<span class="brand-mark" aria-hidden="true"><span></span></span>{% endif %}<span>{{ brand_site_name }}</span></a>
             {% if not private_portal_enabled or user.is_authenticated %}<form class="header-search" role="search" method="get" action="{% url 'search' %}">
                 <label class="visually-hidden" for="site-search">Search videos, channels, and playlists</label>
                 <input id="site-search" type="search" placeholder="Search {{ brand_site_name }}" name="query" value="{{ request.GET.query }}" list="site-search-suggestions" data-search-suggestions="{% url 'search_suggestions' %}">
