@@ -8,11 +8,7 @@
         </div><form method="get" class="creator-range"><label for="analytics-range">Time range</label><select id="analytics-range" name="range"><option value="lifetime"{% if selected_range == 'lifetime' %} selected{% endif %}>Lifetime</option><option value="28d"{% if selected_range == '28d' %} selected{% endif %}>Last 28 days</option></select><button type="submit" class="btn btn-outline-primary">Apply</button></form>
     </header>
 
-    <nav class="creator-workspace-nav" aria-label="Creator workspace">
-        <a href="{% url 'creator_video_list' %}">Library</a>
-        <a href="{% url 'creator_analytics' %}" aria-current="page">Analytics</a>
-        <a href="{% url 'creator_comment_list' %}">Comments</a>
-    </nav>
+    {% include 'videos/_creator_workspace_nav.html' %}
     <section aria-labelledby="summary-heading">
         <h2 id="summary-heading" class="visually-hidden">Summary</h2>
         <div class="row g-3 mb-5">
