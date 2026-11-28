@@ -312,3 +312,5 @@ body { font-size: 15px; }
 .creator-range select { width: auto; }
 .metric-card { border-top: 3px solid var(--accent-deep); }
 @media (max-width: 760px) { .creator-header > div:last-child { flex-wrap: wrap; } .creator-media { min-width: 12rem; } .creator-media img { width: 72px; height: 41px; } }
+
+.brand-logo { width: 2.5rem; height: 2.5rem; object-fit: contain; flex-shrink: 0; }
