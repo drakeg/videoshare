@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+<div class="creator-workspace">
+    <header class="page-header creator-header">
         <div>
+            <p class="eyebrow">Creator Studio / Library</p>
             <h1 class="mb-1">My Videos</h1>
             <p class="text-muted mb-0">Review and manage videos, Shorts, publication states, audience, and release timing.</p>
         </div>
@@ -11,9 +12,15 @@
             <a class="btn btn-outline-secondary" href="{% url 'creator_video_trash' %}">Trash</a>
             <a class="btn btn-primary" href="{% url 'upload' %}">Upload video or Short</a>
         </div>
-    </div>
+    </header>
 
-    <form class="row g-2 align-items-end mb-3" method="get" action="{% url 'creator_video_list' %}">
+    <nav class="creator-workspace-nav" aria-label="Creator workspace">
+        <a href="{% url 'creator_video_list' %}" aria-current="page">Library</a>
+        <a href="{% url 'creator_analytics' %}">Analytics</a>
+        <a href="{% url 'creator_comment_list' %}">Comments</a>
+    </nav>
+
+    <form class="row g-2 align-items-end mb-3 creator-search-panel" method="get" action="{% url 'creator_video_list' %}">
         <input type="hidden" name="status" value="{{ selected_status }}">
         <div class="col-sm-8 col-lg-6">
             <label class="form-label" for="creator-video-search">Search videos</label>
@@ -35,6 +42,7 @@
         {% endfor %}
     </nav>
 
+    <p class="creator-result-count" role="status">{{ videos_page.paginator.count }} matching video{{ videos_page.paginator.count|pluralize }}</p>
     {% if videos %}
         <form method="post" action="{% url 'creator_video_bulk_publication' %}">
             {% csrf_token %}
@@ -53,7 +61,7 @@
                 <span class="text-muted">Scheduling and early access require editing a video individually.</span>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive creator-library-table">
                 <table class="table align-middle">
                     <thead>
                         <tr>
@@ -72,10 +80,10 @@
                         {% for video in videos %}
                             <tr>
                                 <td><input class="form-check-input" type="checkbox" name="video_ids" value="{{ video.pk }}" aria-label="Select {{ video.title }}"></td>
-                                <td><a href="{% url 'video_detail' video.pk %}">{{ video.title }}</a>{% if video.is_early_access %}<div><span class="badge text-bg-primary">Early access</span></div>{% endif %}</td>
+                                <td><div class="creator-media">{% if video.thumbnail %}<img src="{{ video.thumbnail.url }}" alt="" loading="lazy" width="96" height="54">{% endif %}<div><a href="{% url 'video_detail' video.pk %}">{{ video.title }}</a></div></div>{% if video.is_early_access %}<div><span class="badge text-bg-primary">Early access</span></div>{% endif %}</td>
                                 <td>{% if video.is_short %}<span class="badge text-bg-dark">Short</span>{% else %}Video{% endif %}</td>
                                 <td>{{ video.channel|default:"No channel" }}</td>
-                                <td>{{ video.get_publication_status_display }}</td>
+                                <td><span class="publication-chip publication-{{ video.publication_status }}">{{ video.get_publication_status_display }}</span></td>
                                 <td>{{ video.get_audience_display }}</td>
                                 <td>{{ video.publish_at|default:"—" }}</td>
                                 <td>{{ video.public_release_at|default:"—" }}</td>

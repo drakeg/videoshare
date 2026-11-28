@@ -248,3 +248,12 @@ class CreatorVideoSearchTests(TestCase):
             self.title_match.publication_status,
             Video.PublicationStatus.DRAFT,
         )
+
+    def test_creator_workspace_shows_filtered_count_and_navigation(self):
+        response = self.client.get(reverse("creator_video_list"), {"query": "alabama"})
+        self.assertContains(response, "1 matching video")
+        self.assertContains(response, 'aria-label="Creator workspace"')
+        self.assertContains(response, reverse("creator_analytics"))
+        self.assertContains(response, reverse("creator_comment_list"))
+        self.assertContains(response, 'class="creator-media"')
+        self.assertContains(response, "publication-published")
