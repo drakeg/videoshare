@@ -120,6 +120,11 @@ No live payment activation or paid infrastructure is required.
 **Scope:** Shared shell, navigation, discovery hero/cards, playback surfaces, focus and responsive refinements. See `docs/editorial-visual-refresh.md`. Merged in PR #304 after Django and repository standards passed; manual visual QA pending.
 
 
-## Current sprint — Watch-next topic relevance
+## Completed sprint — Watch-next topic relevance
 
-Prioritize shared tags and hashtags before category/channel fallback; preserve visibility, deterministic newest-first ordering within each tier, and the eight-video limit. Regression coverage added; CI pending.
+Prioritize shared tags and hashtags before category/channel fallback; preserve visibility, deterministic newest-first ordering within each tier, and the eight-video limit. Merged in PR #305; Django and repository standards passed.
+
+
+## Current sprint — Creator workspace refresh
+
+**Goal:** Unify library, analytics and comment moderation navigation, surface filtered counts and thumbnails, and improve accessible filter controls. Preserve existing search, pagination, authorization and bulk actions. Regression tests added; CI and manual visual checks pending.
