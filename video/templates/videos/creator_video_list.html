@@ -14,11 +14,7 @@
         </div>
     </header>
 
-    <nav class="creator-workspace-nav" aria-label="Creator workspace">
-        <a href="{% url 'creator_video_list' %}" aria-current="page">Library</a>
-        <a href="{% url 'creator_analytics' %}">Analytics</a>
-        <a href="{% url 'creator_comment_list' %}">Comments</a>
-    </nav>
+    {% include 'videos/_creator_workspace_nav.html' %}
 
     <form class="row g-2 align-items-end mb-3 creator-search-panel" method="get" action="{% url 'creator_video_list' %}">
         <input type="hidden" name="status" value="{{ selected_status }}">
