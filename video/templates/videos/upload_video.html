@@ -3,6 +3,7 @@
 {% block title %}Upload · {{ site_name }}{% endblock %}
 {% block content %}
 <header class="page-header"><div><p class="eyebrow">Creator studio</p><h1>Upload video or Short</h1><p>Choose Standard video or Short, then select the channel, media, visibility, and thumbnail for your next release.</p></div></header>
+{% if is_creator %}{% include 'videos/_creator_workspace_nav.html' %}{% endif %}
 {% if form.channel.field.queryset %}
 <form class="form-panel" method="post" enctype="multipart/form-data">{% csrf_token %}
     <div id="video-drop-zone" class="card mb-4" style="border-style: dashed;">
