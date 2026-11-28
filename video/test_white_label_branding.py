@@ -33,3 +33,25 @@ class WhiteLabelBrandingTests(TestCase):
         self.assertEqual(response.context["site_tagline"], "Customer portal")
         self.assertEqual(response.context["home_headline"], "Customer videos")
         self.assertEqual(response.context["home_subtitle"], "A customer-specific video library.")
+
+    @override_settings(SITE_LOGO="branding/acme/logo.png", SITE_FAVICON="branding/acme/icon.ico")
+    def test_custom_assets_render_on_home_and_login(self):
+        for route in ("video_list", "login"):
+            with self.subTest(route=route):
+                response = self.client.get(reverse(route))
+                self.assertContains(response, "/static/branding/acme/logo.png")
+                self.assertContains(response, "/static/branding/acme/icon.ico")
+                self.assertContains(response, 'class="brand-logo"')
+
+    @override_settings(SITE_LOGO="https://example.com/logo.png", SITE_FAVICON="branding/../icon.ico")
+    def test_unsafe_assets_fall_back_to_defaults(self):
+        response = self.client.get(reverse("video_list"))
+        self.assertNotContains(response, "https://example.com/logo.png")
+        self.assertContains(response, "/static/video/favicon.svg")
+        self.assertContains(response, 'class="brand-mark"')
+
+    @override_settings(SITE_LOGO="", SITE_FAVICON="")
+    def test_default_assets_are_preserved(self):
+        response = self.client.get(reverse("video_list"))
+        self.assertContains(response, "/static/video/favicon.svg")
+        self.assertContains(response, 'class="brand-mark"')
