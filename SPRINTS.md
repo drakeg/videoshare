@@ -125,6 +125,11 @@ No live payment activation or paid infrastructure is required.
 Prioritize shared tags and hashtags before category/channel fallback; preserve visibility, deterministic newest-first ordering within each tier, and the eight-video limit. Merged in PR #305; Django and repository standards passed.
 
 
-## Current sprint — Creator workspace refresh
+## Completed sprint — Creator workspace refresh
 
-**Goal:** Unify library, analytics and comment moderation navigation, surface filtered counts and thumbnails, and improve accessible filter controls. Preserve existing search, pagination, authorization and bulk actions. Regression tests added; CI and manual visual checks pending.
+**Goal:** Unify library, analytics and comment moderation navigation, surface filtered counts and thumbnails, and improve accessible filter controls. Preserve existing search, pagination, authorization and bulk actions. Merged in PR #306; Django and repository standards passed; manual visual checks pending.
+
+
+## Current sprint — Extended creator workspace
+
+Centralize permission-aware creator navigation, extend it to audience, trash, upload and editing, improve audience heading/table semantics and trash result counts. Preserve existing authorization and media forms. CI and visual QA pending.
