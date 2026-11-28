@@ -2,6 +2,7 @@ from django.conf import settings
 from django.utils import timezone
 
 from .models import Channel
+from .services.branding import brand_image_path
 from .services.channels import accessible_channels
 from .services.notifications import deliver_due_scheduled_upload_notifications
 
@@ -35,6 +36,8 @@ def site_branding(request):
     return {
         "site_name": settings.SITE_NAME,
         "brand_site_name": settings.SITE_NAME,
+        "brand_logo": brand_image_path(settings.SITE_LOGO),
+        "brand_favicon": brand_image_path(settings.SITE_FAVICON),
         "site_tagline": settings.SITE_TAGLINE,
         "home_headline": settings.HOME_HEADLINE,
         "home_subtitle": settings.HOME_SUBTITLE,
