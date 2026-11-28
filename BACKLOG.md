@@ -23,8 +23,8 @@
 | P2 | Category detail filtering/pagination | Useful scale improvement but lower commercial urgency | Delivered in PR #299 |
 | P2 | Additional discovery/recommendation ranking | Useful engagement work after pilot requirements are clearer | Delivered in PR #300 |
 | P1 | Editorial visual refresh | Improve viewing hierarchy, mobile navigation and customer demo quality | Delivered in PR #304; manual visual QA pending |
-
-| P2 | Watch-next topic relevance | Improve related-video discovery across channels | Implementation awaiting CI |
+| P2 | Watch-next topic relevance | Improve related-video discovery across channels | Delivered in PR #305 |
+| P1 | Creator workspace refresh | Reduce creator navigation and library scanning friction | Awaiting CI and visual QA |
 
 ## Prioritization rules
 
