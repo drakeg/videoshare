@@ -257,3 +257,15 @@ class CreatorVideoSearchTests(TestCase):
         self.assertContains(response, reverse("creator_comment_list"))
         self.assertContains(response, 'class="creator-media"')
         self.assertContains(response, "publication-published")
+
+    def test_creator_workspace_links_remaining_management_pages(self):
+        response = self.client.get(reverse("creator_video_list"))
+        self.assertContains(response, reverse("creator_audience"))
+        self.assertContains(response, reverse("creator_video_trash"))
+        self.assertContains(response, reverse("upload"))
+        self.assertContains(response, 'aria-current="page">Library</a>')
+
+    def test_trash_workspace_shows_active_navigation(self):
+        response = self.client.get(reverse("creator_video_trash"))
+        self.assertContains(response, 'aria-current="page">Trash</a>')
+        self.assertContains(response, "1 matching video")

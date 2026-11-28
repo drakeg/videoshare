@@ -7,11 +7,7 @@
         <h1 class="mb-1">Comment Moderation</h1>
         <p class="text-muted mb-0">Review comments on your active videos. Hidden comments can be restored.</p>
     </div></header>
-    <nav class="creator-workspace-nav" aria-label="Creator workspace">
-        <a href="{% url 'creator_video_list' %}">Library</a>
-        <a href="{% url 'creator_analytics' %}">Analytics</a>
-        <a href="{% url 'creator_comment_list' %}" aria-current="page">Comments</a>
-    </nav>
+    {% include 'videos/_creator_workspace_nav.html' %}
 
     <form class="row g-2 align-items-end mb-3 creator-search-panel" method="get" action="{% url 'creator_comment_list' %}">
         <input type="hidden" name="status" value="{{ selected_filter }}">

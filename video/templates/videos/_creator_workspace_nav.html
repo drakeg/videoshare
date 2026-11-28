@@ -1,0 +1,8 @@
+<nav class="creator-workspace-nav" aria-label="Creator workspace">
+    <a href="{% url 'creator_video_list' %}"{% if request.resolver_match.url_name == 'creator_video_list' %} aria-current="page"{% endif %}>Library</a>
+    <a href="{% url 'creator_analytics' %}"{% if request.resolver_match.url_name == 'creator_analytics' %} aria-current="page"{% endif %}>Analytics</a>
+    <a href="{% url 'creator_comment_list' %}"{% if request.resolver_match.url_name == 'creator_comment_list' %} aria-current="page"{% endif %}>Comments</a>
+    {% if owns_channel %}<a href="{% url 'creator_audience' %}"{% if request.resolver_match.url_name == 'creator_audience' %} aria-current="page"{% endif %}>Audience</a>{% endif %}
+    <a href="{% url 'creator_video_trash' %}"{% if request.resolver_match.url_name == 'creator_video_trash' %} aria-current="page"{% endif %}>Trash</a>
+    <a href="{% url 'upload' %}"{% if request.resolver_match.url_name == 'upload' %} aria-current="page"{% endif %}>Upload</a>
+</nav>

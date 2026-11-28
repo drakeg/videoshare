@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+<div class="creator-workspace">
+    <header class="page-header creator-header">
         <div>
-            <h1 class="mb-1">Video Trash</h1>
+            <p class="eyebrow">Creator Studio / Recovery</p><h1 class="mb-1">Video Trash</h1>
             <p class="text-muted mb-0">Videos remain recoverable for at least 30 days. Restored videos return as drafts.</p>
         </div>
         <a class="btn btn-outline-secondary" href="{% url 'creator_video_list' %}">Back to My Videos</a>
-    </div>
+    </header>
+    {% include 'videos/_creator_workspace_nav.html' %}
 
-    <form class="row g-2 align-items-end mb-3" method="get" action="{% url 'creator_video_trash' %}">
+    <form class="row g-2 align-items-end mb-3 creator-search-panel" method="get" action="{% url 'creator_video_trash' %}">
         <div class="col-sm-8 col-lg-6">
             <label class="form-label" for="video-trash-search">Search trash</label>
             <input class="form-control" id="video-trash-search" type="search" name="query" value="{{ selected_query }}" placeholder="Title, description, channel, or category">
@@ -25,6 +26,7 @@
         {% endif %}
     </form>
 
+    <p class="creator-result-count" role="status">{{ videos_page.paginator.count }} matching video{{ videos_page.paginator.count|pluralize }}</p>
     {% if videos %}
         <div class="table-responsive">
             <table class="table align-middle">
