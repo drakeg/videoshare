@@ -1,13 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="mb-4">
+<div class="creator-workspace">
+    <header class="page-header creator-header"><div>
+        <p class="eyebrow">Creator Studio / Community</p>
         <h1 class="mb-1">Comment Moderation</h1>
         <p class="text-muted mb-0">Review comments on your active videos. Hidden comments can be restored.</p>
-    </div>
+    </div></header>
+    <nav class="creator-workspace-nav" aria-label="Creator workspace">
+        <a href="{% url 'creator_video_list' %}">Library</a>
+        <a href="{% url 'creator_analytics' %}">Analytics</a>
+        <a href="{% url 'creator_comment_list' %}" aria-current="page">Comments</a>
+    </nav>
 
-    <form class="row g-2 align-items-end mb-3" method="get" action="{% url 'creator_comment_list' %}">
+    <form class="row g-2 align-items-end mb-3 creator-search-panel" method="get" action="{% url 'creator_comment_list' %}">
         <input type="hidden" name="status" value="{{ selected_filter }}">
         <div class="col-sm-8 col-lg-6">
             <label class="form-label" for="moderation-search">Search comments</label>
@@ -29,6 +35,7 @@
         {% endfor %}
     </nav>
 
+    <p class="creator-result-count" role="status">{{ comments_page.paginator.count }} matching comment{{ comments_page.paginator.count|pluralize }}</p>
     {% if comments %}
         <form method="post" action="{% url 'creator_comment_bulk_moderation' %}">
             {% csrf_token %}
